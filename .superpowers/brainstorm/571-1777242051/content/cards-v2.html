@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Fantasy Bike Trial — Cartes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0F172A;
+    color: #fff;
+    font-family: 'Chakra Petch', sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px 48px;
+  }
+
+  h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #D97706;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: #94A3B8;
+    letter-spacing: 1px;
+    margin-bottom: 36px;
+  }
+
+  .section-label {
+    font-family: 'Russo One', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #15803D;
+    text-align: center;
+    margin: 32px 0 16px;
+    position: relative;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 60px;
+    height: 1px;
+    background: #15803D44;
+  }
+  .section-label::before { right: calc(50% + 120px); }
+  .section-label::after { left: calc(50% + 120px); }
+
+  .cards-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  /* ─── CARD BASE ─── */
+  .card {
+    width: 155px;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .card:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
+
+  /* ─── RARITY TREATMENTS ─── */
+  .card.common {
+    background: linear-gradient(160deg, #1E293B 0%, #192134 100%);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .card.rare {
+    background: linear-gradient(160deg, #1E3A5F 0%, #162B47 100%);
+    box-shadow: 0 4px 24px rgba(37,99,235,0.25);
+    border-color: rgba(59,130,246,0.2);
+  }
+  .card.epic {
+    background: linear-gradient(160deg, #2D1B69 0%, #1E1045 100%);
+    box-shadow: 0 4px 28px rgba(124,58,237,0.3);
+    border-color: rgba(139,92,246,0.25);
+  }
+  .card.legendary {
+    background: linear-gradient(160deg, #451A03 0%, #2D1200 100%);
+    box-shadow: 0 6px 32px rgba(217,119,6,0.4);
+    border-color: rgba(217,119,6,0.35);
+  }
+
+  /* Rarity top bar */
+  .rarity-bar {
+    height: 3px;
+    width: 100%;
+  }
+  .common .rarity-bar { background: #475569; }
+  .rare .rarity-bar { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+  .epic .rarity-bar { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+  .legendary .rarity-bar { background: linear-gradient(90deg, #B45309, #F59E0B, #FCD34D); }
+
+  /* ─── CARD HEADER ─── */
+  .card-header {
+    padding: 10px 10px 6px;
+    text-align: center;
+    position: relative;
+  }
+  .card-type {
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .common .card-type { color: #64748B; }
+  .rare .card-type { color: #60A5FA; }
+  .epic .card-type { color: #A78BFA; }
+  .legendary .card-type { color: #F59E0B; }
+
+  .card-name {
+    font-family: 'Russo One', sans-serif;
+    font-size: 13px;
+    line-height: 1.2;
+    margin: 5px 0 2px;
+    color: #F1F5F9;
+  }
+  .card-nation {
+    font-size: 9px;
+    color: #64748B;
+    letter-spacing: 1px;
+  }
+
+  /* ─── CARD IMAGE ─── */
+  .card-image {
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .card-image-icon {
+    width: 52px;
+    height: 52px;
+    opacity: 0.9;
+  }
+  /* Glow behind icon for rare+ */
+  .rare .card-image::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .epic .card-image::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, rgba(124,58,237,0.35) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .legendary .card-image::after {
+    content: '';
+    position: absolute;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, rgba(217,119,6,0.4) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* ─── CARD BODY ─── */
+  .card-body {
+    padding: 8px 10px 10px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    margin: 4px 0;
+  }
+  .stat-label { color: #64748B; font-weight: 500; }
+  .stat-value { font-weight: 700; color: #E2E8F0; }
+  .stat-value.gold { color: #F59E0B; }
+  .stat-value.green { color: #4ADE80; }
+  .stat-value.blue { color: #60A5FA; }
+  .stat-value.purple { color: #A78BFA; }
+
+  /* Tags / affinités */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 8px;
+  }
+  .tag {
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .tag.brand { background: rgba(217,119,6,0.15); color: #F59E0B; border: 1px solid rgba(217,119,6,0.2); }
+  .tag.technique { background: rgba(21,128,61,0.15); color: #4ADE80; border: 1px solid rgba(21,128,61,0.2); }
+
+  /* ─── CARD FOOTER ─── */
+  .card-footer {
+    text-align: center;
+    padding: 5px 0 7px;
+    font-size: 9px;
+    font-family: 'Russo One', sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .common .card-footer { color: #475569; }
+  .rare .card-footer { color: #60A5FA; }
+  .epic .card-footer { color: #A78BFA; }
+  .legendary .card-footer { color: #F59E0B; }
+
+  /* ─── COTE BADGE ─── */
+  .cote-badge {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: rgba(217,119,6,0.2);
+    border: 1px solid rgba(217,119,6,0.35);
+    color: #F59E0B;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-family: 'Chakra Petch', sans-serif;
+  }
+
+  /* ─── TECHNIQUE / EQUIPMENT CARDS ─── */
+  .card.technique .card-image {
+    background: linear-gradient(180deg, rgba(21,128,61,0.15) 0%, rgba(0,0,0,0.2) 100%);
+  }
+  .card.equipment .card-image {
+    background: linear-gradient(180deg, rgba(217,119,6,0.1) 0%, rgba(0,0,0,0.2) 100%);
+  }
+
+  /* activation tag */
+  .activation {
+    text-align: center;
+    font-size: 9px;
+    color: #94A3B8;
+    margin: 4px 0 6px;
+    font-style: italic;
+  }
+
+  /* synergy bar */
+  .synergy-row {
+    margin-top: 6px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 6px;
+  }
+  .synergy-label {
+    font-size: 8px;
+    color: #64748B;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .synergy-level {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    margin: 2px 0;
+  }
+  .synergy-cond { color: #94A3B8; }
+  .synergy-bonus { color: #4ADE80; font-weight: 700; }
+
+  /* Hint text at bottom */
+  .hint {
+    text-align: center;
+    font-size: 11px;
+    color: #475569;
+    margin-top: 36px;
+    font-family: 'Chakra Petch', sans-serif;
+  }
+
+  /* SVG icons inline */
+  .icon-rider { fill: #94A3B8; }
+  .icon-tech { fill: #4ADE80; }
+  .icon-equip { fill: #F59E0B; }
+</style>
+</head>
+<body>
+
+<h1>Super Fantasy Bike Trial</h1>
+<p class="subtitle">Système de cartes — Design system v1</p>
+
+<!-- ── PILOTES ── -->
+<div class="section-label">Cartes Pilote</div>
+<div class="cards-row">
+
+  <!-- Common -->
+  <div class="card common">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Pilote · Senior 26"</div>
+      <div class="cote-badge">×2.0</div>
+      <div class="card-name">Marc Durand</div>
+      <div class="card-nation">🇫🇷 France · #42</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="12" r="6" fill="#94A3B8"/>
+        <path d="M14 34c0-8 24-8 24 0" fill="#475569"/>
+        <circle cx="16" cy="44" r="5" stroke="#94A3B8" stroke-width="2" fill="none"/>
+        <circle cx="36" cy="44" r="5" stroke="#94A3B8" stroke-width="2" fill="none"/>
+        <path d="M16 39 L22 30 L26 28 L34 26 L36 39" stroke="#94A3B8" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="stat-row"><span class="stat-label">Clean rate</span><span class="stat-value green">61%</span></div>
+      <div class="stat-row"><span class="stat-label">Meilleur rang</span><span class="stat-value">15e</span></div>
+      <div class="tags">
+        <span class="tag brand">Monty</span>
+        <span class="tag technique">Sidehop</span>
+      </div>
+    </div>
+    <div class="card-footer">Commune · ×1.0</div>
+  </div>
+
+  <!-- Rare -->
+  <div class="card rare">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Pilote · Senior 20"</div>
+      <div class="cote-badge">×1.6</div>
+      <div class="card-name">Javier Reyes</div>
+      <div class="card-nation">🇪🇸 Espagne · #11</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="12" r="6" fill="#60A5FA"/>
+        <path d="M14 34c0-8 24-8 24 0" fill="#1E3A5F"/>
+        <circle cx="16" cy="44" r="5" stroke="#60A5FA" stroke-width="2" fill="none"/>
+        <circle cx="36" cy="44" r="5" stroke="#60A5FA" stroke-width="2" fill="none"/>
+        <path d="M16 39 L22 30 L26 28 L34 26 L36 39" stroke="#60A5FA" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="stat-row"><span class="stat-label">Clean rate</span><span class="stat-value green">74%</span></div>
+      <div class="stat-row"><span class="stat-label">Meilleur rang</span><span class="stat-value blue">6e</span></div>
+      <div class="tags">
+        <span class="tag brand">Echo</span>
+        <span class="tag technique">Latéral</span>
+        <span class="tag technique">Trackstand</span>
+      </div>
+    </div>
+    <div class="card-footer">Rare · ×1.5</div>
+  </div>
+
+  <!-- Epic -->
+  <div class="card epic">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Pilote · Elite Femme</div>
+      <div class="cote-badge">×1.3</div>
+      <div class="card-name">Léa Fontaine</div>
+      <div class="card-nation">🇫🇷 France · #5</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="12" r="6" fill="#A78BFA"/>
+        <path d="M14 34c0-8 24-8 24 0" fill="#2D1B69"/>
+        <circle cx="16" cy="44" r="5" stroke="#A78BFA" stroke-width="2" fill="none"/>
+        <circle cx="36" cy="44" r="5" stroke="#A78BFA" stroke-width="2" fill="none"/>
+        <path d="M16 39 L22 30 L26 28 L34 26 L36 39" stroke="#A78BFA" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="stat-row"><span class="stat-label">Clean rate</span><span class="stat-value green">82%</span></div>
+      <div class="stat-row"><span class="stat-label">Meilleur rang</span><span class="stat-value purple">3e</span></div>
+      <div class="tags">
+        <span class="tag brand">Inspired</span>
+        <span class="tag technique">Bunny Up</span>
+        <span class="tag technique">Latéral</span>
+      </div>
+    </div>
+    <div class="card-footer">Épique · ×2.0</div>
+  </div>
+
+  <!-- Legendary -->
+  <div class="card legendary">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Pilote · Senior 20"</div>
+      <div class="cote-badge">×1.0</div>
+      <div class="card-name">Toni Bou</div>
+      <div class="card-nation">🇪🇸 Espagne · #1</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="10" r="7" fill="#F59E0B"/>
+        <!-- crown -->
+        <path d="M18 10 L21 4 L26 8 L31 4 L34 10" stroke="#F59E0B" stroke-width="1.5" fill="none"/>
+        <path d="M14 34c0-8 24-8 24 0" fill="#451A03"/>
+        <circle cx="16" cy="44" r="5" stroke="#F59E0B" stroke-width="2" fill="none"/>
+        <circle cx="36" cy="44" r="5" stroke="#F59E0B" stroke-width="2" fill="none"/>
+        <path d="M16 39 L22 30 L26 28 L34 26 L36 39" stroke="#F59E0B" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="stat-row"><span class="stat-label">Clean rate</span><span class="stat-value green">94%</span></div>
+      <div class="stat-row"><span class="stat-label">Meilleur rang</span><span class="stat-value gold">1er</span></div>
+      <div class="tags">
+        <span class="tag brand">Montesa</span>
+        <span class="tag technique">Latéral</span>
+        <span class="tag technique">Step Up</span>
+        <span class="tag technique">Sidehop</span>
+      </div>
+    </div>
+    <div class="card-footer">Légendaire · ×3.0</div>
+  </div>
+
+</div>
+
+<!-- ── TECHNIQUES ── -->
+<div class="section-label">Cartes Technique</div>
+<div class="cards-row">
+
+  <div class="card rare technique">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Technique</div>
+      <div class="card-name">Latéral</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <path d="M10 26 Q20 10 26 26 Q32 42 42 26" stroke="#4ADE80" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="26" cy="26" r="4" fill="#4ADE80"/>
+        <path d="M38 20 L42 26 L38 32" stroke="#4ADE80" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="activation">Si réalisé en compétition</div>
+      <div class="stat-row"><span class="stat-label">Bonus</span><span class="stat-value green">+25 pts</span></div>
+      <div class="stat-row"><span class="stat-label">Si affinité pilote</span><span class="stat-value gold">+40 pts</span></div>
+      <div class="tags"><span class="tag technique">1 pilote / event</span></div>
+    </div>
+    <div class="card-footer">Rare · ×1.5</div>
+  </div>
+
+  <div class="card epic technique">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Technique</div>
+      <div class="card-name">Bunny Hop Up</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <path d="M14 38 L26 14 L38 38" stroke="#A78BFA" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="26" cy="14" r="4" fill="#A78BFA"/>
+        <path d="M20 38 L32 38" stroke="#A78BFA" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="activation">Si réalisé en compétition</div>
+      <div class="stat-row"><span class="stat-label">Bonus</span><span class="stat-value green">+40 pts</span></div>
+      <div class="stat-row"><span class="stat-label">Si affinité pilote</span><span class="stat-value gold">+65 pts</span></div>
+      <div class="tags"><span class="tag technique">1 pilote / zone</span></div>
+    </div>
+    <div class="card-footer">Épique · ×2.0</div>
+  </div>
+
+</div>
+
+<!-- ── EQUIPEMENT ── -->
+<div class="section-label">Cartes Équipement</div>
+<div class="cards-row">
+
+  <div class="card epic equipment">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Équipement · Marque</div>
+      <div class="card-name">Monty Team</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <rect x="16" y="20" width="20" height="14" rx="3" stroke="#F59E0B" stroke-width="2" fill="none"/>
+        <path d="M20 20 L20 16 L32 16 L32 20" stroke="#F59E0B" stroke-width="2" fill="none"/>
+        <circle cx="22" cy="27" r="2" fill="#F59E0B"/>
+        <circle cx="30" cy="27" r="2" fill="#F59E0B"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="synergy-row">
+        <div class="synergy-label">Synergie Marque</div>
+        <div class="synergy-level"><span class="synergy-cond">2 pilotes Monty</span><span class="synergy-bonus">+15%</span></div>
+        <div class="synergy-level"><span class="synergy-cond">3+ pilotes Monty</span><span class="synergy-bonus">+30%</span></div>
+      </div>
+      <div class="tags" style="margin-top:8px"><span class="tag brand">Sur score de base</span></div>
+    </div>
+    <div class="card-footer">Épique · ×2.0</div>
+  </div>
+
+  <div class="card legendary equipment">
+    <div class="rarity-bar"></div>
+    <div class="card-header">
+      <div class="card-type">Équipement · Composant</div>
+      <div class="card-name">Freins Magura</div>
+    </div>
+    <div class="card-image">
+      <svg class="card-image-icon" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="26" r="14" stroke="#F59E0B" stroke-width="2" fill="none"/>
+        <path d="M26 12 L26 26 L34 30" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="26" cy="26" r="3" fill="#F59E0B"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <div class="stat-row"><span class="stat-label">Par section clean</span><span class="stat-value green">+8 pts</span></div>
+      <div class="stat-row"><span class="stat-label">Si affinité pilote</span><span class="stat-value gold">+15 pts</span></div>
+      <div class="tags"><span class="tag brand">1 pilote · Cumulable</span></div>
+    </div>
+    <div class="card-footer">Légendaire · ×3.0</div>
+  </div>
+
+</div>
+
+<p class="hint">Dis-moi dans le terminal — couleurs, typographie, structure des cartes ?</p>
+
+<script>
+// Inject into parent frame if exists
+if (window.parent && window.parent !== window) {
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const type = card.querySelector('.card-type')?.textContent;
+      const name = card.querySelector('.card-name')?.textContent;
+      window.parent.postMessage({ type: 'select', choice: name, text: `${type}: ${name}` }, '*');
+    });
+  });
+}
+</script>
+</body>
+</html>
