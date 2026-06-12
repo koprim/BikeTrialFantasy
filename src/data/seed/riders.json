@@ -1,0 +1,322 @@
+[
+  {
+    "id": "senior-26-1",
+    "name": "SENIOR 26 Pilote 1",
+    "country": "GBR",
+    "category": "SENIOR_26",
+    "uciRank": 1,
+    "cote": 1
+  },
+  {
+    "id": "senior-26-2",
+    "name": "SENIOR 26 Pilote 2",
+    "country": "ESP",
+    "category": "SENIOR_26",
+    "uciRank": 8,
+    "cote": 1.3
+  },
+  {
+    "id": "senior-26-3",
+    "name": "SENIOR 26 Pilote 3",
+    "country": "GER",
+    "category": "SENIOR_26",
+    "uciRank": 15,
+    "cote": 1.6
+  },
+  {
+    "id": "senior-26-4",
+    "name": "SENIOR 26 Pilote 4",
+    "country": "SUI",
+    "category": "SENIOR_26",
+    "uciRank": 22,
+    "cote": 1.6
+  },
+  {
+    "id": "senior-26-5",
+    "name": "SENIOR 26 Pilote 5",
+    "country": "POL",
+    "category": "SENIOR_26",
+    "uciRank": 29,
+    "cote": 2
+  },
+  {
+    "id": "senior-26-6",
+    "name": "SENIOR 26 Pilote 6",
+    "country": "CZE",
+    "category": "SENIOR_26",
+    "uciRank": 36,
+    "cote": 2
+  },
+  {
+    "id": "senior-26-7",
+    "name": "SENIOR 26 Pilote 7",
+    "country": "BEL",
+    "category": "SENIOR_26",
+    "uciRank": 43,
+    "cote": 2
+  },
+  {
+    "id": "senior-26-8",
+    "name": "SENIOR 26 Pilote 8",
+    "country": "FRA",
+    "category": "SENIOR_26",
+    "uciRank": 50,
+    "cote": 2
+  },
+  {
+    "id": "junior-26-1",
+    "name": "JUNIOR 26 Pilote 1",
+    "country": "GBR",
+    "category": "JUNIOR_26",
+    "uciRank": 1,
+    "cote": 1
+  },
+  {
+    "id": "junior-26-2",
+    "name": "JUNIOR 26 Pilote 2",
+    "country": "ESP",
+    "category": "JUNIOR_26",
+    "uciRank": 8,
+    "cote": 1.3
+  },
+  {
+    "id": "junior-26-3",
+    "name": "JUNIOR 26 Pilote 3",
+    "country": "GER",
+    "category": "JUNIOR_26",
+    "uciRank": 15,
+    "cote": 1.6
+  },
+  {
+    "id": "junior-26-4",
+    "name": "JUNIOR 26 Pilote 4",
+    "country": "SUI",
+    "category": "JUNIOR_26",
+    "uciRank": 22,
+    "cote": 1.6
+  },
+  {
+    "id": "junior-26-5",
+    "name": "JUNIOR 26 Pilote 5",
+    "country": "POL",
+    "category": "JUNIOR_26",
+    "uciRank": 29,
+    "cote": 2
+  },
+  {
+    "id": "junior-26-6",
+    "name": "JUNIOR 26 Pilote 6",
+    "country": "CZE",
+    "category": "JUNIOR_26",
+    "uciRank": 36,
+    "cote": 2
+  },
+  {
+    "id": "junior-26-7",
+    "name": "JUNIOR 26 Pilote 7",
+    "country": "BEL",
+    "category": "JUNIOR_26",
+    "uciRank": 43,
+    "cote": 2
+  },
+  {
+    "id": "junior-26-8",
+    "name": "JUNIOR 26 Pilote 8",
+    "country": "FRA",
+    "category": "JUNIOR_26",
+    "uciRank": 50,
+    "cote": 2
+  },
+  {
+    "id": "senior-20-1",
+    "name": "SENIOR 20 Pilote 1",
+    "country": "GBR",
+    "category": "SENIOR_20",
+    "uciRank": 1,
+    "cote": 1
+  },
+  {
+    "id": "senior-20-2",
+    "name": "SENIOR 20 Pilote 2",
+    "country": "ESP",
+    "category": "SENIOR_20",
+    "uciRank": 8,
+    "cote": 1.3
+  },
+  {
+    "id": "senior-20-3",
+    "name": "SENIOR 20 Pilote 3",
+    "country": "GER",
+    "category": "SENIOR_20",
+    "uciRank": 15,
+    "cote": 1.6
+  },
+  {
+    "id": "senior-20-4",
+    "name": "SENIOR 20 Pilote 4",
+    "country": "SUI",
+    "category": "SENIOR_20",
+    "uciRank": 22,
+    "cote": 1.6
+  },
+  {
+    "id": "senior-20-5",
+    "name": "SENIOR 20 Pilote 5",
+    "country": "POL",
+    "category": "SENIOR_20",
+    "uciRank": 29,
+    "cote": 2
+  },
+  {
+    "id": "senior-20-6",
+    "name": "SENIOR 20 Pilote 6",
+    "country": "CZE",
+    "category": "SENIOR_20",
+    "uciRank": 36,
+    "cote": 2
+  },
+  {
+    "id": "senior-20-7",
+    "name": "SENIOR 20 Pilote 7",
+    "country": "BEL",
+    "category": "SENIOR_20",
+    "uciRank": 43,
+    "cote": 2
+  },
+  {
+    "id": "senior-20-8",
+    "name": "SENIOR 20 Pilote 8",
+    "country": "FRA",
+    "category": "SENIOR_20",
+    "uciRank": 50,
+    "cote": 2
+  },
+  {
+    "id": "junior-20-1",
+    "name": "JUNIOR 20 Pilote 1",
+    "country": "GBR",
+    "category": "JUNIOR_20",
+    "uciRank": 1,
+    "cote": 1
+  },
+  {
+    "id": "junior-20-2",
+    "name": "JUNIOR 20 Pilote 2",
+    "country": "ESP",
+    "category": "JUNIOR_20",
+    "uciRank": 8,
+    "cote": 1.3
+  },
+  {
+    "id": "junior-20-3",
+    "name": "JUNIOR 20 Pilote 3",
+    "country": "GER",
+    "category": "JUNIOR_20",
+    "uciRank": 15,
+    "cote": 1.6
+  },
+  {
+    "id": "junior-20-4",
+    "name": "JUNIOR 20 Pilote 4",
+    "country": "SUI",
+    "category": "JUNIOR_20",
+    "uciRank": 22,
+    "cote": 1.6
+  },
+  {
+    "id": "junior-20-5",
+    "name": "JUNIOR 20 Pilote 5",
+    "country": "POL",
+    "category": "JUNIOR_20",
+    "uciRank": 29,
+    "cote": 2
+  },
+  {
+    "id": "junior-20-6",
+    "name": "JUNIOR 20 Pilote 6",
+    "country": "CZE",
+    "category": "JUNIOR_20",
+    "uciRank": 36,
+    "cote": 2
+  },
+  {
+    "id": "junior-20-7",
+    "name": "JUNIOR 20 Pilote 7",
+    "country": "BEL",
+    "category": "JUNIOR_20",
+    "uciRank": 43,
+    "cote": 2
+  },
+  {
+    "id": "junior-20-8",
+    "name": "JUNIOR 20 Pilote 8",
+    "country": "FRA",
+    "category": "JUNIOR_20",
+    "uciRank": 50,
+    "cote": 2
+  },
+  {
+    "id": "elite-women-1",
+    "name": "ELITE WOMEN Pilote 1",
+    "country": "GBR",
+    "category": "ELITE_WOMEN",
+    "uciRank": 1,
+    "cote": 1
+  },
+  {
+    "id": "elite-women-2",
+    "name": "ELITE WOMEN Pilote 2",
+    "country": "ESP",
+    "category": "ELITE_WOMEN",
+    "uciRank": 8,
+    "cote": 1.3
+  },
+  {
+    "id": "elite-women-3",
+    "name": "ELITE WOMEN Pilote 3",
+    "country": "GER",
+    "category": "ELITE_WOMEN",
+    "uciRank": 15,
+    "cote": 1.6
+  },
+  {
+    "id": "elite-women-4",
+    "name": "ELITE WOMEN Pilote 4",
+    "country": "SUI",
+    "category": "ELITE_WOMEN",
+    "uciRank": 22,
+    "cote": 1.6
+  },
+  {
+    "id": "elite-women-5",
+    "name": "ELITE WOMEN Pilote 5",
+    "country": "POL",
+    "category": "ELITE_WOMEN",
+    "uciRank": 29,
+    "cote": 2
+  },
+  {
+    "id": "elite-women-6",
+    "name": "ELITE WOMEN Pilote 6",
+    "country": "CZE",
+    "category": "ELITE_WOMEN",
+    "uciRank": 36,
+    "cote": 2
+  },
+  {
+    "id": "elite-women-7",
+    "name": "ELITE WOMEN Pilote 7",
+    "country": "BEL",
+    "category": "ELITE_WOMEN",
+    "uciRank": 43,
+    "cote": 2
+  },
+  {
+    "id": "elite-women-8",
+    "name": "ELITE WOMEN Pilote 8",
+    "country": "FRA",
+    "category": "ELITE_WOMEN",
+    "uciRank": 50,
+    "cote": 2
+  }
+]
