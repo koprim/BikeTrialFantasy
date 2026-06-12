@@ -28,3 +28,9 @@ test('RESET returns to initial', () => {
   const base = { ...initialState, player: { name: 'X' }, currentIndex: 5 };
   expect(gameReducer(base, { type: 'RESET' })).toEqual(initialState);
 });
+
+test('HYDRATE merges saved state', () => {
+  const s = gameReducer(initialState, { type: 'HYDRATE', payload: { player: { name: 'Z' }, currentIndex: 3 } });
+  expect(s.player).toEqual({ name: 'Z' });
+  expect(s.currentIndex).toBe(3);
+});

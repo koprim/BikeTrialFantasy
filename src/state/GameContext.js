@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import { saveState, loadState } from './persistence';
 
 const initialState = {
   player: null,        // { name }
@@ -19,6 +20,8 @@ function gameReducer(state, action) {
       return { ...state, currentIndex: state.currentIndex + 1 };
     case 'RESET':
       return initialState;
+    case 'HYDRATE':
+      return { ...state, ...action.payload };
     default:
       return state;
   }
@@ -28,6 +31,8 @@ const GameContext = createContext(null);
 
 export function GameProvider({ children }) {
   const [state, dispatch] = useReducer(gameReducer, initialState);
+  useEffect(() => { loadState().then((saved) => { if (saved) dispatch({ type: 'HYDRATE', payload: saved }); }); }, []);
+  useEffect(() => { saveState(state); }, [state]);
   return <GameContext.Provider value={{ state, dispatch }}>{children}</GameContext.Provider>;
 }
 
