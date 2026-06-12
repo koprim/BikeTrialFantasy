@@ -8,7 +8,8 @@ jest.mock('react-native-safe-area-context', () => {
 
 import App from './App';
 
-test('app renders the Home screen title', async () => {
+test('app renders the Home screen start button', async () => {
   const { findByText } = render(<App />);
-  expect(await findByText(/Super Fantasy Bike Trial|Commencer|Pseudo/i)).toBeTruthy();
+  // Unique signal that the Home screen mounted and rendered without crashing.
+  expect(await findByText('Commencer la saison')).toBeTruthy();
 });
