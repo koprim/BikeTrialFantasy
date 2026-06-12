@@ -1,7 +1,7 @@
-# Super Fantasy Bike Trial — Design Spec (WIP)
+# Super Fantasy Bike Trial — Design Spec
 
-> État: **En cours de brainstorming** — toutes les mécaniques de base validées, design visuel en cours de choix.
-> Prochaine étape: valider le style visuel des cartes, puis finaliser le spec complet.
+> État: **Périmètre MVP figé** — boucle core validée pour le POC (voir §1bis). Vision complète conservée comme cible post-MVP.
+> Prochaine étape: réunir les données (Coupe du Monde UCI + ranking), puis rédiger le plan d'implémentation.
 
 ---
 
@@ -16,6 +16,102 @@
 **Modèle**: Free-to-play, collection permanente, progression méritocratique.
 
 **Compétitions sources**: UCI internationales uniquement (World Cup, Championnats du Monde).
+
+---
+
+## 1bis. Périmètre MVP (POC démo sectorielle)
+
+> **Ceci est la source de vérité pour ce qu'on construit en premier.** Les sections 4–8 décrivent la vision complète (cartes, synergies, collection, ligues, pipeline) — **reportée post-MVP**.
+
+### Décisions de cadrage
+
+| Axe | Choix MVP | Reporté |
+|-----|-----------|---------|
+| **Périmètre** | Boucle core seule : composer une équipe, scorer `classement × cote`, classement | Cartes (techniques, équipement, synergies), objectifs, collection/packs |
+| **Architecture** | Démo mono-appareil : données seedées en local, adversaires simulés | Backend, comptes joueurs, classement partagé, ligues privées |
+| **Données** | Plusieurs manches d'une Coupe du Monde UCI récente, seedées en dur | Import semi-auto, crowdsourcing |
+| **Scoring** | Uniquement `classement × cote` (le scoring zones/sections n'a aucun consommateur sans cartes/objectifs → retiré du MVP) | Indice de performance zones, bonus techniques/objectifs |
+| **Visuel** | Non bloquant pour le MVP fonctionnel ; style final à choisir plus tard | Choix Bento/Neumorphism/Premium White |
+
+### Boucle de démo (saison d'events seedés)
+
+1. **Saisie joueur** — un pseudo, pas de compte.
+2. Pour chaque event de la saison, dans l'ordre chronologique :
+   1. **Briefing** — event (nom, date, lieu, n° de manche) + roster disponible par catégorie, cote de chaque pilote affichée.
+   2. **Composition** — le joueur remplit ses 6 slots typés.
+   3. **Lock** — confirmation de l'équipe (verrouillée pour l'event).
+   4. **Reveal** — affichage des résultats réels + calcul du score joueur.
+   5. **Classement de l'event** — joueur vs rivaux simulés.
+   6. **Classement saison** — cumul depuis le début de la saison.
+3. Event suivant jusqu'à la fin de la saison seedée.
+
+### Composition d'équipe
+
+6 slots typés, 1 catégorie par slot. **5 catégories distinctes** (Elite Femme occupe 2 slots) :
+
+| Slot | Catégorie | Roue |
+|------|-----------|------|
+| 1 | Senior | 26" |
+| 2 | Junior | 26" |
+| 3 | Senior | 20" |
+| 4 | Junior | 20" |
+| 5 | Elite Femme | 20" |
+| 6 | Elite Femme | 20" |
+
+Contrainte : les 2 pilotes Elite Femme doivent être **différents**.
+
+### Moteur de score
+
+```
+Cote(pilote)          = palier dérivé du ranking UCI (constante sur la saison pour le MVP)
+PointsClassement(pos) = table de points selon la position finale dans la catégorie
+Score pilote (event)  = PointsClassement(position) × Cote(pilote)
+Score joueur (event)  = Σ des 6 pilotes
+Score saison          = Σ des events joués
+```
+
+**Points de classement** (proposition, à affiner après test) :
+
+| Pos | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | au-delà |
+|-----|---|---|---|---|---|---|---|---|---|----|---------|
+| Pts |100|80 |65 |52 |42 |34 |27 |21 |16 |12 | dégressif, min 4 |
+
+**Cote** (inversement liée au ranking UCI) :
+
+| Profil UCI | Top 3 | Top 4–10 | Top 11–25 | Top 26–50 | Hors top 50 / NC |
+|------------|-------|----------|-----------|-----------|------------------|
+| Cote | ×1.0 | ×1.3 | ×1.6 | ×2.0 | ×2.5 |
+
+> **Hook** : favori qui gagne = 100×1.0 = **100**. Outsider (×2.5) 3e = 65×2.5 = **162**. Outsider dernier = 4×2.5 = **10**. Risque/récompense lisible, récompense la connaissance du milieu.
+> **Cote constante par pilote** sur la saison seedée (son standing général) — choisi pour simplifier le seed ; un snapshot par event reste possible post-MVP.
+
+### Adversaires simulés
+
+8–12 rivaux, chacun avec une **stratégie** générant son équipe à chaque event :
+
+| Stratégie | Comportement |
+|-----------|--------------|
+| Favoris | Prend les pilotes les mieux classés (cotes basses) |
+| Équilibré | Mix favoris / outsiders |
+| Outsider | Privilégie les cotes hautes |
+| Aléatoire | Sélection au hasard parmi les éligibles |
+
+Objectif : un joueur qui pioche intelligemment doit pouvoir battre les bots « Favoris » → preuve visible du hook.
+
+### Modèle de données (seed)
+
+- **Rider** : id, nom, pays (ISO), catégorie (`SENIOR_26` | `JUNIOR_26` | `SENIOR_20` | `JUNIOR_20` | `ELITE_WOMEN`), rankingUCI (int), cote (dérivée).
+- **Event** : id, nom, date, lieu, n° de manche, résultats = pour chaque catégorie, liste ordonnée d'identifiants pilotes (classement final).
+- **Team** (pick joueur par event) : eventId, 6 slots → riderId (Elite Femme ×2 distincts).
+- **Rival** : id, nom, stratégie.
+
+### Données à fournir (dépendance)
+
+Pour seeder : une Coupe du Monde UCI récente, plusieurs manches. Par manche : **classement final ordonné par catégorie**. Par pilote : nom, pays, **ranking UCI** (→ je dérive la cote). Saison/manches précises à confirmer.
+
+### Hors périmètre MVP (rappel explicite)
+
+Cartes techniques, cartes équipement/marques, synergies, objectifs joueur, collection/packs/progression, ligues privées, backend/comptes, pipeline d'import, crowdsourcing, choix du style visuel final.
 
 ---
 
@@ -218,9 +314,15 @@ Crowdsourcing: arbitres/observateurs de confiance saisissent les données en qua
 
 ## À valider / décisions ouvertes
 
+### Bloquant pour le MVP
+- [ ] **Données** : confirmer la saison/manches de Coupe du Monde UCI à seeder + récupérer classements par catégorie et rankings UCI
+- [ ] Valider les valeurs des points de classement (table proposée à affiner après test)
+- [ ] Nombre exact de rivaux simulés et répartition des stratégies
+
+### Post-MVP (vision complète)
 - [ ] Style visuel final des cartes (A/B/C ou hybride)
 - [ ] Nombre exact de slots par pilote (3 confirmé ?)
 - [ ] Liste complète des techniques disponibles
 - [ ] Liste des marques/composants à inclure au lancement
-- [ ] Formule exacte des points de classement (valeurs à affiner après test)
 - [ ] Nombre d'objectifs disponibles par event et par joueur
+- [ ] Cote : snapshot par event vs constante saison (MVP = constante)
