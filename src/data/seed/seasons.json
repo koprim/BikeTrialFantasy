@@ -1,0 +1,502 @@
+[
+  {
+    "id": "2025",
+    "name": "Coupe du Monde 2025",
+    "events": [
+      {
+        "id": "2025-r1",
+        "name": "Coupe du Monde 2025 — Manche 1",
+        "venue": "Vic",
+        "country": "ESP",
+        "round": 1,
+        "dateFrom": "2025-05-10",
+        "dateTo": "2025-05-11",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-5",
+            "senior-26-2",
+            "senior-26-4",
+            "senior-26-8",
+            "senior-26-1",
+            "senior-26-7",
+            "senior-26-6",
+            "senior-26-3"
+          ],
+          "JUNIOR_26": [
+            "junior-26-1",
+            "junior-26-6",
+            "junior-26-7",
+            "junior-26-4",
+            "junior-26-3",
+            "junior-26-2",
+            "junior-26-5",
+            "junior-26-8"
+          ],
+          "SENIOR_20": [
+            "senior-20-5",
+            "senior-20-3",
+            "senior-20-7",
+            "senior-20-6",
+            "senior-20-4",
+            "senior-20-1",
+            "senior-20-8",
+            "senior-20-2"
+          ],
+          "JUNIOR_20": [
+            "junior-20-5",
+            "junior-20-3",
+            "junior-20-4",
+            "junior-20-2",
+            "junior-20-7",
+            "junior-20-1",
+            "junior-20-8",
+            "junior-20-6"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-1",
+            "elite-women-8",
+            "elite-women-4",
+            "elite-women-3",
+            "elite-women-7",
+            "elite-women-6",
+            "elite-women-5",
+            "elite-women-2"
+          ]
+        }
+      },
+      {
+        "id": "2025-r2",
+        "name": "Coupe du Monde 2025 — Manche 2",
+        "venue": "Andorre",
+        "country": "AND",
+        "round": 2,
+        "dateFrom": "2025-07-05",
+        "dateTo": "2025-07-06",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-2",
+            "senior-26-4",
+            "senior-26-3",
+            "senior-26-1",
+            "senior-26-8",
+            "senior-26-7",
+            "senior-26-5",
+            "senior-26-6"
+          ],
+          "JUNIOR_26": [
+            "junior-26-6",
+            "junior-26-1",
+            "junior-26-8",
+            "junior-26-5",
+            "junior-26-4",
+            "junior-26-3",
+            "junior-26-7",
+            "junior-26-2"
+          ],
+          "SENIOR_20": [
+            "senior-20-5",
+            "senior-20-3",
+            "senior-20-8",
+            "senior-20-2",
+            "senior-20-7",
+            "senior-20-4",
+            "senior-20-6",
+            "senior-20-1"
+          ],
+          "JUNIOR_20": [
+            "junior-20-1",
+            "junior-20-2",
+            "junior-20-3",
+            "junior-20-7",
+            "junior-20-5",
+            "junior-20-4",
+            "junior-20-6",
+            "junior-20-8"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-6",
+            "elite-women-3",
+            "elite-women-4",
+            "elite-women-2",
+            "elite-women-1",
+            "elite-women-5",
+            "elite-women-8",
+            "elite-women-7"
+          ]
+        }
+      },
+      {
+        "id": "2025-r3",
+        "name": "Coupe du Monde 2025 — Manche 3",
+        "venue": "Val di Sole",
+        "country": "ITA",
+        "round": 3,
+        "dateFrom": "2025-08-23",
+        "dateTo": "2025-08-24",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-5",
+            "senior-26-1",
+            "senior-26-6",
+            "senior-26-4",
+            "senior-26-8",
+            "senior-26-7",
+            "senior-26-2",
+            "senior-26-3"
+          ],
+          "JUNIOR_26": [
+            "junior-26-4",
+            "junior-26-5",
+            "junior-26-7",
+            "junior-26-2",
+            "junior-26-8",
+            "junior-26-6",
+            "junior-26-1",
+            "junior-26-3"
+          ],
+          "SENIOR_20": [
+            "senior-20-7",
+            "senior-20-5",
+            "senior-20-3",
+            "senior-20-8",
+            "senior-20-1",
+            "senior-20-6",
+            "senior-20-4",
+            "senior-20-2"
+          ],
+          "JUNIOR_20": [
+            "junior-20-1",
+            "junior-20-4",
+            "junior-20-5",
+            "junior-20-8",
+            "junior-20-7",
+            "junior-20-3",
+            "junior-20-6",
+            "junior-20-2"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-3",
+            "elite-women-2",
+            "elite-women-4",
+            "elite-women-5",
+            "elite-women-7",
+            "elite-women-8",
+            "elite-women-6",
+            "elite-women-1"
+          ]
+        }
+      },
+      {
+        "id": "2025-r4",
+        "name": "Coupe du Monde 2025 — Manche 4",
+        "venue": "Leogang",
+        "country": "AUT",
+        "round": 4,
+        "dateFrom": "2025-09-20",
+        "dateTo": "2025-09-21",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-6",
+            "senior-26-1",
+            "senior-26-7",
+            "senior-26-8",
+            "senior-26-3",
+            "senior-26-4",
+            "senior-26-5",
+            "senior-26-2"
+          ],
+          "JUNIOR_26": [
+            "junior-26-7",
+            "junior-26-4",
+            "junior-26-8",
+            "junior-26-3",
+            "junior-26-5",
+            "junior-26-6",
+            "junior-26-2",
+            "junior-26-1"
+          ],
+          "SENIOR_20": [
+            "senior-20-8",
+            "senior-20-7",
+            "senior-20-2",
+            "senior-20-1",
+            "senior-20-3",
+            "senior-20-5",
+            "senior-20-6",
+            "senior-20-4"
+          ],
+          "JUNIOR_20": [
+            "junior-20-6",
+            "junior-20-7",
+            "junior-20-1",
+            "junior-20-8",
+            "junior-20-4",
+            "junior-20-2",
+            "junior-20-5",
+            "junior-20-3"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-2",
+            "elite-women-6",
+            "elite-women-4",
+            "elite-women-7",
+            "elite-women-1",
+            "elite-women-3",
+            "elite-women-8",
+            "elite-women-5"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "2026-27",
+    "name": "Coupe du Monde 2026-27",
+    "events": [
+      {
+        "id": "2026-27-r1",
+        "name": "Coupe du Monde 2026-27 — Manche 1",
+        "venue": "Les Gets",
+        "country": "FRA",
+        "round": 1,
+        "dateFrom": "2026-10-18",
+        "dateTo": "2026-10-19",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-1",
+            "senior-26-8",
+            "senior-26-5",
+            "senior-26-7",
+            "senior-26-6",
+            "senior-26-3",
+            "senior-26-4",
+            "senior-26-2"
+          ],
+          "JUNIOR_26": [
+            "junior-26-6",
+            "junior-26-7",
+            "junior-26-5",
+            "junior-26-3",
+            "junior-26-1",
+            "junior-26-4",
+            "junior-26-8",
+            "junior-26-2"
+          ],
+          "SENIOR_20": [
+            "senior-20-1",
+            "senior-20-8",
+            "senior-20-2",
+            "senior-20-7",
+            "senior-20-3",
+            "senior-20-5",
+            "senior-20-6",
+            "senior-20-4"
+          ],
+          "JUNIOR_20": [
+            "junior-20-1",
+            "junior-20-4",
+            "junior-20-2",
+            "junior-20-8",
+            "junior-20-3",
+            "junior-20-6",
+            "junior-20-7",
+            "junior-20-5"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-8",
+            "elite-women-1",
+            "elite-women-4",
+            "elite-women-3",
+            "elite-women-5",
+            "elite-women-6",
+            "elite-women-2",
+            "elite-women-7"
+          ]
+        }
+      },
+      {
+        "id": "2026-27-r2",
+        "name": "Coupe du Monde 2026-27 — Manche 2",
+        "venue": "Châtel",
+        "country": "FRA",
+        "round": 2,
+        "dateFrom": "2026-11-08",
+        "dateTo": "2026-11-09",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-7",
+            "senior-26-3",
+            "senior-26-1",
+            "senior-26-6",
+            "senior-26-5",
+            "senior-26-2",
+            "senior-26-8",
+            "senior-26-4"
+          ],
+          "JUNIOR_26": [
+            "junior-26-7",
+            "junior-26-2",
+            "junior-26-5",
+            "junior-26-6",
+            "junior-26-8",
+            "junior-26-4",
+            "junior-26-3",
+            "junior-26-1"
+          ],
+          "SENIOR_20": [
+            "senior-20-1",
+            "senior-20-3",
+            "senior-20-4",
+            "senior-20-8",
+            "senior-20-2",
+            "senior-20-6",
+            "senior-20-5",
+            "senior-20-7"
+          ],
+          "JUNIOR_20": [
+            "junior-20-2",
+            "junior-20-3",
+            "junior-20-4",
+            "junior-20-5",
+            "junior-20-8",
+            "junior-20-6",
+            "junior-20-1",
+            "junior-20-7"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-6",
+            "elite-women-2",
+            "elite-women-7",
+            "elite-women-8",
+            "elite-women-5",
+            "elite-women-3",
+            "elite-women-1",
+            "elite-women-4"
+          ]
+        }
+      },
+      {
+        "id": "2026-27-r3",
+        "name": "Coupe du Monde 2026-27 — Manche 3",
+        "venue": "Lenzerheide",
+        "country": "SUI",
+        "round": 3,
+        "dateFrom": "2026-11-29",
+        "dateTo": "2026-11-30",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-8",
+            "senior-26-6",
+            "senior-26-2",
+            "senior-26-1",
+            "senior-26-5",
+            "senior-26-4",
+            "senior-26-7",
+            "senior-26-3"
+          ],
+          "JUNIOR_26": [
+            "junior-26-7",
+            "junior-26-3",
+            "junior-26-6",
+            "junior-26-4",
+            "junior-26-2",
+            "junior-26-5",
+            "junior-26-8",
+            "junior-26-1"
+          ],
+          "SENIOR_20": [
+            "senior-20-2",
+            "senior-20-3",
+            "senior-20-4",
+            "senior-20-6",
+            "senior-20-8",
+            "senior-20-7",
+            "senior-20-5",
+            "senior-20-1"
+          ],
+          "JUNIOR_20": [
+            "junior-20-3",
+            "junior-20-1",
+            "junior-20-8",
+            "junior-20-7",
+            "junior-20-4",
+            "junior-20-6",
+            "junior-20-5",
+            "junior-20-2"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-4",
+            "elite-women-2",
+            "elite-women-7",
+            "elite-women-8",
+            "elite-women-5",
+            "elite-women-3",
+            "elite-women-6",
+            "elite-women-1"
+          ]
+        }
+      },
+      {
+        "id": "2026-27-r4",
+        "name": "Coupe du Monde 2026-27 — Manche 4",
+        "venue": "Pal Arinsal",
+        "country": "AND",
+        "round": 4,
+        "dateFrom": "2026-12-20",
+        "dateTo": "2026-12-21",
+        "results": {
+          "SENIOR_26": [
+            "senior-26-1",
+            "senior-26-2",
+            "senior-26-6",
+            "senior-26-3",
+            "senior-26-7",
+            "senior-26-5",
+            "senior-26-4",
+            "senior-26-8"
+          ],
+          "JUNIOR_26": [
+            "junior-26-7",
+            "junior-26-1",
+            "junior-26-4",
+            "junior-26-3",
+            "junior-26-6",
+            "junior-26-8",
+            "junior-26-2",
+            "junior-26-5"
+          ],
+          "SENIOR_20": [
+            "senior-20-2",
+            "senior-20-3",
+            "senior-20-8",
+            "senior-20-6",
+            "senior-20-4",
+            "senior-20-1",
+            "senior-20-7",
+            "senior-20-5"
+          ],
+          "JUNIOR_20": [
+            "junior-20-8",
+            "junior-20-7",
+            "junior-20-5",
+            "junior-20-6",
+            "junior-20-1",
+            "junior-20-2",
+            "junior-20-3",
+            "junior-20-4"
+          ],
+          "ELITE_WOMEN": [
+            "elite-women-5",
+            "elite-women-8",
+            "elite-women-4",
+            "elite-women-1",
+            "elite-women-6",
+            "elite-women-7",
+            "elite-women-2",
+            "elite-women-3"
+          ]
+        }
+      }
+    ]
+  }
+]
