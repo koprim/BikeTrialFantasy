@@ -1,71 +1,106 @@
-# Menu de navigation — Design Spec
+# Menu de navigation & saisons pilotées par les dates — Design Spec
 
 > État : validé (brainstorming 2026-11-15). Première version, appelée à évoluer.
+> Remplace la boucle linéaire du MVP (`currentIndex` / `ADVANCE` / « Terminer la saison »).
 
 ## Objectif
 
-Ajouter un menu persistant pour sortir de la boucle linéaire, permettre de **reprendre** une saison sauvegardée (aujourd'hui l'Accueil relance toujours une nouvelle saison), et consulter classement / historique / règles à tout moment.
+1. Ajouter un menu persistant (onglets) : jouer, classement, historique, règles & profil.
+2. Faire piloter la saison **par les dates**, pas par le joueur : ouverture / verrouillage des compositions, révélation des résultats et archivage des saisons sont automatiques.
+3. Conserver les saisons passées et les scores du joueur.
 
-## Navigation
+Les données restent **simulées et locales** (seed + AsyncStorage). Pas de backend.
 
-Barre d'onglets en bas (`@react-navigation/bottom-tabs@^6`), 4 onglets :
+## Données simulées
 
-| Onglet | Nom de route | Contenu |
-|--------|--------------|---------|
-| 🎮 Jouer | `PlayTab` | Stack existante : `Home → Briefing → Compose → EventResult → SeasonStandings` (inchangée) |
-| 🏆 Classement | `StandingsTab` | Classement saison en lecture seule |
-| 📜 Historique | `HistoryTab` | Stack : `HistoryList → HistoryDetail` |
-| 📖 Règles | `RulesTab` | Règles du scoring + profil |
+`src/data/seed/seasons.json` remplace `season.json` :
 
-Les en-têtes de stack restent gérés par chaque stack ; la tab bar masque son propre header (`headerShown: false`).
+```
+Season = { id, name, events: Event[] }
+Event  = { id, name, venue, country, round, dateFrom, dateTo, results }   // dates 'YYYY-MM-DD'
+```
 
-## Écrans
+Contenu généré par `scripts/gen-dev-seed.js` (déterministe) :
 
-### Accueil (onglet Jouer) — 3 états
+| Saison | Manches | Dates |
+|--------|---------|-------|
+| `2025` — archivée | 4 | toutes en 2025 |
+| `2026-27` — en cours | 4 | 2026-10-18, 2026-11-08 (passées) · 2026-11-29, 2026-12-20 (à venir) |
 
-Dérivés de l'état du jeu :
+Chaque manche dure 2 jours (`dateTo = dateFrom + 1`). Toutes ont des `results` (simulés) : ils ne sont **affichés** qu'une fois la manche terminée.
 
-- **Aucune saison** (`player === null`) : écran actuel (pseudo, calendrier, « Commencer la saison »).
-- **Saison en cours** (`player` défini, `finished` faux) : carte « Manche X / N · {score} pts » + bouton **Reprendre** ; lien secondaire **Nouvelle saison** avec confirmation.
-  - Reprendre → `SeasonStandings` si la manche courante a déjà un résultat (`outcomes[event.id]` existe), sinon `Briefing`.
-- **Saison terminée** (`finished` vrai) : récap final (rang + score du joueur) + bouton **Nouvelle saison** (sans confirmation).
+`src/data/seed/demoPlayer.json` : `{ name: 'Démo', picks: { [eventId]: Team } }` — équipes fictives pour les 4 manches 2025 et les 2 manches passées de 2026-27. C'est l'état de départ du joueur.
 
-### Classement (onglet)
+`riders.json` est inchangé et partagé par toutes les saisons.
 
-Liste du classement saison (`aggregateStandings`) sans bouton d'action. Composant de liste extrait de `SeasonStandingsScreen` et partagé (`StandingsList`).
+## Calendrier (pur, `src/engine/calendar.js`)
 
-### Historique (onglet)
+`now` est une date `'YYYY-MM-DD'`.
 
-- `HistoryList` : manches ayant un résultat, ordre chronologique — « Manche N · lieu · score ».
-- `HistoryDetail` (param `eventId`) : équipe alignée + détail des points + classement de la manche. Rendu par un composant `OutcomeView({ event, outcome })` extrait de `EventResultScreen`, qui l'utilise aussi.
+- `eventStatus(event, now)` :
+  - `'open'` si `now < dateFrom` — composition ouverte, modifiable ;
+  - `'live'` si `dateFrom ≤ now ≤ dateTo` — équipe verrouillée, résultats cachés ;
+  - `'done'` si `now > dateTo` — résultats et score révélés.
+- `seasonStatus(season, now)` : `'archived'` si `now >` dernière `dateTo` ; `'upcoming'` si `now <` première `dateFrom` ; sinon `'current'`.
+- `currentSeason(seasons, now)` : la saison `'current'` ; à défaut la prochaine `'upcoming'` ; à défaut la plus récente.
 
-### Règles & profil (onglet)
+## Horloge
 
-- Texte : les 6 slots typés, `points = PointsClassement(position) × cote`, cote élevée = outsider.
-- Pseudo actuel (si saison).
-- Bouton **Réinitialiser la partie** → confirmation → `RESET`, retour à l'onglet Jouer.
-
-### États vides
-
-Classement et Historique sans saison : « Commence une saison pour voir ton classement / historique » + bouton qui ouvre l'onglet Jouer.
+- `state.simulatedDate` : `null` (date réelle) ou `'YYYY-MM-DD'`.
+- `useNow()` : renvoie `simulatedDate ?? today()`. Tous les écrans passent par lui.
+- Réglable dans l'onglet Règles & profil (champ + bouton « Revenir à aujourd'hui »).
 
 ## État du jeu
 
-- Nouveau champ `finished: false` dans `initialState`.
-- Nouvelle action `FINISH_SEASON` → `finished: true`. `START_SEASON` remet `finished: false`.
-- `SeasonStandingsScreen` : « Terminer la saison » dispatch `FINISH_SEASON` (au lieu de `RESET`) puis revient à `Home`, qui affiche le récap.
+```
+state = { player: { name }, picks: { [eventId]: Team }, simulatedDate }
+```
+
+- État initial = `demoPlayer` (`player.name`, `picks`) + `simulatedDate: null`.
+- Les scores ne sont **pas** stockés : `computeOutcome(event, team, rivals)` les dérive des `results` via le moteur existant (`scoring`, `bots`). Rivaux : `createRivals()` déterministe, identiques pour toutes les saisons.
+- Actions :
+  - `SAVE_TEAM { eventId, team, now }` — ignorée si `eventStatus !== 'open'` ;
+  - `SET_NAME { name }` ;
+  - `SET_SIMULATED_DATE { date | null }` ;
+  - `RESET` — retour à l'état initial (démo) ;
+  - `HYDRATE` — un état sauvegardé à l'ancien format (présence de `currentIndex`) est ignoré.
+- Supprimés : `START_SEASON`, `LOCK_TEAM`, `ADVANCE`, `currentIndex`, `outcomes`.
+- Une manche `'done'` sans équipe compte 0 pt et s'affiche « non jouée ».
+
+## Navigation
+
+Barre d'onglets (`@react-navigation/bottom-tabs@^6`), `headerShown: false` au niveau des onglets, chaque onglet est une stack avec ses en-têtes.
+
+| Onglet | Stack |
+|--------|-------|
+| 🎮 Jouer | `SeasonHome → Briefing(eventId) → Compose(eventId)` ; `EventResult(eventId)` |
+| 🏆 Classement | `Standings` |
+| 📜 Historique | `SeasonList → SeasonDetail(seasonId) → EventResult(eventId)` |
+| 📖 Règles | `Rules` |
+
+## Écrans
+
+- **SeasonHome** (remplace `HomeScreen`) : nom de la saison courante, score cumulé du joueur, liste des manches avec statut (« Ouverte · équipe prête / à composer », « En cours », « Terminée · X pts », « Non jouée »). Manche ouverte → `Briefing` ; en cours → `EventResult` en mode « résultats à venir » montrant l'équipe verrouillée ; terminée → `EventResult`.
+- **Briefing / Compose** : reçoivent `eventId` en paramètre. Compose pré-remplit l'équipe existante ; le bouton devient « Enregistrer l'équipe » ; retour à `SeasonHome` après enregistrement. Si la manche n'est plus ouverte, Compose affiche « Composition fermée ».
+- **EventResult** : rendu par `OutcomeView({ event, outcome })` (extrait de l'écran actuel), réutilisé dans Historique. Plus de bouton « classement saison ».
+- **Standings** : classement cumulé de la saison courante sur ses manches `'done'` (`aggregateStandings`), composant `StandingsList` extrait de `SeasonStandingsScreen` (écran supprimé).
+- **SeasonList** : saison courante en tête, puis archivées (plus récentes d'abord) : nom, rang final, score.
+- **SeasonDetail** : les manches de la saison avec score ; manche terminée → `EventResult`.
+- **Rules** : règles (6 slots typés, `points = PointsClassement(position) × cote`, cote élevée = outsider, verrouillage à `dateFrom`), pseudo modifiable, date simulée, « Réinitialiser la partie » (confirmation).
 
 ## Confirmations
 
-`Alert.alert` n'agit pas sur web : helper `confirm(message)` dans `src/ui/confirm.js` — `window.confirm` sur web, `Alert.alert` avec boutons sur natif, renvoyant une Promise<boolean>.
+`src/ui/confirm.js` : `confirm(message): Promise<boolean>` — `window.confirm` sur web, `Alert.alert` à deux boutons sur natif.
 
 ## Tests
 
-- Reducer : `FINISH_SEASON`, `START_SEASON` remet `finished` à faux.
-- Intégration : les 4 onglets sont visibles et navigables ; avec un état hydraté en cours, l'Accueil affiche « Reprendre ».
-- Rendu : `HistoryList` (avec et sans résultats), `RulesScreen`.
-- Les tests existants (smoke, Home→Briefing→Compose) restent verts.
+- `calendar` : les 3 statuts d'event aux bornes (`dateFrom`, `dateTo`, lendemain) ; statuts de saison ; `currentSeason`.
+- Reducer : `SAVE_TEAM` accepté si ouverte, ignoré sinon ; `SET_SIMULATED_DATE` ; `RESET` ; `HYDRATE` ignore l'ancien format.
+- Seed : 2 saisons, dates conformes au tableau, `demoPlayer.picks` valides (`validateTeam`).
+- Intégration : 4 onglets visibles ; SeasonHome affiche les statuts au 2026-11-15 (date simulée) ; Historique liste la saison 2025.
+- Les tests existants sont adaptés à la nouvelle forme d'état.
 
 ## Hors périmètre
 
-Liste des pilotes, vue calendrier séparée, réglages avancés, cartes/collection/ligues.
+- **Dashboard d'administration** (ajout d'événements/compétitions, corrections) : spec séparée — il suppose une source de données partagée.
+- Liste des pilotes, records personnels, comptes, synchronisation serveur.
