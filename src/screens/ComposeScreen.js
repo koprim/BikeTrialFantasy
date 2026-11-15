@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, ScrollView, Modal, FlatList, StyleSheet } from 'react-native';
-import { useGame } from '../state/GameContext';
-import { ridersByCategory, RIDERS_BY_ID } from '../data/index';
+import { useGame, useNow } from '../state/GameContext';
+import { ridersByCategory, RIDERS_BY_ID, EVENTS_BY_ID } from '../data/index';
 import { SLOTS, validateTeam } from '../engine/team';
-import { computeEventOutcome } from '../engine/season';
+import { eventStatus } from '../engine/calendar';
 import { colors, space, radius } from '../ui/theme';
 
 const EMPTY = { senior26: null, junior26: null, senior20: null, junior20: null, eliteWomen1: null, eliteWomen2: null };
 
-export default function ComposeScreen({ navigation }) {
+export default function ComposeScreen({ navigation, route }) {
   const { state, dispatch } = useGame();
-  const event = state.season[state.currentIndex];
+  const now = useNow();
+  const event = EVENTS_BY_ID[route.params.eventId];
   const byCat = ridersByCategory();
-  const [team, setTeam] = useState(EMPTY);
+  const [team, setTeam] = useState(state.picks[event.id] || EMPTY);
   const [activeSlot, setActiveSlot] = useState(null);
 
   const result = validateTeam(team, RIDERS_BY_ID);
@@ -22,13 +23,17 @@ export default function ComposeScreen({ navigation }) {
     setActiveSlot(null);
   }
 
-  function lock() {
-    const outcome = computeEventOutcome({
-      event, playerName: state.player.name, playerTeam: team, rivals: state.rivals,
-      ridersById: RIDERS_BY_ID, ridersByCategory: byCat, seed: event.round,
-    });
-    dispatch({ type: 'LOCK_TEAM', payload: { eventId: event.id, team, outcome } });
-    navigation.navigate('EventResult');
+  function save() {
+    dispatch({ type: 'SAVE_TEAM', payload: { eventId: event.id, team, now } });
+    navigation.popToTop();
+  }
+
+  if (eventStatus(event, now) !== 'open') {
+    return (
+      <View style={styles.closed}>
+        <Text style={styles.closedText}>Composition fermée</Text>
+      </View>
+    );
   }
 
   const options = activeSlot
@@ -57,8 +62,8 @@ export default function ComposeScreen({ navigation }) {
 
       <View style={styles.footer}>
         {!result.valid && <Text style={styles.error}>{result.errors[0]}</Text>}
-        <Pressable disabled={!result.valid} onPress={lock} style={[styles.cta, !result.valid && styles.ctaDisabled]} accessibilityRole="button">
-          <Text style={styles.ctaText}>Verrouiller l'équipe</Text>
+        <Pressable disabled={!result.valid} onPress={save} style={[styles.cta, !result.valid && styles.ctaDisabled]} accessibilityRole="button">
+          <Text style={styles.ctaText}>Enregistrer l'équipe</Text>
         </Pressable>
       </View>
 
@@ -86,6 +91,8 @@ export default function ComposeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  closed: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  closedText: { fontSize: 18, color: colors.muted },
   slot: { backgroundColor: colors.surface, borderRadius: radius.md, padding: space.md, borderWidth: 1, borderColor: colors.border },
   slotLabel: { fontSize: 12, color: colors.muted },
   slotRider: { fontSize: 16, color: colors.text, fontWeight: '600', marginTop: 2 },

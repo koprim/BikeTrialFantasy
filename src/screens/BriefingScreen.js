@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, SectionList, Pressable, StyleSheet } from 'react-native';
-import { useGame } from '../state/GameContext';
-import { ridersByCategory } from '../data/index';
+import { ridersByCategory, EVENTS_BY_ID } from '../data/index';
 import { SLOTS } from '../engine/team';
 import { colors, space, radius } from '../ui/theme';
 
@@ -10,9 +9,8 @@ const CATEGORY_LABEL = {
   JUNIOR_20: 'Junior 20"', ELITE_WOMEN: 'Elite Femme 20"',
 };
 
-export default function BriefingScreen({ navigation }) {
-  const { state } = useGame();
-  const event = state.season[state.currentIndex];
+export default function BriefingScreen({ navigation, route }) {
+  const event = EVENTS_BY_ID[route.params.eventId];
   const byCat = ridersByCategory();
   const categories = [...new Set(SLOTS.map((s) => s.category))];
   const sections = categories.map((c) => ({
@@ -25,6 +23,7 @@ export default function BriefingScreen({ navigation }) {
       <View style={styles.header}>
         <Text style={styles.title}>{event.name}</Text>
         <Text style={styles.sub}>Manche {event.round} · {event.venue} ({event.country}) · {event.dateFrom}</Text>
+        <Text style={styles.sub}>Équipe verrouillée le {event.dateFrom}</Text>
       </View>
       <SectionList
         sections={sections}
@@ -40,7 +39,7 @@ export default function BriefingScreen({ navigation }) {
         )}
         stickySectionHeadersEnabled={false}
       />
-      <Pressable accessibilityRole="button" onPress={() => navigation.navigate('Compose')} style={styles.cta}>
+      <Pressable accessibilityRole="button" onPress={() => navigation.navigate('Compose', { eventId: event.id })} style={styles.cta}>
         <Text style={styles.ctaText}>Composer mon équipe</Text>
       </Pressable>
     </View>
