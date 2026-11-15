@@ -458,8 +458,8 @@ test('eventOutcome is null until the event is done', () => {
 
 test('eventOutcome scores the saved team once done', () => {
   const o = eventOutcome({ event, ...ctx() });
-  // 4 winners × 100 + women P1 100 + P2 80, all cote 1.0
-  expect(o.player.total).toBe(580);
+  // 4 winners × 100 × 1.0 + women P1 100 × 1.0 + P2 80 × 1.3 = 604
+  expect(o.player.total).toBe(604);
   expect(o.leaderboard.find((r) => r.isPlayer).name).toBe('Me');
   expect(o.leaderboard).toHaveLength(11);
 });
@@ -471,7 +471,7 @@ test('eventOutcome scores 0 when no team was saved', () => {
 test('seasonSummary aggregates done events only', () => {
   const s = seasonSummary({ season: { events: [event, later] }, ...ctx() });
   expect(s.played).toBe(1);
-  expect(s.score).toBe(580);
+  expect(s.score).toBe(604);
   expect(s.rank).toBeGreaterThanOrEqual(1);
   expect(s.standings).toHaveLength(11);
 });
