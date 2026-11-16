@@ -1,0 +1,63 @@
+// Declarative card effects: { description, trigger, reward }. Pure functions only.
+const TRIGGERS = ['ALWAYS', 'RIDER_TOP_N', 'RIDER_DID_TECHNIQUE', 'RIDER_CLEAN_MIN',
+  'NATION_COUNT_IN_TOP', 'CATEGORY_WINNER_NATION', 'TEAM_BRAND_COUNT', 'CATEGORY_WINNER_OUTSIDER'];
+const REWARDS = ['FLAT_POINTS', 'RIDER_MULTIPLIER', 'CATEGORY_MULTIPLIER', 'TEAM_MULTIPLIER'];
+const RIDER_TRIGGERS = ['RIDER_TOP_N', 'RIDER_DID_TECHNIQUE', 'RIDER_CLEAN_MIN'];
+
+function winnerOf(event, category, ridersById) {
+  const order = (event.results || {})[category] || [];
+  return ridersById[order[0]] || null;
+}
+
+// ctx = { event, ridersById, riderId (rider the card acts on, or null), teamRiderIds }
+function evaluateTrigger(trigger, ctx) {
+  const { event, ridersById, riderId, teamRiderIds } = ctx;
+  const results = event.results || {};
+  const stats = riderId ? (event.stats || {})[riderId] : null;
+  switch (trigger.type) {
+    case 'ALWAYS':
+      return true;
+    case 'RIDER_TOP_N': {
+      const rider = riderId && ridersById[riderId];
+      const order = rider && results[rider.category];
+      if (!order) return false;
+      const idx = order.indexOf(riderId);
+      return idx >= 0 && idx < trigger.n;
+    }
+    case 'RIDER_DID_TECHNIQUE':
+      return !!stats && stats.techniques.includes(trigger.technique);
+    case 'RIDER_CLEAN_MIN':
+      return !!stats && stats.cleanSections >= trigger.min;
+    case 'NATION_COUNT_IN_TOP': {
+      const top = (results[trigger.category] || []).slice(0, trigger.top);
+      return top.filter((id) => ridersById[id] && ridersById[id].country === trigger.nation).length >= trigger.min;
+    }
+    case 'CATEGORY_WINNER_NATION': {
+      const w = winnerOf(event, trigger.category, ridersById);
+      return !!w && w.country === trigger.nation;
+    }
+    case 'TEAM_BRAND_COUNT':
+      return teamRiderIds.filter((id) => ridersById[id] && ridersById[id].brand === trigger.brand).length >= trigger.min;
+    case 'CATEGORY_WINNER_OUTSIDER': {
+      const w = winnerOf(event, trigger.category, ridersById);
+      return !!w && w.cote >= trigger.minCote;
+    }
+    default:
+      return false;
+  }
+}
+
+function scaledValue(reward, rarity, balance) {
+  return reward.value * balance.rarityMultiplier[rarity];
+}
+
+function formatValue(reward, rarity, balance) {
+  const v = scaledValue(reward, rarity, balance);
+  return reward.type === 'FLAT_POINTS' ? String(Math.round(v)) : `${Math.round(v * 100)} %`;
+}
+
+function describeEffect(effect, rarity, balance) {
+  return effect.description.split('{value}').join(formatValue(effect.reward, rarity, balance));
+}
+
+module.exports = { TRIGGERS, REWARDS, RIDER_TRIGGERS, evaluateTrigger, scaledValue, describeEffect };
