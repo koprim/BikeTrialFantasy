@@ -104,3 +104,17 @@ Barre d'onglets (`@react-navigation/bottom-tabs@^6`), `headerShown: false` au ni
 
 - **Dashboard d'administration** (ajout d'événements/compétitions, corrections) : spec séparée — il suppose une source de données partagée.
 - Liste des pilotes, records personnels, comptes, synchronisation serveur.
+
+## Relecture finale — clôturée le 2026-11-16, corrections reportées
+
+Aucun problème bloquant. Les corrections ci-dessous sont **reportées** : on y reviendra quand la direction produit sera plus claire. La branche `feat/menu-date-seasons` reste en l'état.
+
+Importantes :
+1. `ComposeScreen` : calculer `now` dans `save()` et ne pas revenir à l'accueil si l'enregistrement est refusé (la manche peut se verrouiller écran ouvert).
+2. Équipes des rivaux identiques d'une saison à l'autre (`selectors.js`, `seed: event.round`) : utiliser un hash de `event.id`.
+3. Résultats recalculés plusieurs fois par rendu : constante `RIDERS_BY_CATEGORY`, `useScoring` mémoïsé, passer les résultats à `eventLabel`.
+4. `calendar.js` plante sur une saison sans manche : filtrer les saisons vides dans `data/index.js`.
+
+Mineures : griser les manches ouvertes non cliquables dans SeasonDetail ; masquer « Composer » dans Briefing si la manche n'est plus ouverte ; refuser les dates impossibles dans Règles (ex. 2026-02-31) ; l'en-tête d'EventResult affiche « Résultats » en mode « en cours » ; paramètres de route inconnus non gérés.
+
+Le parcours manuel (tâche 11 du plan) n'a pas été fait.
