@@ -105,3 +105,19 @@ test('openDailyPack without a date does nothing', () => {
   expect(openDailyPack(col, null, deps)).toBe(col);
   expect(openDailyPack(col, undefined, deps)).toBe(col);
 });
+
+test('pack odds over 2000 packs match the balance (non-guaranteed slots) and every pack has a Rare+', () => {
+  const rng = makeRng(42);
+  const N = 2000;
+  const counts = { C: 0, R: 0, E: 0, L: 0 };
+  let col = emptyCollection();
+  for (let i = 0; i < N; i++) {
+    col = openPack(col, deps, rng);
+    expect(col.lastPack.some((c) => atLeast(c.rarity, 'R'))).toBe(true);
+    col.lastPack.slice(0, 4).forEach((c) => { counts[c.rarity] += 1; });
+  }
+  const odds = BALANCE.pack.odds;
+  const total = N * 4;
+  ['C', 'R', 'E'].forEach((r) => expect(Math.abs(counts[r] / total - odds[r])).toBeLessThanOrEqual(0.03));
+  expect(Math.abs(counts.L / total - odds.L)).toBeLessThanOrEqual(0.01);
+});

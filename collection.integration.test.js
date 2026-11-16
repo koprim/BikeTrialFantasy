@@ -63,3 +63,38 @@ test('a finished event lists the triggered effects', async () => {
   fireEvent.press(await screen.findByText(/^Manche 1 · /));
   expect(await screen.findByText('Effets déclenchés')).toBeTruthy();
 });
+
+test('flow: open the daily pack, then its cards are offered when composing a team', async () => {
+  const { CARDS } = require('./src/data/index');
+  const byName = Object.fromEntries(CARDS.map((c) => [c.name, c]));
+  render(<App />);
+  fireEvent.press(await screen.findByLabelText('Onglet Collection'));
+  fireEvent.press(await screen.findByText('Ouvrir le pack du jour'));
+  expect(await screen.findByText('Pack du jour')).toBeTruthy();
+  const revealed = screen.getAllByLabelText(/^Carte révélée/).map((n) => {
+    const label = n.props.accessibilityLabel.replace(/^Carte révélée /, '');
+    const rarity = label.split(' ').pop();
+    return { name: label.slice(0, label.length - rarity.length - 1), rarity, type: byName[label.slice(0, label.length - rarity.length - 1)].type };
+  });
+  fireEvent.press(screen.getByText('Voir ma collection'));
+
+  fireEvent.press(await screen.findByLabelText('Onglet Jouer'));
+  fireEvent.press(await screen.findByText(/^Manche 3 · /));
+  fireEvent.press(await screen.findByText('Composer mon équipe'));
+  await screen.findByText('Équipements (0/2)');
+
+  // Open the picker that matches a card of the pack (equipment, referee, technique, else pilot).
+  const target = ['EQUIPMENT', 'REFEREE', 'TECHNIQUE', 'PILOT'].map((t) => revealed.find((c) => c.type === t)).find(Boolean);
+  if (target.type === 'EQUIPMENT') fireEvent.press(screen.getByText('+ Équipement'));
+  else if (target.type === 'REFEREE') fireEvent.press(screen.getByText('Choisir un arbitre…'));
+  else if (target.type === 'TECHNIQUE') {
+    fireEvent.press(screen.getByText('Senior 26"'));
+    fireEvent.press((await screen.findAllByLabelText(/^Choisir .* Commune$/))[0]);
+    fireEvent.press(await screen.findByText(/^\+ Technique \(0\//));
+  } else {
+    const { RIDERS_BY_ID } = require('./src/data/index');
+    const slot = { SENIOR_26: 'Senior 26"', JUNIOR_26: 'Junior 26"', SENIOR_20: 'Senior 20"', JUNIOR_20: 'Junior 20"' }[RIDERS_BY_ID[byName[target.name].subject].category] || 'Elite Women 1';
+    fireEvent.press(screen.getByText(slot));
+  }
+  expect((await screen.findAllByLabelText(`Choisir ${target.name} ${target.rarity}`)).length).toBeGreaterThan(0);
+});

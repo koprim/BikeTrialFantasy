@@ -3,10 +3,12 @@
 // Usage: npm run sim:economy   (PLAYERS=200 npm run sim:economy for a quicker run)
 const cards = require('../src/data/seed/cards.json');
 const balance = require('../src/data/seed/balance.json');
-const { emptyCollection, openPack, recycle, craft, countOf } = require('../src/engine/collection');
+const riders = require('../src/data/seed/riders.json');
+const { emptyCollection, openPack, openStarter, recycle, craft, countOf } = require('../src/engine/collection');
 const { RARITIES, RARITY_LABELS } = require('../src/engine/rarity');
 const { makeRng } = require('../src/engine/rng');
 
+const ridersById = Object.fromEntries(riders.map((r) => [r.id, r]));
 const PLAYERS = Number(process.env.PLAYERS || 1000);
 const DAYS = Number(process.env.DAYS || 365);
 const totals = Object.fromEntries(RARITIES.map((r) => [r, cards.filter((c) => c.rarities.includes(r)).length]));
@@ -23,7 +25,7 @@ function cheapestMissing(col) {
 
 function simulatePlayer(seed) {
   const rng = makeRng(seed);
-  let col = emptyCollection();
+  let col = openStarter(emptyCollection(), { cards, ridersById }, rng);
   const reached = Object.fromEntries(RARITIES.map((r) => [r, { half: null, full: null }]));
   for (let day = 1; day <= DAYS; day++) {
     col = openPack(col, { cards, balance }, rng);
