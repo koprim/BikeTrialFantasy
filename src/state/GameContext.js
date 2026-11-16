@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { saveState, loadState } from './persistence';
 import { DEMO_PLAYER, EVENTS_BY_ID, RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
-import { eventStatus, today } from '../engine/calendar';
+import { eventStatus, today, dayBefore } from '../engine/calendar';
 import { openStarter, openDailyPack, recycle, craft } from '../engine/collection';
 import { makeRng, hashString } from '../engine/rng';
 import { migrateSave } from './migrate';
@@ -24,6 +24,7 @@ function gameReducer(state, action) {
     case 'SAVE_TEAM': {
       const { eventId, team, now } = action.payload;
       const event = EVENTS_BY_ID[eventId];
+      if (!team) return state;
       if (!event || eventStatus(event, now) !== 'open') return state;
       const check = validateCardTeam(team, { cardsById: CARDS_BY_ID, ridersById: RIDERS_BY_ID, owned: state.collection.owned, balance: BALANCE });
       if (!check.valid) return state;
@@ -31,8 +32,14 @@ function gameReducer(state, action) {
     }
     case 'SET_NAME':
       return { ...state, player: { name: action.payload.name } };
-    case 'SET_SIMULATED_DATE':
-      return { ...state, simulatedDate: action.payload.date };
+    case 'SET_SIMULATED_DATE': {
+      const date = action.payload.date;
+      const effective = date || today();
+      const last = state.collection.lastPackDate;
+      // Going back in time must not lock the daily pack behind a future date.
+      const collection = last && effective <= last ? { ...state.collection, lastPackDate: dayBefore(effective) } : state.collection;
+      return { ...state, simulatedDate: date, collection };
+    }
     case 'OPEN_STARTER':
       return withCollection(state, openStarter(state.collection, { cards: CARDS, ridersById: RIDERS_BY_ID },
         makeRng(hashString(`starter#${state.player.name}`))));

@@ -26,8 +26,13 @@ export default function ComposeScreen({ navigation, route }) {
   function options() {
     if (!picker) return [];
     const types = { pilot: 'PILOT', technique: 'TECHNIQUE', equipment: 'EQUIPMENT', referee: 'REFEREE' };
+    const used = [...Object.values(team.slots).flatMap((e) => (e ? e.techniques : [])), ...team.equipment];
     return ownedRefs(state.collection, CARDS, (c) => c.type === types[picker.kind]
-      && (picker.kind !== 'pilot' || RIDERS_BY_ID[c.subject]?.category === picker.slot.category));
+      && (picker.kind !== 'pilot' || RIDERS_BY_ID[c.subject]?.category === picker.slot.category)).filter((o) => {
+      if (picker.kind === 'technique' || picker.kind === 'equipment') return !used.some((u) => sameRef(u, o));
+      if (picker.kind === 'referee') return !(team.referee && sameRef(team.referee, o));
+      return true;
+    });
   }
 
   function choose(option) {

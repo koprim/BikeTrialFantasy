@@ -5,6 +5,13 @@ function today(d = new Date()) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
+// Previous calendar day, UTC-safe.
+function dayBefore(iso) {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
 function endOf(event) { return event.dateTo || event.dateFrom; }
 function seasonStart(season) { return season.events[0].dateFrom; }
 function seasonEnd(season) { return endOf(season.events[season.events.length - 1]); }
@@ -31,4 +38,4 @@ function currentSeason(seasons, now) {
   return [...seasons].sort((a, b) => seasonEnd(b).localeCompare(seasonEnd(a)))[0];
 }
 
-module.exports = { today, eventStatus, seasonStatus, currentSeason };
+module.exports = { today, dayBefore, eventStatus, seasonStatus, currentSeason };

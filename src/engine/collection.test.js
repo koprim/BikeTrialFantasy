@@ -99,3 +99,9 @@ test('ownedRefs lists owned card/rarity pairs matching a filter', () => {
   expect(ownedRefs(col, CARDS, (c) => c.type === 'TECHNIQUE').map(({ cardId, rarity, count }) => [cardId, rarity, count]))
     .toEqual([['technique-2026-gap', 'C', 2]]);
 });
+
+test('openDailyPack without a date does nothing', () => {
+  const col = emptyCollection();
+  expect(openDailyPack(col, null, deps)).toBe(col);
+  expect(openDailyPack(col, undefined, deps)).toBe(col);
+});

@@ -68,3 +68,19 @@ test('RECYCLE and CRAFT', () => {
   expect(crafted.collection.fragments).toBe(85);
   expect(gameReducer(crafted, { type: 'CRAFT', payload: { cardId: 'technique-2026-gap', rarity: 'E' } })).toBe(crafted);
 });
+
+test('setting the simulated date back lets the daily pack be opened again', () => {
+  const opened = gameReducer(initialState, { type: 'OPEN_DAILY_PACK', payload: { now: '2027-03-01' } });
+  expect(opened.collection.lastPackDate).toBe('2027-03-01');
+  const back = gameReducer(opened, { type: 'SET_SIMULATED_DATE', payload: { date: '2026-11-16' } });
+  expect(back.collection.lastPackDate).toBe('2026-11-15');
+  const again = gameReducer(back, { type: 'OPEN_DAILY_PACK', payload: { now: '2026-11-16' } });
+  expect(again.collection.lastPackDate).toBe('2026-11-16');
+  expect(again.collection.packsOpened).toBe(opened.collection.packsOpened + 1);
+  // moving forward leaves lastPackDate alone
+  expect(gameReducer(opened, { type: 'SET_SIMULATED_DATE', payload: { date: '2027-03-05' } }).collection.lastPackDate).toBe('2027-03-01');
+});
+
+test('SAVE_TEAM ignores a missing team', () => {
+  expect(gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team: null, now: '2026-11-15' } })).toBe(initialState);
+});

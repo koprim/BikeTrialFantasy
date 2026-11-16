@@ -1,4 +1,5 @@
 const { normalizeTeam } = require('../engine/team');
+const { emptyCollection } = require('../engine/collection');
 
 const renameEventId = (id) => id.replace(/^2026-27-/, '2026-');
 
@@ -6,8 +7,8 @@ const renameEventId = (id) => id.replace(/^2026-27-/, '2026-');
 function migrateSave(saved, { edition, demoCollection }) {
   if (!saved || 'currentIndex' in saved || !saved.picks) return null;
   const picks = {};
-  Object.entries(saved.picks).forEach(([id, team]) => { picks[renameEventId(id)] = normalizeTeam(team, edition); });
-  let collection = saved.collection;
+  Object.entries(saved.picks).forEach(([id, team]) => { if (!team) return; picks[renameEventId(id)] = normalizeTeam(team, edition); });
+  let collection = saved.collection && { ...emptyCollection(), ...saved.collection };
   if (!collection) {
     // Saves from before the collection: start from the demo collection and own every pilot already played.
     collection = JSON.parse(JSON.stringify(demoCollection));

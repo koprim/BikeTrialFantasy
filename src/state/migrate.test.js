@@ -23,7 +23,21 @@ test('a save without collection gets the demo collection plus every pilot it use
   expect(demoCollection.owned['pilot-2026-elite-women-2']).toBeUndefined(); // not mutated
 });
 
-test('a save with a collection keeps it', () => {
+test('a complete saved collection keeps its values', () => {
   const collection = { ...demoCollection, fragments: 99 };
-  expect(migrateSave({ picks: {}, collection }, opts).collection).toBe(collection);
+  expect(migrateSave({ picks: {}, collection }, opts).collection).toEqual(collection);
+});
+
+test('null teams in picks are skipped', () => {
+  const out = migrateSave({ picks: { '2025-r1': null, '2025-r2': riderTeam }, collection: demoCollection }, opts);
+  expect(Object.keys(out.picks)).toEqual(['2025-r2']);
+});
+
+test('a partial saved collection is merged over the defaults', () => {
+  const out = migrateSave({ picks: {}, collection: { owned: { x: { C: 1 } }, fragments: 7 } }, opts);
+  expect(out.collection.owned).toEqual({ x: { C: 1 } });
+  expect(out.collection.fragments).toBe(7);
+  expect(out.collection.packsOpened).toBe(0);
+  expect(out.collection.pity).toEqual({ E: 0, L: 0 });
+  expect(out.collection.lastPack).toEqual([]);
 });

@@ -31,11 +31,11 @@ export default function EventResultScreen({ route }) {
           <View key={slot.id} style={styles.row}>
             <Text style={styles.label}>{slot.label}</Text>
             <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
-            {entry && entry.techniques.map((t) => <Text key={t.cardId} style={styles.label}>+ {label(t)}</Text>)}
+            {entry && entry.techniques.map((t) => <Text key={`${t.cardId}:${t.rarity}`} style={styles.label}>+ {label(t)}</Text>)}
           </View>
         );
       }) : <Text style={styles.sub}>Aucune équipe enregistrée</Text>}
-      {team && team.equipment.map((e) => <Text key={e.cardId} style={styles.sub}>Équipement : {label(e)}</Text>)}
+      {team && team.equipment.map((e) => <Text key={`${e.cardId}:${e.rarity}`} style={styles.sub}>Équipement : {label(e)}</Text>)}
       {team && team.referee && <Text style={styles.sub}>Arbitre : {label(team.referee)}</Text>}
     </View>
   );

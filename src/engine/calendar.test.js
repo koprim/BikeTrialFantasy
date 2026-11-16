@@ -1,4 +1,4 @@
-const { today, eventStatus, seasonStatus, currentSeason } = require('./calendar');
+const { today, dayBefore, eventStatus, seasonStatus, currentSeason } = require('./calendar');
 
 const ev = { dateFrom: '2026-11-29', dateTo: '2026-11-30' };
 
@@ -34,4 +34,10 @@ test('currentSeason: current, else next upcoming, else most recent', () => {
 
 test('today formats a local date as YYYY-MM-DD', () => {
   expect(today(new Date(2026, 10, 5))).toBe('2026-11-05');
+});
+
+test('dayBefore is calendar-safe', () => {
+  expect(dayBefore('2026-11-16')).toBe('2026-11-15');
+  expect(dayBefore('2026-03-01')).toBe('2026-02-28');
+  expect(dayBefore('2027-01-01')).toBe('2026-12-31');
 });

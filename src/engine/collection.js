@@ -70,7 +70,7 @@ function canOpenDaily(collection, now) {
 
 // Packs do not pile up: one per calendar day, seeded by the date and the pack count.
 function openDailyPack(collection, now, deps) {
-  if (!canOpenDaily(collection, now)) return collection;
+  if (!now || !canOpenDaily(collection, now)) return collection;
   const rng = makeRng(hashString(`${now}#${collection.packsOpened}`));
   return { ...openPack(collection, deps, rng), lastPackDate: now };
 }
