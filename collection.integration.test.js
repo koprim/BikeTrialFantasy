@@ -34,3 +34,14 @@ test('collection tab: the starter pack gives 10 cards', async () => {
   expect(await screen.findByText('Pack de départ')).toBeTruthy();
   expect(screen.getAllByLabelText(/^Carte révélée/)).toHaveLength(10);
 });
+
+test('card detail shows each rarity with its effect; crafting needs fragments', async () => {
+  render(<App />);
+  fireEvent.press(await screen.findByLabelText('Onglet Collection'));
+  fireEvent.press(await screen.findByText('Techniques'));
+  fireEvent.press((await screen.findAllByLabelText('Gap Commune'))[0]);
+  expect(await screen.findByText('+25 pts si le pilote réussit un Gap')).toBeTruthy();   // Commune
+  expect(screen.getByText('+75 pts si le pilote réussit un Gap')).toBeTruthy();          // Légendaire
+  expect(screen.getAllByText(/^Fabriquer · \d+ fragments$/).length).toBeGreaterThan(0);
+  expect(screen.getAllByLabelText(/^Fabriquer .* indisponible$/).length).toBe(4);        // 0 fragments
+});
