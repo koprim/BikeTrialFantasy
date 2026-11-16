@@ -57,3 +57,9 @@ test('compose: pick an owned pilot card; team section has equipment and referee'
   fireEvent.press(options[0]);
   expect(await screen.findByText(/^\+ Technique \(0\/1\)$/)).toBeTruthy();
 });
+
+test('a finished event lists the triggered effects', async () => {
+  render(<App />);
+  fireEvent.press(await screen.findByText(/^Manche 1 · /));
+  expect(await screen.findByText('Effets déclenchés')).toBeTruthy();
+});

@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useGame, useScoring } from '../state/GameContext';
-import { EVENTS_BY_ID, RIDERS_BY_ID } from '../data/index';
-import { SLOTS } from '../engine/team';
+import { EVENTS_BY_ID, CARDS_BY_ID, EDITION } from '../data/index';
+import { SLOTS, normalizeTeam } from '../engine/team';
+import { RARITY_LABELS } from '../engine/rarity';
 import { eventOutcome } from '../state/selectors';
 import OutcomeView from '../ui/OutcomeView';
 import { colors, space, radius } from '../ui/theme';
@@ -18,17 +19,24 @@ export default function EventResultScreen({ route }) {
   }
 
   // Live event: team is locked, results not revealed yet.
-  const team = state.picks[event.id];
+  const team = normalizeTeam(state.picks[event.id], EDITION);
+  const label = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '—'} · ${RARITY_LABELS[ref.rarity]}`;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{event.name}</Text>
       <Text style={styles.sub}>Résultats après le {event.dateTo || event.dateFrom}</Text>
-      {team ? SLOTS.map((slot) => (
-        <View key={slot.id} style={styles.row}>
-          <Text style={styles.label}>{slot.label}</Text>
-          <Text style={styles.rider}>{RIDERS_BY_ID[team[slot.id]]?.name ?? '—'}</Text>
-        </View>
-      )) : <Text style={styles.sub}>Aucune équipe enregistrée</Text>}
+      {team ? SLOTS.map((slot) => {
+        const entry = team.slots[slot.id];
+        return (
+          <View key={slot.id} style={styles.row}>
+            <Text style={styles.label}>{slot.label}</Text>
+            <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
+            {entry && entry.techniques.map((t) => <Text key={t.cardId} style={styles.label}>+ {label(t)}</Text>)}
+          </View>
+        );
+      }) : <Text style={styles.sub}>Aucune équipe enregistrée</Text>}
+      {team && team.equipment.map((e) => <Text key={e.cardId} style={styles.sub}>Équipement : {label(e)}</Text>)}
+      {team && team.referee && <Text style={styles.sub}>Arbitre : {label(team.referee)}</Text>}
     </View>
   );
 }
