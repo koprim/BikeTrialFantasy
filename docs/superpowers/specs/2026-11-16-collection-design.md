@@ -22,9 +22,9 @@ Les données restent simulées et locales (seed et AsyncStorage). Pas de backend
 
 ```
 CardDef = {
-  id,                 // ex. 'pilot-2026-27-senior20-1'
+  id,                 // ex. 'pilot-2026-senior20-1'
   type,               // 'PILOT' | 'TECHNIQUE' | 'EQUIPMENT' | 'REFEREE'
-  edition,            // id de saison, ex. '2026-27'
+  edition,            // id de saison = une année, ex. '2026'
   name,
   subject,            // riderId (PILOT), nom de technique, marque, nom d'arbitre
   rarities,           // raretés disponibles, ex. ['C','R','E'] (pas de 'L' pour tous)
@@ -36,7 +36,11 @@ CardDef = {
 - **Versions** : chaque saison (`edition`) peut publier une nouvelle carte pour un même pilote, avec d'autres effets.
 - **Légendes** : pilotes retraités. Ils figurent dans `riders.json` avec `active: false` et une catégorie. Ils occupent l'emplacement de leur catégorie, ne marquent aucun point de classement et ne marquent que par leurs effets.
 - **Présence non requise** : un pilote absent de la manche marque 0 point de classement, mais ses effets s'évaluent quand même (un effet qui dépend de son résultat ne se déclenche pas).
-- **Arbitres** : nommés et uniques. Un joueur en possède au plus un exemplaire, et un arbitre possédé ne retombe plus en pack. Un arbitre n'a pas besoin d'officier sur la manche.
+- **Arbitres** : cartes nommées qui fonctionnent comme les cartes pilotes (plusieurs raretés, doublons, recyclage, fabrication). La composition n'a qu'**un seul emplacement arbitre**. Un arbitre n'a pas besoin d'officier sur la manche.
+
+### Saisons en année simple
+
+Une saison = une année : `2025`, `2026`, puis `2027`. La saison simulée `2026-27` est renommée `2026` (id, nom, ids de manches `2026-r1`…, `demoPlayer.json`). Ses dates ne changent pas. Une sauvegarde qui contient des équipes sous les anciens ids `2026-27-rN` est migrée vers `2026-rN`.
 
 ## 2. Équilibrage — `src/data/seed/balance.json`
 
@@ -66,8 +70,12 @@ Les valeurs ci-dessus sont un point de départ. Elles seront ajustées avec le s
 ## 3. Moteur d'effets — `src/engine/effects.js` (pur, CommonJS)
 
 ```
-Effect = { trigger: Trigger, reward: Reward }
+Effect = { description: string, trigger: Trigger, reward: Reward }
 ```
+
+- `trigger` et `reward` servent au calcul.
+- `description` est le texte affiché au joueur (carte, détail du score). Il peut contenir `{value}`, remplacé par la valeur de la récompense à la rareté affichée. Exemple : `"+{value} pts si au moins 3 Français finissent dans le top 5 Seniors 20\""` donne « +40 pts… » en Commune et « +120 pts… » en Légendaire. Pour un multiplicateur, `{value}` s'affiche en pourcentage (« +30 % »).
+- Une description manquante est une erreur de validation du catalogue.
 
 **Déclencheurs** :
 
@@ -104,7 +112,8 @@ Les multiplicateurs d'une même étape s'additionnent avant d'être appliqués. 
 
 Exemple :
 ```json
-{ "trigger": { "type": "NATION_COUNT_IN_TOP", "nation": "FRA", "category": "SENIOR_20", "top": 5, "min": 3 },
+{ "description": "+{value} pts si au moins 3 Français finissent dans le top 5 Seniors 20\"",
+  "trigger": { "type": "NATION_COUNT_IN_TOP", "nation": "FRA", "category": "SENIOR_20", "top": 5, "min": 3 },
   "reward":  { "type": "FLAT_POINTS", "value": 40 } }
 ```
 
@@ -135,7 +144,7 @@ state.collection = {
 - **Pack de départ** (une fois) : 6 cartes pilotes Communes couvrant tous les emplacements (dont 2 Elite Femmes différentes), 3 techniques, 1 équipement.
 - **Pack du jour** : disponible si `lastPackDate < now` (fonctionne avec la date simulée). Les packs ne s'accumulent pas. 5 cartes, au moins une Rare. La graine du tirage = hash de (`now`, nombre de packs ouverts).
 - **Recycler** : un doublon (count > 1) rapporte des fragments selon sa rareté.
-- **Fabriquer** : une carte et une rareté choisies, contre des fragments. Impossible pour un arbitre déjà possédé.
+- **Fabriquer** : une carte et une rareté choisies, contre des fragments.
 
 Actions du reducer : `OPEN_STARTER`, `OPEN_DAILY_PACK { now }`, `RECYCLE { cardId, rarity }`, `CRAFT { cardId, rarity }`. Chacune est refusée (état inchangé) si ses conditions ne sont pas remplies.
 
@@ -164,7 +173,7 @@ Validation (`team.js`) :
 
 - **Nouvel onglet 🃏 Collection** (5 onglets) : grille filtrable par type et par rareté, compteurs, cartes manquantes grisées, solde de fragments.
 - Bouton **« Ouvrir le pack du jour »** → écran de révélation des 5 cartes. Désactivé avec « Prochain pack demain » si déjà ouvert.
-- **Détail d'une carte** : effet à chaque rareté, exemplaires possédés, boutons **Fabriquer** et **Recycler**.
+- **Détail d'une carte** : description de l'effet à chaque rareté, exemplaires possédés, boutons **Fabriquer** et **Recycler**.
 - **Compose** : choix parmi les cartes possédées de la catégorie ; ajout de techniques au pilote ; section équipe pour l'équipement et l'arbitre.
 - **Résultat d'une manche** : le détail du score liste les effets déclenchés.
 - **Règles** : section sur les cartes, raretés et packs.
@@ -173,12 +182,12 @@ Validation (`team.js`) :
 
 `scripts/sim-economy.js` lit `balance.json` et `cards.json`, simule 1 000 joueurs ouvrant un pack par jour pendant 365 jours (recyclage et fabrication inclus), et affiche le **nombre médian de jours pour posséder 50 % et 100 % de chaque rareté**. Il sert à vérifier les objectifs de rythme ci-dessus.
 
-## 9. Contenu v1 (édition 2026-27)
+## 9. Contenu v1 (édition 2026)
 
 - 40 cartes pilotes (une par pilote actif), dont certaines sans Légendaire ;
 - 3 légendes ;
 - 8 techniques, 8 équipements, 4 arbitres ;
-- un effet par carte, couvrant chaque déclencheur et chaque récompense au moins une fois.
+- un effet par carte, avec sa description, couvrant chaque déclencheur et chaque récompense au moins une fois.
 
 ## 10. Documentation (tâches finales du plan)
 
@@ -191,7 +200,9 @@ Les deux documents sont mis à jour à la fin de chaque EPIC.
 
 - Chaque déclencheur et chaque récompense, avec un cas vrai et un cas faux.
 - Ordre de calcul des effets sur un exemple chiffré.
-- Packs : taille, Rare garantie, probabilités (graine fixe), pity E et L, arbitre possédé jamais retiré.
+- Packs : taille, Rare garantie, probabilités (graine fixe), pity E et L.
+- Descriptions : `{value}` remplacé selon la rareté (points et pourcentage).
+- Renommage de la saison `2026-27` → `2026` et migration des anciens ids de manches.
 - Fragments : recyclage, fabrication, refus si fonds insuffisants.
 - Validation d'équipe contre la collection (carte non possédée, mauvaise catégorie, trop de techniques, carte en double).
 - Migration de l'ancien format.
@@ -201,5 +212,5 @@ Les deux documents sont mis à jour à la fin de chaque EPIC.
 ## Hors périmètre
 
 - **Ligues** (spec suivante) : puissance de collection, paliers, rivaux par ligue.
-- Packs gagnés (objectifs, résultats), rotation des collections par saison, unicité mondiale des arbitres (suppose un serveur), animations élaborées.
+- Packs gagnés (objectifs, résultats), rotation des collections par saison, animations élaborées.
 - Corrections reportées de la relecture du menu (voir la spec du menu).
