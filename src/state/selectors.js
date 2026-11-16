@@ -5,11 +5,11 @@ const { createRivals } = require('../engine/bots');
 
 const RIVALS = createRivals();
 
-function eventOutcome({ event, picks, playerName, now, ridersById, ridersByCategory }) {
+function eventOutcome({ event, picks, playerName, now, ridersById, ridersByCategory, cardsById, balance, edition }) {
   if (eventStatus(event, now) !== 'done') return null;
   return computeEventOutcome({
-    event, playerName, playerTeam: picks[event.id] || {}, rivals: RIVALS,
-    ridersById, ridersByCategory, seed: event.round,
+    event, playerName, playerTeam: picks[event.id], rivals: RIVALS,
+    ridersById, ridersByCategory, cardsById, balance, edition, seed: event.round,
   });
 }
 

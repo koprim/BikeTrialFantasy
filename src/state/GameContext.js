@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { saveState, loadState } from './persistence';
-import { DEMO_PLAYER, EVENTS_BY_ID, RIDERS_BY_ID, ridersByCategory } from '../data/index';
+import { DEMO_PLAYER, EVENTS_BY_ID, RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
 import { eventStatus, today } from '../engine/calendar';
 
 const initialState = {
@@ -66,7 +66,10 @@ export function useNow() {
 export function useScoring() {
   const { state } = useGame();
   const now = useNow();
-  return { picks: state.picks, playerName: state.player.name, now, ridersById: RIDERS_BY_ID, ridersByCategory: ridersByCategory() };
+  return {
+    picks: state.picks, playerName: state.player.name, now,
+    ridersById: RIDERS_BY_ID, ridersByCategory: RIDERS_BY_CATEGORY, cardsById: CARDS_BY_ID, balance: BALANCE, edition: EDITION,
+  };
 }
 
 export { gameReducer, initialState };

@@ -4,6 +4,8 @@ const { eventOutcome, seasonSummary } = require('./selectors');
 
 const ridersById = Object.fromEntries(riders.map((r) => [r.id, r]));
 const ridersByCategory = groupByCategory(riders);
+const cardsById = Object.fromEntries(riders.map((r) => [`pilot-2026-${r.id}`, { id: `pilot-2026-${r.id}`, type: 'PILOT', name: r.name, subject: r.id, rarities: ['C'], effects: [] }]));
+const balance = { rarityMultiplier: { C: 1, R: 1.5, E: 2, L: 3 } };
 // Results in seed order: each category's rider #1 (uciRank 1, cote 1.0) finishes 1st.
 const results = Object.fromEntries(Object.entries(ridersByCategory).map(([c, rs]) => [c, rs.map((r) => r.id)]));
 const event = { id: 'e1', round: 1, dateFrom: '2026-11-08', dateTo: '2026-11-09', results };
@@ -13,7 +15,7 @@ const team = {
   senior20: ridersByCategory.SENIOR_20[0].id, junior20: ridersByCategory.JUNIOR_20[0].id,
   eliteWomen1: ridersByCategory.ELITE_WOMEN[0].id, eliteWomen2: ridersByCategory.ELITE_WOMEN[1].id,
 };
-const ctx = (over = {}) => ({ picks: { e1: team }, playerName: 'Me', now: '2026-11-15', ridersById, ridersByCategory, ...over });
+const ctx = (over = {}) => ({ picks: { e1: team }, playerName: 'Me', now: '2026-11-15', ridersById, ridersByCategory, cardsById, balance, edition: '2026', ...over });
 
 test('eventOutcome is null until the event is done', () => {
   expect(eventOutcome({ event, ...ctx({ now: '2026-11-09' }) })).toBeNull();

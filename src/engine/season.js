@@ -1,14 +1,17 @@
 const { teamEventScore } = require('./scoring');
 const { generateBotTeam } = require('./bots');
 const { makeRng } = require('./rng');
+const { normalizeTeam, cardTeamFromRiders, emptyTeam } = require('./team');
 
-function computeEventOutcome({ event, playerName, playerTeam, rivals, ridersById, ridersByCategory, seed }) {
-  const player = teamEventScore(playerTeam, ridersById, event);
+function computeEventOutcome({ event, playerName, playerTeam, rivals, ridersById, ridersByCategory, cardsById, balance, edition, seed }) {
+  const deps = { ridersById, cardsById, balance };
+  const player = teamEventScore(normalizeTeam(playerTeam, edition) || emptyTeam(), event, deps);
   const leaderboard = [{ entrantId: 'player', name: playerName, isPlayer: true, score: player.total }];
   rivals.forEach((rival, i) => {
     const rng = makeRng((seed || 1) * 1000 + i);
-    const botTeam = generateBotTeam(rival.strategy, ridersByCategory, rng);
-    const score = teamEventScore(botTeam, ridersById, event).total;
+    // Rivals play Common pilot cards with their effects, without techniques, equipment or referee.
+    const botTeam = cardTeamFromRiders(generateBotTeam(rival.strategy, ridersByCategory, rng), edition);
+    const score = teamEventScore(botTeam, event, deps).total;
     leaderboard.push({ entrantId: rival.id, name: rival.name, isPlayer: false, score });
   });
   leaderboard.sort((a, b) => b.score - a.score);

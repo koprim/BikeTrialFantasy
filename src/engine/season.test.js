@@ -18,10 +18,12 @@ const event = { id: 'e1', round: 1, results: Object.fromEntries(
   ['SENIOR_26', 'JUNIOR_26', 'SENIOR_20', 'JUNIOR_20', 'ELITE_WOMEN'].map((c) => [c, byCat[c].map((r) => r.id)]),
 ) };
 const playerTeam = { senior26: 'SENIOR_26-1', junior26: 'JUNIOR_26-1', senior20: 'SENIOR_20-1', junior20: 'JUNIOR_20-1', eliteWomen1: 'ELITE_WOMEN-1', eliteWomen2: 'ELITE_WOMEN-2' };
+const cardsById = Object.fromEntries(RIDERS.map((r) => [`pilot-2026-${r.id}`, { id: `pilot-2026-${r.id}`, type: 'PILOT', name: r.name, subject: r.id, rarities: ['C'], effects: [] }]));
+const balance = { rarityMultiplier: { C: 1, R: 1.5, E: 2, L: 3 } };
 
 test('computeEventOutcome returns player + sorted leaderboard with player row', () => {
   const rivals = createRivals();
-  const out = computeEventOutcome({ event, playerName: 'Me', playerTeam, rivals, ridersById, ridersByCategory: byCat, seed: event.round });
+  const out = computeEventOutcome({ event, playerName: 'Me', playerTeam, rivals, ridersById, ridersByCategory: byCat, cardsById, balance, edition: '2026', seed: event.round });
   expect(out.player.total).toBeGreaterThan(0);
   expect(out.leaderboard).toHaveLength(rivals.length + 1);
   for (let i = 1; i < out.leaderboard.length; i++) {
