@@ -15,7 +15,7 @@ test('eventStatus falls back to dateFrom when dateTo is missing', () => {
 });
 
 const s2025 = { id: '2025', events: [{ dateFrom: '2025-05-10', dateTo: '2025-05-11' }, { dateFrom: '2025-09-20', dateTo: '2025-09-21' }] };
-const s2026 = { id: '2026-27', events: [{ dateFrom: '2026-10-18', dateTo: '2026-10-19' }, { dateFrom: '2026-12-20', dateTo: '2026-12-21' }] };
+const s2026 = { id: '2026', events: [{ dateFrom: '2026-10-18', dateTo: '2026-10-19' }, { dateFrom: '2026-12-20', dateTo: '2026-12-21' }] };
 const s2027 = { id: '2027', events: [{ dateFrom: '2027-05-01', dateTo: '2027-05-02' }] };
 
 test('seasonStatus', () => {
@@ -27,9 +27,9 @@ test('seasonStatus', () => {
 });
 
 test('currentSeason: current, else next upcoming, else most recent', () => {
-  expect(currentSeason([s2025, s2026, s2027], '2026-11-15').id).toBe('2026-27');
+  expect(currentSeason([s2025, s2026, s2027], '2026-11-15').id).toBe('2026');
   expect(currentSeason([s2025, s2026, s2027], '2027-01-10').id).toBe('2027');
-  expect(currentSeason([s2025, s2026], '2027-01-10').id).toBe('2026-27');
+  expect(currentSeason([s2025, s2026], '2027-01-10').id).toBe('2026');
 });
 
 test('today formats a local date as YYYY-MM-DD', () => {

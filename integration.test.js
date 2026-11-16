@@ -11,7 +11,7 @@ import App from './App';
 import { STORAGE_KEY } from './src/state/persistence';
 import { initialState } from './src/state/GameContext';
 
-// Freeze "now" at 2026-11-15: 2025 archived, 2026-27 rounds 1-2 done, 3-4 open.
+// Freeze "now" at 2026-11-15: 2025 archived, 2026 rounds 1-2 done, 3-4 open.
 beforeEach(async () => {
   await AsyncStorage.clear();
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ ...initialState, simulatedDate: '2026-11-15' }));
@@ -19,7 +19,7 @@ beforeEach(async () => {
 
 test('season home shows date-driven statuses', async () => {
   render(<App />);
-  expect(await screen.findByText('Coupe du Monde 2026-27')).toBeTruthy();
+  expect(await screen.findByText('Coupe du Monde 2026')).toBeTruthy();
   expect(screen.getAllByText(/^Terminée · \d+ pts$/)).toHaveLength(2);
   expect(screen.getAllByText('Ouverte · à composer')).toHaveLength(2);
 });

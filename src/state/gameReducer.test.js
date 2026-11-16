@@ -9,12 +9,12 @@ test('initial state is the demo player with real time', () => {
 });
 
 test('SAVE_TEAM stores the team while the event is open', () => {
-  const s = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-27-r3', team, now: '2026-11-15' } });
-  expect(s.picks['2026-27-r3']).toEqual(team);
+  const s = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team, now: '2026-11-15' } });
+  expect(s.picks['2026-r3']).toEqual(team);
 });
 
 test('SAVE_TEAM is ignored once the event is locked or unknown', () => {
-  const locked = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-27-r3', team, now: '2026-11-29' } });
+  const locked = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team, now: '2026-11-29' } });
   expect(locked).toBe(initialState);
   const unknown = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: 'nope', team, now: '2026-11-15' } });
   expect(unknown).toBe(initialState);

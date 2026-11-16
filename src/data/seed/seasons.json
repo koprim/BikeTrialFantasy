@@ -11,6 +11,7 @@
         "round": 1,
         "dateFrom": "2025-05-10",
         "dateTo": "2025-05-11",
+        "referee": "M. Durand",
         "results": {
           "SENIOR_26": [
             "senior-26-5",
@@ -62,6 +63,334 @@
             "elite-women-5",
             "elite-women-2"
           ]
+        },
+        "stats": {
+          "senior-26-5": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "senior-26-2": {
+            "techniques": [
+              "bunny-up"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-4": {
+            "techniques": [
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-8": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-1": {
+            "techniques": [
+              "gap",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-7": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-6": {
+            "techniques": [
+              "gap",
+              "pivot"
+            ],
+            "cleanSections": 5
+          },
+          "senior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-1": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "junior-26-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "sur-place"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-7": {
+            "techniques": [
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-4": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 8
+          },
+          "junior-26-3": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-2": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "junior-26-8": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          },
+          "senior-20-5": {
+            "techniques": [
+              "gap",
+              "sur-place"
+            ],
+            "cleanSections": 11
+          },
+          "senior-20-3": {
+            "techniques": [
+              "bunny-up",
+              "drop"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-7": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-6": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-4": {
+            "techniques": [
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-2": {
+            "techniques": [
+              "bunny-up",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-5": {
+            "techniques": [
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-3": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-4": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-7": {
+            "techniques": [
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "junior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-6": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "elite-women-1": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "elite-women-8": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-4": {
+            "techniques": [
+              "bunny-up",
+              "pivot"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-7": {
+            "techniques": [],
+            "cleanSections": 8
+          },
+          "elite-women-6": {
+            "techniques": [
+              "gap",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-5": {
+            "techniques": [
+              "wheeling"
+            ],
+            "cleanSections": 4
+          },
+          "elite-women-2": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          }
         }
       },
       {
@@ -72,6 +401,7 @@
         "round": 2,
         "dateFrom": "2025-07-05",
         "dateTo": "2025-07-06",
+        "referee": "Mme Keller",
         "results": {
           "SENIOR_26": [
             "senior-26-2",
@@ -123,6 +453,336 @@
             "elite-women-8",
             "elite-women-7"
           ]
+        },
+        "stats": {
+          "senior-26-2": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "senior-26-4": {
+            "techniques": [
+              "gap",
+              "drop"
+            ],
+            "cleanSections": 11
+          },
+          "senior-26-3": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-1": {
+            "techniques": [
+              "gap",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-8": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-7": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-5": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-6": {
+            "techniques": [
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          },
+          "junior-26-6": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-1": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-8": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-5": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-4": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 8
+          },
+          "junior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-7": {
+            "techniques": [
+              "bunny-up",
+              "pivot"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-2": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "senior-20-5": {
+            "techniques": [
+              "sur-place"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-3": {
+            "techniques": [
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-8": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-2": {
+            "techniques": [
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 8
+          },
+          "senior-20-7": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "senior-20-4": {
+            "techniques": [
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-1": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-2": {
+            "techniques": [
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-3": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 9
+          },
+          "junior-20-7": {
+            "techniques": [
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-4": {
+            "techniques": [
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-6": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-8": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 3
+          },
+          "elite-women-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 12
+          },
+          "elite-women-3": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 11
+          },
+          "elite-women-4": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 8
+          },
+          "elite-women-2": {
+            "techniques": [
+              "side-hop",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-1": {
+            "techniques": [
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-5": {
+            "techniques": [
+              "side-hop"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-8": {
+            "techniques": [
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-7": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          }
         }
       },
       {
@@ -133,6 +793,7 @@
         "round": 3,
         "dateFrom": "2025-08-23",
         "dateTo": "2025-08-24",
+        "referee": "M. Rossi",
         "results": {
           "SENIOR_26": [
             "senior-26-5",
@@ -184,6 +845,324 @@
             "elite-women-6",
             "elite-women-1"
           ]
+        },
+        "stats": {
+          "senior-26-5": {
+            "techniques": [
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 12
+          },
+          "senior-26-1": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-6": {
+            "techniques": [
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-4": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-8": {
+            "techniques": [
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-7": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 5
+          },
+          "senior-26-2": {
+            "techniques": [
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-3": {
+            "techniques": [
+              "gap",
+              "sur-place"
+            ],
+            "cleanSections": 3
+          },
+          "junior-26-4": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "junior-26-5": {
+            "techniques": [
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-7": {
+            "techniques": [],
+            "cleanSections": 10
+          },
+          "junior-26-2": {
+            "techniques": [
+              "pivot"
+            ],
+            "cleanSections": 8
+          },
+          "junior-26-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 8
+          },
+          "junior-26-6": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-1": {
+            "techniques": [
+              "pivot"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-3": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 5
+          },
+          "senior-20-7": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-5": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-3": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "senior-20-1": {
+            "techniques": [
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-6": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-4": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-4": {
+            "techniques": [
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-7": {
+            "techniques": [
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-20-3": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-6": {
+            "techniques": [
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-2": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 3
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-2": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-4": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-5": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-7": {
+            "techniques": [
+              "gap",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "elite-women-8": {
+            "techniques": [
+              "gap",
+              "pivot"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-6": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-1": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          }
         }
       },
       {
@@ -194,6 +1173,7 @@
         "round": 4,
         "dateFrom": "2025-09-20",
         "dateTo": "2025-09-21",
+        "referee": "Mme Novak",
         "results": {
           "SENIOR_26": [
             "senior-26-6",
@@ -245,22 +1225,340 @@
             "elite-women-8",
             "elite-women-5"
           ]
+        },
+        "stats": {
+          "senior-26-6": {
+            "techniques": [
+              "bunny-up",
+              "pivot"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-1": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "drop"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-7": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-8": {
+            "techniques": [
+              "gap",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-4": {
+            "techniques": [
+              "gap",
+              "drop"
+            ],
+            "cleanSections": 5
+          },
+          "senior-26-5": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 4
+          },
+          "senior-26-2": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          },
+          "junior-26-7": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 11
+          },
+          "junior-26-4": {
+            "techniques": [
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 11
+          },
+          "junior-26-8": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-3": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-5": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-6": {
+            "techniques": [
+              "gap"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-2": {
+            "techniques": [
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-1": {
+            "techniques": [
+              "gap",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          },
+          "senior-20-8": {
+            "techniques": [
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-7": {
+            "techniques": [],
+            "cleanSections": 11
+          },
+          "senior-20-2": {
+            "techniques": [
+              "side-hop",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-1": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-3": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-6": {
+            "techniques": [
+              "bunny-up",
+              "pivot"
+            ],
+            "cleanSections": 4
+          },
+          "senior-20-4": {
+            "techniques": [
+              "gap",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          },
+          "junior-20-6": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-7": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-20-8": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-4": {
+            "techniques": [
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-2": {
+            "techniques": [],
+            "cleanSections": 7
+          },
+          "junior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-3": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-6": {
+            "techniques": [
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-4": {
+            "techniques": [
+              "pivot"
+            ],
+            "cleanSections": 8
+          },
+          "elite-women-7": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-1": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-8": {
+            "techniques": [
+              "bunny-up",
+              "pivot"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-5": {
+            "techniques": [
+              "gap",
+              "sur-place"
+            ],
+            "cleanSections": 5
+          }
         }
       }
     ]
   },
   {
-    "id": "2026-27",
-    "name": "Coupe du Monde 2026-27",
+    "id": "2026",
+    "name": "Coupe du Monde 2026",
     "events": [
       {
-        "id": "2026-27-r1",
-        "name": "Coupe du Monde 2026-27 — Manche 1",
+        "id": "2026-r1",
+        "name": "Coupe du Monde 2026 — Manche 1",
         "venue": "Les Gets",
         "country": "FRA",
         "round": 1,
         "dateFrom": "2026-10-18",
         "dateTo": "2026-10-19",
+        "referee": "M. Durand",
         "results": {
           "SENIOR_26": [
             "senior-26-1",
@@ -312,16 +1610,350 @@
             "elite-women-2",
             "elite-women-7"
           ]
+        },
+        "stats": {
+          "senior-26-1": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 12
+          },
+          "senior-26-8": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-5": {
+            "techniques": [
+              "gap",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-7": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-4": {
+            "techniques": [
+              "gap",
+              "drop"
+            ],
+            "cleanSections": 4
+          },
+          "senior-26-2": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          },
+          "junior-26-6": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 11
+          },
+          "junior-26-7": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-3": {
+            "techniques": [
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-1": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "junior-26-4": {
+            "techniques": [
+              "side-hop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-8": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-2": {
+            "techniques": [
+              "pivot",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 3
+          },
+          "senior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "senior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 11
+          },
+          "senior-20-2": {
+            "techniques": [
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-7": {
+            "techniques": [
+              "pivot",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-3": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 8
+          },
+          "senior-20-5": {
+            "techniques": [
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-6": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 5
+          },
+          "senior-20-4": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-1": {
+            "techniques": [
+              "side-hop"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-4": {
+            "techniques": [
+              "gap",
+              "bunny-up"
+            ],
+            "cleanSections": 11
+          },
+          "junior-20-2": {
+            "techniques": [
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-3": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-6": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-7": {
+            "techniques": [
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          },
+          "elite-women-8": {
+            "techniques": [
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-1": {
+            "techniques": [
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-4": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-5": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-6": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-7": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          }
         }
       },
       {
-        "id": "2026-27-r2",
-        "name": "Coupe du Monde 2026-27 — Manche 2",
+        "id": "2026-r2",
+        "name": "Coupe du Monde 2026 — Manche 2",
         "venue": "Châtel",
         "country": "FRA",
         "round": 2,
         "dateFrom": "2026-11-08",
         "dateTo": "2026-11-09",
+        "referee": "Mme Keller",
         "results": {
           "SENIOR_26": [
             "senior-26-7",
@@ -373,16 +2005,349 @@
             "elite-women-1",
             "elite-women-4"
           ]
+        },
+        "stats": {
+          "senior-26-7": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 11
+          },
+          "senior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-1": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-6": {
+            "techniques": [
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-5": {
+            "techniques": [
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 4
+          },
+          "senior-26-4": {
+            "techniques": [
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 3
+          },
+          "junior-26-7": {
+            "techniques": [
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 12
+          },
+          "junior-26-2": {
+            "techniques": [
+              "gap",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-5": {
+            "techniques": [],
+            "cleanSections": 9
+          },
+          "junior-26-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "junior-26-8": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-4": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-1": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 3
+          },
+          "senior-20-1": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 12
+          },
+          "senior-20-3": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "senior-20-4": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop"
+            ],
+            "cleanSections": 8
+          },
+          "senior-20-8": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-2": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-6": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-5": {
+            "techniques": [
+              "gap",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "senior-20-7": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-2": {
+            "techniques": [
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-3": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-20-4": {
+            "techniques": [
+              "sur-place"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-8": {
+            "techniques": [
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-6": {
+            "techniques": [
+              "bunny-up",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-20-1": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-7": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place"
+            ],
+            "cleanSections": 4
+          },
+          "elite-women-6": {
+            "techniques": [
+              "gap",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "elite-women-2": {
+            "techniques": [
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-7": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "elite-women-5": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "side-hop"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-1": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "elite-women-4": {
+            "techniques": [
+              "gap",
+              "bunny-up"
+            ],
+            "cleanSections": 4
+          }
         }
       },
       {
-        "id": "2026-27-r3",
-        "name": "Coupe du Monde 2026-27 — Manche 3",
+        "id": "2026-r3",
+        "name": "Coupe du Monde 2026 — Manche 3",
         "venue": "Lenzerheide",
         "country": "SUI",
         "round": 3,
         "dateFrom": "2026-11-29",
         "dateTo": "2026-11-30",
+        "referee": "M. Rossi",
         "results": {
           "SENIOR_26": [
             "senior-26-8",
@@ -434,16 +2399,362 @@
             "elite-women-6",
             "elite-women-1"
           ]
+        },
+        "stats": {
+          "senior-26-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "senior-26-6": {
+            "techniques": [
+              "bunny-up",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 11
+          },
+          "senior-26-2": {
+            "techniques": [
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-1": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-5": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-4": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-7": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-3": {
+            "techniques": [
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-7": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-3": {
+            "techniques": [
+              "pivot",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-6": {
+            "techniques": [
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 10
+          },
+          "junior-26-4": {
+            "techniques": [
+              "gap",
+              "pivot"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-2": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-8": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-1": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 4
+          },
+          "senior-20-2": {
+            "techniques": [
+              "sur-place"
+            ],
+            "cleanSections": 11
+          },
+          "senior-20-3": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 11
+          },
+          "senior-20-4": {
+            "techniques": [
+              "gap",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-7": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-1": {
+            "techniques": [
+              "bunny-up"
+            ],
+            "cleanSections": 3
+          },
+          "junior-20-3": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 12
+          },
+          "junior-20-1": {
+            "techniques": [
+              "gap",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-8": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-7": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 8
+          },
+          "junior-20-4": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-20-6": {
+            "techniques": [
+              "gap",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "wheeling"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-4": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 12
+          },
+          "elite-women-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "sur-place",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-7": {
+            "techniques": [
+              "side-hop"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-8": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-6": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-1": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          }
         }
       },
       {
-        "id": "2026-27-r4",
-        "name": "Coupe du Monde 2026-27 — Manche 4",
+        "id": "2026-r4",
+        "name": "Coupe du Monde 2026 — Manche 4",
         "venue": "Pal Arinsal",
         "country": "AND",
         "round": 4,
         "dateFrom": "2026-12-20",
         "dateTo": "2026-12-21",
+        "referee": "Mme Novak",
         "results": {
           "SENIOR_26": [
             "senior-26-1",
@@ -495,6 +2806,338 @@
             "elite-women-2",
             "elite-women-3"
           ]
+        },
+        "stats": {
+          "senior-26-1": {
+            "techniques": [
+              "sur-place",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "senior-26-2": {
+            "techniques": [
+              "side-hop"
+            ],
+            "cleanSections": 9
+          },
+          "senior-26-6": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 8
+          },
+          "senior-26-3": {
+            "techniques": [
+              "gap",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 7
+          },
+          "senior-26-7": {
+            "techniques": [
+              "gap",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-5": {
+            "techniques": [
+              "gap",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "senior-26-4": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "senior-26-8": {
+            "techniques": [
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-7": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "junior-26-1": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 11
+          },
+          "junior-26-4": {
+            "techniques": [
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-3": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 9
+          },
+          "junior-26-6": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "junior-26-8": {
+            "techniques": [
+              "gap",
+              "bunny-up"
+            ],
+            "cleanSections": 5
+          },
+          "junior-26-2": {
+            "techniques": [
+              "gap",
+              "side-hop",
+              "sur-place",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-26-5": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "senior-20-2": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "pivot",
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 12
+          },
+          "senior-20-3": {
+            "techniques": [
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "senior-20-8": {
+            "techniques": [
+              "bunny-up",
+              "sur-place"
+            ],
+            "cleanSections": 10
+          },
+          "senior-20-6": {
+            "techniques": [
+              "pivot",
+              "sur-place"
+            ],
+            "cleanSections": 8
+          },
+          "senior-20-4": {
+            "techniques": [
+              "bunny-up",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-1": {
+            "techniques": [
+              "sur-place",
+              "wheeling"
+            ],
+            "cleanSections": 6
+          },
+          "senior-20-7": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "senior-20-5": {
+            "techniques": [
+              "bunny-up",
+              "side-hop",
+              "sur-place",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "junior-20-8": {
+            "techniques": [
+              "side-hop",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 11
+          },
+          "junior-20-7": {
+            "techniques": [
+              "side-hop",
+              "pivot",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-5": {
+            "techniques": [
+              "gap",
+              "bunny-up",
+              "pivot",
+              "drop"
+            ],
+            "cleanSections": 10
+          },
+          "junior-20-6": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 7
+          },
+          "junior-20-1": {
+            "techniques": [],
+            "cleanSections": 8
+          },
+          "junior-20-2": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 6
+          },
+          "junior-20-3": {
+            "techniques": [
+              "side-hop",
+              "nose-turn"
+            ],
+            "cleanSections": 4
+          },
+          "junior-20-4": {
+            "techniques": [
+              "gap",
+              "sur-place",
+              "drop",
+              "nose-turn"
+            ],
+            "cleanSections": 5
+          },
+          "elite-women-5": {
+            "techniques": [
+              "side-hop",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-8": {
+            "techniques": [
+              "side-hop",
+              "drop",
+              "wheeling"
+            ],
+            "cleanSections": 10
+          },
+          "elite-women-4": {
+            "techniques": [
+              "gap",
+              "drop"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-1": {
+            "techniques": [
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 9
+          },
+          "elite-women-6": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "nose-turn"
+            ],
+            "cleanSections": 7
+          },
+          "elite-women-7": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 6
+          },
+          "elite-women-2": {
+            "techniques": [
+              "bunny-up",
+              "pivot",
+              "sur-place",
+              "drop"
+            ],
+            "cleanSections": 4
+          },
+          "elite-women-3": {
+            "techniques": [
+              "gap",
+              "pivot",
+              "sur-place",
+              "drop",
+              "wheeling",
+              "nose-turn"
+            ],
+            "cleanSections": 3
+          }
         }
       }
     ]

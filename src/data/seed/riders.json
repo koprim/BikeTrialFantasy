@@ -5,7 +5,9 @@
     "country": "GBR",
     "category": "SENIOR_26",
     "uciRank": 1,
-    "cote": 1
+    "cote": 1,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "senior-26-2",
@@ -13,7 +15,9 @@
     "country": "ESP",
     "category": "SENIOR_26",
     "uciRank": 8,
-    "cote": 1.3
+    "cote": 1.3,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "senior-26-3",
@@ -21,7 +25,9 @@
     "country": "GER",
     "category": "SENIOR_26",
     "uciRank": 15,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "senior-26-4",
@@ -29,7 +35,9 @@
     "country": "SUI",
     "category": "SENIOR_26",
     "uciRank": 22,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "senior-26-5",
@@ -37,7 +45,9 @@
     "country": "POL",
     "category": "SENIOR_26",
     "uciRank": 29,
-    "cote": 2
+    "cote": 2,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "senior-26-6",
@@ -45,7 +55,9 @@
     "country": "CZE",
     "category": "SENIOR_26",
     "uciRank": 36,
-    "cote": 2
+    "cote": 2,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "senior-26-7",
@@ -53,7 +65,9 @@
     "country": "BEL",
     "category": "SENIOR_26",
     "uciRank": 43,
-    "cote": 2
+    "cote": 2,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "senior-26-8",
@@ -61,7 +75,9 @@
     "country": "FRA",
     "category": "SENIOR_26",
     "uciRank": 50,
-    "cote": 2
+    "cote": 2,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "junior-26-1",
@@ -69,7 +85,9 @@
     "country": "GBR",
     "category": "JUNIOR_26",
     "uciRank": 1,
-    "cote": 1
+    "cote": 1,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "junior-26-2",
@@ -77,7 +95,9 @@
     "country": "ESP",
     "category": "JUNIOR_26",
     "uciRank": 8,
-    "cote": 1.3
+    "cote": 1.3,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "junior-26-3",
@@ -85,7 +105,9 @@
     "country": "GER",
     "category": "JUNIOR_26",
     "uciRank": 15,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "junior-26-4",
@@ -93,7 +115,9 @@
     "country": "SUI",
     "category": "JUNIOR_26",
     "uciRank": 22,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "junior-26-5",
@@ -101,7 +125,9 @@
     "country": "POL",
     "category": "JUNIOR_26",
     "uciRank": 29,
-    "cote": 2
+    "cote": 2,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "junior-26-6",
@@ -109,7 +135,9 @@
     "country": "CZE",
     "category": "JUNIOR_26",
     "uciRank": 36,
-    "cote": 2
+    "cote": 2,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "junior-26-7",
@@ -117,7 +145,9 @@
     "country": "BEL",
     "category": "JUNIOR_26",
     "uciRank": 43,
-    "cote": 2
+    "cote": 2,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "junior-26-8",
@@ -125,7 +155,9 @@
     "country": "FRA",
     "category": "JUNIOR_26",
     "uciRank": 50,
-    "cote": 2
+    "cote": 2,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "senior-20-1",
@@ -133,7 +165,9 @@
     "country": "GBR",
     "category": "SENIOR_20",
     "uciRank": 1,
-    "cote": 1
+    "cote": 1,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "senior-20-2",
@@ -141,7 +175,9 @@
     "country": "ESP",
     "category": "SENIOR_20",
     "uciRank": 8,
-    "cote": 1.3
+    "cote": 1.3,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "senior-20-3",
@@ -149,7 +185,9 @@
     "country": "GER",
     "category": "SENIOR_20",
     "uciRank": 15,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "senior-20-4",
@@ -157,7 +195,9 @@
     "country": "SUI",
     "category": "SENIOR_20",
     "uciRank": 22,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "senior-20-5",
@@ -165,7 +205,9 @@
     "country": "POL",
     "category": "SENIOR_20",
     "uciRank": 29,
-    "cote": 2
+    "cote": 2,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "senior-20-6",
@@ -173,7 +215,9 @@
     "country": "CZE",
     "category": "SENIOR_20",
     "uciRank": 36,
-    "cote": 2
+    "cote": 2,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "senior-20-7",
@@ -181,7 +225,9 @@
     "country": "BEL",
     "category": "SENIOR_20",
     "uciRank": 43,
-    "cote": 2
+    "cote": 2,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "senior-20-8",
@@ -189,7 +235,9 @@
     "country": "FRA",
     "category": "SENIOR_20",
     "uciRank": 50,
-    "cote": 2
+    "cote": 2,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "junior-20-1",
@@ -197,7 +245,9 @@
     "country": "GBR",
     "category": "JUNIOR_20",
     "uciRank": 1,
-    "cote": 1
+    "cote": 1,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "junior-20-2",
@@ -205,7 +255,9 @@
     "country": "ESP",
     "category": "JUNIOR_20",
     "uciRank": 8,
-    "cote": 1.3
+    "cote": 1.3,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "junior-20-3",
@@ -213,7 +265,9 @@
     "country": "GER",
     "category": "JUNIOR_20",
     "uciRank": 15,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "junior-20-4",
@@ -221,7 +275,9 @@
     "country": "SUI",
     "category": "JUNIOR_20",
     "uciRank": 22,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "junior-20-5",
@@ -229,7 +285,9 @@
     "country": "POL",
     "category": "JUNIOR_20",
     "uciRank": 29,
-    "cote": 2
+    "cote": 2,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "junior-20-6",
@@ -237,7 +295,9 @@
     "country": "CZE",
     "category": "JUNIOR_20",
     "uciRank": 36,
-    "cote": 2
+    "cote": 2,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "junior-20-7",
@@ -245,7 +305,9 @@
     "country": "BEL",
     "category": "JUNIOR_20",
     "uciRank": 43,
-    "cote": 2
+    "cote": 2,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "junior-20-8",
@@ -253,7 +315,9 @@
     "country": "FRA",
     "category": "JUNIOR_20",
     "uciRank": 50,
-    "cote": 2
+    "cote": 2,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "elite-women-1",
@@ -261,7 +325,9 @@
     "country": "GBR",
     "category": "ELITE_WOMEN",
     "uciRank": 1,
-    "cote": 1
+    "cote": 1,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "elite-women-2",
@@ -269,7 +335,9 @@
     "country": "ESP",
     "category": "ELITE_WOMEN",
     "uciRank": 8,
-    "cote": 1.3
+    "cote": 1.3,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "elite-women-3",
@@ -277,7 +345,9 @@
     "country": "GER",
     "category": "ELITE_WOMEN",
     "uciRank": 15,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "elite-women-4",
@@ -285,7 +355,9 @@
     "country": "SUI",
     "category": "ELITE_WOMEN",
     "uciRank": 22,
-    "cote": 1.6
+    "cote": 1.6,
+    "brand": "Alpha",
+    "active": true
   },
   {
     "id": "elite-women-5",
@@ -293,7 +365,9 @@
     "country": "POL",
     "category": "ELITE_WOMEN",
     "uciRank": 29,
-    "cote": 2
+    "cote": 2,
+    "brand": "Torq",
+    "active": true
   },
   {
     "id": "elite-women-6",
@@ -301,7 +375,9 @@
     "country": "CZE",
     "category": "ELITE_WOMEN",
     "uciRank": 36,
-    "cote": 2
+    "cote": 2,
+    "brand": "Grip",
+    "active": true
   },
   {
     "id": "elite-women-7",
@@ -309,7 +385,9 @@
     "country": "BEL",
     "category": "ELITE_WOMEN",
     "uciRank": 43,
-    "cote": 2
+    "cote": 2,
+    "brand": "Volt",
+    "active": true
   },
   {
     "id": "elite-women-8",
@@ -317,6 +395,38 @@
     "country": "FRA",
     "category": "ELITE_WOMEN",
     "uciRank": 50,
-    "cote": 2
+    "cote": 2,
+    "brand": "Alpha",
+    "active": true
+  },
+  {
+    "id": "legend-senior-20",
+    "name": "Légende Senior 20\"",
+    "country": "FRA",
+    "category": "SENIOR_20",
+    "uciRank": null,
+    "cote": 2.5,
+    "brand": "Alpha",
+    "active": false
+  },
+  {
+    "id": "legend-senior-26",
+    "name": "Légende Senior 26\"",
+    "country": "ESP",
+    "category": "SENIOR_26",
+    "uciRank": null,
+    "cote": 2.5,
+    "brand": "Alpha",
+    "active": false
+  },
+  {
+    "id": "legend-elite-women",
+    "name": "Légende Elite Femmes",
+    "country": "GBR",
+    "category": "ELITE_WOMEN",
+    "uciRank": null,
+    "cote": 2.5,
+    "brand": "Alpha",
+    "active": false
   }
 ]
