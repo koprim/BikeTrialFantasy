@@ -1,13 +1,22 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { saveState, loadState } from './persistence';
-import { DEMO_PLAYER, EVENTS_BY_ID, RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
+import { DEMO_PLAYER, EVENTS_BY_ID, RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
 import { eventStatus, today } from '../engine/calendar';
+import { openStarter, openDailyPack, recycle, craft } from '../engine/collection';
+import { makeRng, hashString } from '../engine/rng';
+import { migrateSave } from './migrate';
 
 const initialState = {
   player: { name: DEMO_PLAYER.name },
-  picks: DEMO_PLAYER.picks,   // { [eventId]: Team }
-  simulatedDate: null,        // null = real date, else 'YYYY-MM-DD'
+  picks: DEMO_PLAYER.picks,           // { [eventId]: card Team }
+  simulatedDate: null,                // null = real date, else 'YYYY-MM-DD'
+  collection: DEMO_PLAYER.collection, // see src/engine/collection.js
 };
+
+// Returns the same state object when the collection did not change, so no-op actions do not re-render.
+function withCollection(state, collection) {
+  return collection === state.collection ? state : { ...state, collection };
+}
 
 function gameReducer(state, action) {
   switch (action.type) {
@@ -21,13 +30,20 @@ function gameReducer(state, action) {
       return { ...state, player: { name: action.payload.name } };
     case 'SET_SIMULATED_DATE':
       return { ...state, simulatedDate: action.payload.date };
+    case 'OPEN_STARTER':
+      return withCollection(state, openStarter(state.collection, { cards: CARDS, ridersById: RIDERS_BY_ID },
+        makeRng(hashString(`starter#${state.player.name}`))));
+    case 'OPEN_DAILY_PACK':
+      return withCollection(state, openDailyPack(state.collection, action.payload.now, { cards: CARDS, balance: BALANCE }));
+    case 'RECYCLE':
+      return withCollection(state, recycle(state.collection, action.payload.cardId, action.payload.rarity, BALANCE));
+    case 'CRAFT':
+      return withCollection(state, craft(state.collection, CARDS_BY_ID[action.payload.cardId], action.payload.rarity, BALANCE));
     case 'RESET':
       return initialState;
     case 'HYDRATE': {
-      const saved = action.payload;
-      // Saves from the old linear loop (currentIndex/outcomes) are incompatible: start from demo.
-      if (!saved || 'currentIndex' in saved || !saved.picks) return state;
-      return { ...state, ...saved };
+      const migrated = migrateSave(action.payload, { edition: EDITION, demoCollection: DEMO_PLAYER.collection });
+      return migrated ? { ...state, ...migrated } : state;
     }
     default:
       return state;

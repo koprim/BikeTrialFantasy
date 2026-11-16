@@ -6,6 +6,7 @@ test('initial state is the demo player with real time', () => {
   expect(initialState.player).toEqual({ name: 'Démo' });
   expect(Object.keys(initialState.picks)).toHaveLength(6);
   expect(initialState.simulatedDate).toBeNull();
+  expect(initialState.collection.starterGiven).toBe(false);
 });
 
 test('SAVE_TEAM stores the team while the event is open', () => {
@@ -33,9 +34,36 @@ test('RESET returns to the demo state', () => {
   expect(gameReducer(dirty, { type: 'RESET' })).toBe(initialState);
 });
 
-test('HYDRATE merges a saved state but ignores the old linear format', () => {
-  const saved = { player: { name: 'Z' }, picks: { a: team }, simulatedDate: '2026-11-15' };
+test('HYDRATE migrates a saved state but ignores the old linear format', () => {
+  const saved = { player: { name: 'Z' }, picks: {}, simulatedDate: '2026-11-15', collection: initialState.collection };
   expect(gameReducer(initialState, { type: 'HYDRATE', payload: saved })).toEqual(saved);
   const old = { player: { name: 'Old' }, season: [], currentIndex: 2, picks: {}, outcomes: {} };
   expect(gameReducer(initialState, { type: 'HYDRATE', payload: old })).toBe(initialState);
+});
+
+const { countOf } = require('../engine/collection');
+
+test('OPEN_STARTER gives 10 Common cards once', () => {
+  const s = gameReducer(initialState, { type: 'OPEN_STARTER' });
+  expect(s.collection.starterGiven).toBe(true);
+  expect(s.collection.lastPack).toHaveLength(10);
+  expect(gameReducer(s, { type: 'OPEN_STARTER' })).toBe(s);
+});
+
+test('OPEN_DAILY_PACK opens one pack per day', () => {
+  const s = gameReducer(initialState, { type: 'OPEN_DAILY_PACK', payload: { now: '2026-11-16' } });
+  expect(s.collection.lastPack).toHaveLength(5);
+  expect(s.collection.lastPackDate).toBe('2026-11-16');
+  expect(gameReducer(s, { type: 'OPEN_DAILY_PACK', payload: { now: '2026-11-16' } })).toBe(s);
+});
+
+test('RECYCLE and CRAFT', () => {
+  const withDup = { ...initialState, collection: { ...initialState.collection, owned: { 'technique-2026-gap': { C: 2 } }, fragments: 200 } };
+  const recycled = gameReducer(withDup, { type: 'RECYCLE', payload: { cardId: 'technique-2026-gap', rarity: 'C' } });
+  expect(recycled.collection.owned['technique-2026-gap'].C).toBe(1);
+  expect(recycled.collection.fragments).toBe(205);
+  const crafted = gameReducer(recycled, { type: 'CRAFT', payload: { cardId: 'technique-2026-gap', rarity: 'R' } });
+  expect(countOf(crafted.collection, 'technique-2026-gap', 'R')).toBe(1);
+  expect(crafted.collection.fragments).toBe(85);
+  expect(gameReducer(crafted, { type: 'CRAFT', payload: { cardId: 'technique-2026-gap', rarity: 'E' } })).toBe(crafted);
 });

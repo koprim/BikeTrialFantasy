@@ -2,52 +2,293 @@
   "name": "Démo",
   "picks": {
     "2025-r1": {
-      "senior26": "senior-26-5",
-      "junior26": "junior-26-5",
-      "senior20": "senior-20-5",
-      "junior20": "junior-20-5",
-      "eliteWomen1": "elite-women-5",
-      "eliteWomen2": "elite-women-1"
+      "slots": {
+        "senior26": {
+          "cardId": "pilot-2026-senior-26-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior26": {
+          "cardId": "pilot-2026-junior-26-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "senior20": {
+          "cardId": "pilot-2026-senior-20-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior20": {
+          "cardId": "pilot-2026-junior-20-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen1": {
+          "cardId": "pilot-2026-elite-women-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen2": {
+          "cardId": "pilot-2026-elite-women-1",
+          "rarity": "C",
+          "techniques": []
+        }
+      },
+      "equipment": [],
+      "referee": null
     },
     "2025-r2": {
-      "senior26": "senior-26-8",
-      "junior26": "junior-26-8",
-      "senior20": "senior-20-8",
-      "junior20": "junior-20-8",
-      "eliteWomen1": "elite-women-8",
-      "eliteWomen2": "elite-women-7"
+      "slots": {
+        "senior26": {
+          "cardId": "pilot-2026-senior-26-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior26": {
+          "cardId": "pilot-2026-junior-26-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "senior20": {
+          "cardId": "pilot-2026-senior-20-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior20": {
+          "cardId": "pilot-2026-junior-20-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen1": {
+          "cardId": "pilot-2026-elite-women-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen2": {
+          "cardId": "pilot-2026-elite-women-7",
+          "rarity": "C",
+          "techniques": []
+        }
+      },
+      "equipment": [],
+      "referee": null
     },
     "2025-r3": {
-      "senior26": "senior-26-4",
-      "junior26": "junior-26-8",
-      "senior20": "senior-20-2",
-      "junior20": "junior-20-6",
-      "eliteWomen1": "elite-women-7",
-      "eliteWomen2": "elite-women-2"
+      "slots": {
+        "senior26": {
+          "cardId": "pilot-2026-senior-26-4",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior26": {
+          "cardId": "pilot-2026-junior-26-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "senior20": {
+          "cardId": "pilot-2026-senior-20-2",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior20": {
+          "cardId": "pilot-2026-junior-20-6",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen1": {
+          "cardId": "pilot-2026-elite-women-7",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen2": {
+          "cardId": "pilot-2026-elite-women-2",
+          "rarity": "C",
+          "techniques": []
+        }
+      },
+      "equipment": [],
+      "referee": null
     },
     "2025-r4": {
-      "senior26": "senior-26-5",
-      "junior26": "junior-26-5",
-      "senior20": "senior-20-5",
-      "junior20": "junior-20-5",
-      "eliteWomen1": "elite-women-5",
-      "eliteWomen2": "elite-women-1"
+      "slots": {
+        "senior26": {
+          "cardId": "pilot-2026-senior-26-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior26": {
+          "cardId": "pilot-2026-junior-26-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "senior20": {
+          "cardId": "pilot-2026-senior-20-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior20": {
+          "cardId": "pilot-2026-junior-20-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen1": {
+          "cardId": "pilot-2026-elite-women-5",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen2": {
+          "cardId": "pilot-2026-elite-women-1",
+          "rarity": "C",
+          "techniques": []
+        }
+      },
+      "equipment": [],
+      "referee": null
     },
     "2026-r1": {
-      "senior26": "senior-26-8",
-      "junior26": "junior-26-8",
-      "senior20": "senior-20-8",
-      "junior20": "junior-20-8",
-      "eliteWomen1": "elite-women-8",
-      "eliteWomen2": "elite-women-7"
+      "slots": {
+        "senior26": {
+          "cardId": "pilot-2026-senior-26-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior26": {
+          "cardId": "pilot-2026-junior-26-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "senior20": {
+          "cardId": "pilot-2026-senior-20-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior20": {
+          "cardId": "pilot-2026-junior-20-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen1": {
+          "cardId": "pilot-2026-elite-women-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen2": {
+          "cardId": "pilot-2026-elite-women-7",
+          "rarity": "C",
+          "techniques": []
+        }
+      },
+      "equipment": [],
+      "referee": null
     },
     "2026-r2": {
-      "senior26": "senior-26-4",
-      "junior26": "junior-26-1",
-      "senior20": "senior-20-1",
-      "junior20": "junior-20-4",
-      "eliteWomen1": "elite-women-8",
-      "eliteWomen2": "elite-women-6"
+      "slots": {
+        "senior26": {
+          "cardId": "pilot-2026-senior-26-4",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior26": {
+          "cardId": "pilot-2026-junior-26-1",
+          "rarity": "C",
+          "techniques": []
+        },
+        "senior20": {
+          "cardId": "pilot-2026-senior-20-1",
+          "rarity": "C",
+          "techniques": []
+        },
+        "junior20": {
+          "cardId": "pilot-2026-junior-20-4",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen1": {
+          "cardId": "pilot-2026-elite-women-8",
+          "rarity": "C",
+          "techniques": []
+        },
+        "eliteWomen2": {
+          "cardId": "pilot-2026-elite-women-6",
+          "rarity": "C",
+          "techniques": []
+        }
+      },
+      "equipment": [],
+      "referee": null
     }
+  },
+  "collection": {
+    "owned": {
+      "pilot-2026-senior-26-5": {
+        "C": 1
+      },
+      "pilot-2026-junior-26-5": {
+        "C": 1
+      },
+      "pilot-2026-senior-20-5": {
+        "C": 1
+      },
+      "pilot-2026-junior-20-5": {
+        "C": 1
+      },
+      "pilot-2026-elite-women-5": {
+        "C": 1
+      },
+      "pilot-2026-elite-women-1": {
+        "C": 1
+      },
+      "pilot-2026-senior-26-8": {
+        "C": 1
+      },
+      "pilot-2026-junior-26-8": {
+        "C": 1
+      },
+      "pilot-2026-senior-20-8": {
+        "C": 1
+      },
+      "pilot-2026-junior-20-8": {
+        "C": 1
+      },
+      "pilot-2026-elite-women-8": {
+        "C": 1
+      },
+      "pilot-2026-elite-women-7": {
+        "C": 1
+      },
+      "pilot-2026-senior-26-4": {
+        "C": 1
+      },
+      "pilot-2026-senior-20-2": {
+        "C": 1
+      },
+      "pilot-2026-junior-20-6": {
+        "C": 1
+      },
+      "pilot-2026-elite-women-2": {
+        "C": 1
+      },
+      "pilot-2026-junior-26-1": {
+        "C": 1
+      },
+      "pilot-2026-senior-20-1": {
+        "C": 1
+      },
+      "pilot-2026-junior-20-4": {
+        "C": 1
+      },
+      "pilot-2026-elite-women-6": {
+        "C": 1
+      }
+    },
+    "fragments": 0,
+    "pity": {
+      "E": 0,
+      "L": 0
+    },
+    "packsOpened": 0,
+    "lastPackDate": null,
+    "starterGiven": false,
+    "lastPack": []
   }
 }

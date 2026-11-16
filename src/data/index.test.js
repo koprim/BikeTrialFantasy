@@ -66,7 +66,13 @@ test('balance odds sum to 1', () => {
   expect(sum).toBeCloseTo(1);
 });
 
-test('demo player has teams for the 6 finished events', () => {
+test('demo player: card teams for the 6 finished events, all owned', () => {
+  const { validateCardTeam } = require('../engine/team');
+  const { CARDS_BY_ID } = require('./index');
   expect(Object.keys(DEMO_PLAYER.picks).sort()).toEqual(['2025-r1', '2025-r2', '2025-r3', '2025-r4', '2026-r1', '2026-r2']);
+  Object.values(DEMO_PLAYER.picks).forEach((team) => {
+    expect(validateCardTeam(team, { cardsById: CARDS_BY_ID, ridersById: RIDERS_BY_ID, owned: DEMO_PLAYER.collection.owned, balance: BALANCE }).valid).toBe(true);
+  });
+  expect(DEMO_PLAYER.collection.starterGiven).toBe(false);
   expect(DEMO_PLAYER.name).toBe('Démo');
 });

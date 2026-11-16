@@ -3,7 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const { coteFromRank } = require('../src/engine/cote');
-const { CATEGORIES, groupByCategory } = require('../src/engine/team');
+const { CATEGORIES, groupByCategory, cardTeamFromRiders } = require('../src/engine/team');
+const { emptyCollection, addCard } = require('../src/engine/collection');
 const { generateBotTeam } = require('../src/engine/bots');
 const { makeRng } = require('../src/engine/rng');
 
@@ -148,11 +149,17 @@ function buildDemoPlayer(seasons, riders) {
   const rng = makeRng(2026);
   const strategies = ['EQUILIBRE', 'OUTSIDER', 'ALEATOIRE'];
   const picks = {};
+  const collection = emptyCollection();
   let k = 0;
   seasons.forEach((s) => s.events.forEach((e) => {
-    if (e.dateTo < DEMO_PLAYED_BEFORE) picks[e.id] = generateBotTeam(strategies[k++ % strategies.length], byCat, rng);
+    if (e.dateTo >= DEMO_PLAYED_BEFORE) return;
+    const team = cardTeamFromRiders(generateBotTeam(strategies[k++ % strategies.length], byCat, rng), EDITION);
+    picks[e.id] = team;
+    Object.values(team.slots).forEach(({ cardId, rarity }) => {
+      if (!(collection.owned[cardId] || {})[rarity]) collection.owned = addCard(collection.owned, cardId, rarity);
+    });
   }));
-  return { name: 'Démo', picks };
+  return { name: 'Démo', picks, collection };
 }
 
 const riders = buildRiders();
