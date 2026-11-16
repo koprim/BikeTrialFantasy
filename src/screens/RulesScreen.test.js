@@ -29,3 +29,9 @@ test('renames the player and resets after confirmation', async () => {
   fireEvent.press(screen.getByText('Réinitialiser la partie'));
   expect(await screen.findByText('Pseudo actuel : Démo')).toBeTruthy();
 });
+
+test('rules explain cards, rarities and packs', async () => {
+  renderRules();
+  expect(await screen.findByText('Cartes et collection')).toBeTruthy();
+  expect(screen.getByText(/Une Épique est garantie au moins tous les 10 packs/)).toBeTruthy();
+});

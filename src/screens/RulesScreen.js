@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useGame, useNow, initialState } from '../state/GameContext';
+import { BALANCE } from '../data/index';
 import { confirm } from '../ui/confirm';
 import { colors, space, radius } from '../ui/theme';
 
@@ -30,6 +31,13 @@ export default function RulesScreen() {
       <Text style={styles.p}>• Points d'un pilote = points de classement (100 pour le 1er, 80, 65…) × sa cote.</Text>
       <Text style={styles.p}>• Une cote élevée signale un outsider : s'il finit bien, il rapporte gros.</Text>
       <Text style={styles.p}>• L'équipe est modifiable jusqu'au jour de la manche, puis verrouillée. Les résultats sont révélés à la fin de la manche.</Text>
+
+      <Text style={styles.h2}>Cartes et collection</Text>
+      <Text style={styles.p}>• Tu ne joues que les cartes que tu possèdes. Elles se réutilisent d'une manche à l'autre.</Text>
+      <Text style={styles.p}>• 4 types : pilote, technique (attachée à un pilote), équipement ({BALANCE.slots.equipment} par équipe), arbitre (1 par équipe).</Text>
+      <Text style={styles.p}>• 4 raretés : Commune, Rare, Épique, Légendaire. Plus la carte est rare, plus son effet rapporte et plus son pilote peut porter de techniques.</Text>
+      <Text style={styles.p}>• Un pack gratuit par jour : {BALANCE.pack.size} cartes dont au moins une Rare. Une Épique est garantie au moins tous les {BALANCE.pity.E} packs, une Légendaire tous les {BALANCE.pity.L}.</Text>
+      <Text style={styles.p}>• Les doublons se recyclent en fragments, qui servent à fabriquer la carte de ton choix.</Text>
 
       <Text style={styles.h2}>Profil</Text>
       <Text style={styles.p}>Pseudo actuel : {state.player.name}</Text>
