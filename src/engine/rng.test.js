@@ -12,3 +12,11 @@ test('values in [0,1)', () => {
 test('different seeds differ', () => {
   expect(makeRng(1)()).not.toEqual(makeRng(2)());
 });
+
+const { hashString } = require('./rng');
+
+test('hashString is deterministic, unsigned and spreads close inputs', () => {
+  expect(hashString('2026-11-16#3')).toBe(hashString('2026-11-16#3'));
+  expect(hashString('2026-11-16#3')).not.toBe(hashString('2026-11-16#4'));
+  expect(hashString('abc')).toBeGreaterThanOrEqual(0);
+});

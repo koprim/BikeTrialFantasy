@@ -1,0 +1,15 @@
+{
+  "rarityMultiplier": { "C": 1, "R": 1.5, "E": 2, "L": 3 },
+  "pack": {
+    "size": 5,
+    "guaranteedMinRarity": "R",
+    "odds": { "C": 0.70, "R": 0.22, "E": 0.07, "L": 0.01 },
+    "typeWeights": { "PILOT": 0.55, "TECHNIQUE": 0.25, "EQUIPMENT": 0.15, "REFEREE": 0.05 }
+  },
+  "pity": { "E": 10, "L": 60 },
+  "fragments": {
+    "perDuplicate": { "C": 5, "R": 15, "E": 50, "L": 200 },
+    "craftCost": { "C": 40, "R": 120, "E": 400, "L": 1600 }
+  },
+  "slots": { "techniquesByPilotRarity": { "C": 1, "R": 1, "E": 2, "L": 3 }, "equipment": 2, "referee": 1 }
+}
