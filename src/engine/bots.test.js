@@ -1,6 +1,6 @@
 const { generateBotTeam, createRivals } = require('./bots');
 const { makeRng } = require('./rng');
-const { validateTeam, groupByCategory } = require('./team');
+const { validateRiderTeam, groupByCategory } = require('./team');
 
 function mkRiders() {
   const riders = [];
@@ -21,7 +21,7 @@ describe('generateBotTeam', () => {
 
   test.each(['FAVORIS', 'EQUILIBRE', 'OUTSIDER', 'ALEATOIRE'])('%s produces a valid team', (strategy) => {
     const team = generateBotTeam(strategy, byCat, makeRng(1));
-    expect(validateTeam(team, ridersById).valid).toBe(true);
+    expect(validateRiderTeam(team, ridersById).valid).toBe(true);
   });
 
   test('FAVORIS picks best-ranked per category', () => {

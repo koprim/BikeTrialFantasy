@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable, ScrollView, Modal, FlatList, StyleSheet } from 'react-native';
 import { useGame, useNow } from '../state/GameContext';
 import { ridersByCategory, RIDERS_BY_ID, EVENTS_BY_ID } from '../data/index';
-import { SLOTS, validateTeam } from '../engine/team';
+import { SLOTS, validateRiderTeam } from '../engine/team';
 import { eventStatus } from '../engine/calendar';
 import { colors, space, radius } from '../ui/theme';
 
@@ -16,7 +16,7 @@ export default function ComposeScreen({ navigation, route }) {
   const [team, setTeam] = useState(state.picks[event.id] || EMPTY);
   const [activeSlot, setActiveSlot] = useState(null);
 
-  const result = validateTeam(team, RIDERS_BY_ID);
+  const result = validateRiderTeam(team, RIDERS_BY_ID);
 
   function pick(riderId) {
     setTeam((t) => ({ ...t, [activeSlot.id]: riderId }));
