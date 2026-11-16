@@ -3,6 +3,8 @@ const { generateBotTeam } = require('./bots');
 const { makeRng } = require('./rng');
 const { normalizeTeam, cardTeamFromRiders, emptyTeam } = require('./team');
 
+// Past seasons rely on cardTeamFromRiders/normalizeTeam assuming every rider has a pilot card in the current
+// EDITION, so archived seasons keep their scores; edition rotation is out of scope.
 function computeEventOutcome({ event, playerName, playerTeam, rivals, ridersById, ridersByCategory, cardsById, balance, edition, seed }) {
   const deps = { ridersById, cardsById, balance };
   const player = teamEventScore(normalizeTeam(playerTeam, edition) || emptyTeam(), event, deps);

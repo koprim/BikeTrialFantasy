@@ -94,6 +94,17 @@ describe('teamEventScore', () => {
     expect(out.total).toBeCloseTo(724 + 30);
   });
 
+  test('team multipliers of one step add up instead of compounding', () => {
+    const cards = { ...cardsById, ref2: { ...cardsById.ref, id: 'ref2' } };
+    const team = { ...plain, equipment: [{ cardId: 'ref2', rarity: 'C' }], referee: { cardId: 'ref', rarity: 'C' } };
+    const out = teamEventScore(team, event, { ...deps, cardsById: cards });
+    const subtotal = 834; // 824 base + r1's rider multiplier
+    const gains = out.effects.filter((e) => e.cardId === 'ref' || e.cardId === 'ref2').map((e) => e.points);
+    expect(gains).toHaveLength(2);
+    gains.forEach((g) => expect(g).toBeCloseTo(subtotal * 0.1));
+    expect(out.total).toBeCloseTo(subtotal * 1.2);
+  });
+
   test('an empty team scores 0', () => {
     expect(teamEventScore({ slots: {}, equipment: [], referee: null }, event, deps)).toMatchObject({ total: 0, effects: [] });
   });

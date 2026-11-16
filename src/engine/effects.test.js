@@ -75,3 +75,21 @@ test('describeEffect fills {value}: points for flat, percent for multipliers', (
   expect(describeEffect(mult, 'R', balance)).toBe('+15 % sur ses points');
   expect(describeEffect(mult, 'L', balance)).toBe('+30 % sur ses points');
 });
+
+test('scaledValue is 0 for an unknown rarity (no NaN)', () => {
+  expect(scaledValue({ type: 'FLAT_POINTS', value: 40 }, 'X', balance)).toBe(0);
+});
+
+test('evaluateTrigger: missing trigger is false; missing stats.techniques is safe', () => {
+  expect(evaluateTrigger(undefined, ctx())).toBe(false);
+  const e2 = { ...event, stats: { a: { cleanSections: 1 } } };
+  expect(on({ type: 'RIDER_DID_TECHNIQUE', technique: 'gap' }, { riderId: 'a', event: e2 })).toBe(false);
+});
+
+test('describeEffect shows exact values: one decimal max, French comma', () => {
+  const flat = { description: '+{value} pts', trigger: { type: 'ALWAYS' }, reward: { type: 'FLAT_POINTS', value: 25 } };
+  expect(describeEffect(flat, 'R', balance)).toBe('+37,5 pts');
+  const mult = { description: '+{value}', trigger: { type: 'ALWAYS' }, reward: { type: 'RIDER_MULTIPLIER', value: 0.03 } };
+  expect(describeEffect(mult, 'R', balance)).toBe('+4,5 %');
+  expect(describeEffect(mult, 'C', balance)).toBe('+3 %');
+});

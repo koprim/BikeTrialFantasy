@@ -50,6 +50,8 @@ function cardTeamFromRiders(riderTeam, edition) {
   return { slots, equipment: [], referee: null };
 }
 
+// Assumption: every rider has a pilot card in the current EDITION, so archived seasons keep their scores
+// (edition rotation is out of scope).
 // Old saves store { senior26: riderId, … }: convert them to Common pilot cards.
 function normalizeTeam(team, edition) {
   if (!team) return null;
@@ -57,7 +59,7 @@ function normalizeTeam(team, edition) {
 }
 
 function teamRiderIds(team, cardsById) {
-  return SLOTS.map((s) => team.slots[s.id])
+  return SLOTS.map((s) => (team.slots || {})[s.id])
     .filter(Boolean)
     .map((e) => cardsById[e.cardId])
     .filter(Boolean)
@@ -70,6 +72,7 @@ function ownsCard(owned, ref) {
 
 // deps = { cardsById, ridersById, owned, balance }
 function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
+  const slots = team.slots || {};
   const errors = [];
   const used = new Set();
   const riderIds = [];
@@ -84,7 +87,7 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
     return card;
   };
   SLOTS.forEach((slot) => {
-    const entry = team.slots[slot.id];
+    const entry = slots[slot.id];
     if (!entry) { errors.push(`${slot.label} : emplacement vide.`); return; }
     const card = useCard(entry, 'PILOT', slot.label);
     if (!card) return;

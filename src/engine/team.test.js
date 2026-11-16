@@ -130,3 +130,12 @@ describe('card teams', () => {
     expect(check(team).errors.join()).toMatch(/rareté indisponible/);
   });
 });
+
+describe('teams without slots', () => {
+  test('validateCardTeam does not throw and is invalid; teamRiderIds returns []', () => {
+    const out = validateCardTeam({}, { cardsById: CARDS_BY_ID, ridersById: RIDERS_BY_ID, owned: {}, balance: BALANCE });
+    expect(out.valid).toBe(false);
+    expect(out.errors.length).toBeGreaterThan(0);
+    expect(teamRiderIds({}, CARDS_BY_ID)).toEqual([]);
+  });
+});

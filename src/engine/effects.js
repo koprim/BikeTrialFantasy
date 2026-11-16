@@ -11,6 +11,7 @@ function winnerOf(event, category, ridersById) {
 
 // ctx = { event, ridersById, riderId (rider the card acts on, or null), teamRiderIds }
 function evaluateTrigger(trigger, ctx) {
+  if (!trigger) return false;
   const { event, ridersById, riderId, teamRiderIds } = ctx;
   const results = event.results || {};
   const stats = riderId ? (event.stats || {})[riderId] : null;
@@ -25,7 +26,7 @@ function evaluateTrigger(trigger, ctx) {
       return idx >= 0 && idx < trigger.n;
     }
     case 'RIDER_DID_TECHNIQUE':
-      return !!stats && stats.techniques.includes(trigger.technique);
+      return !!stats && (stats.techniques || []).includes(trigger.technique);
     case 'RIDER_CLEAN_MIN':
       return !!stats && stats.cleanSections >= trigger.min;
     case 'NATION_COUNT_IN_TOP': {
@@ -48,12 +49,14 @@ function evaluateTrigger(trigger, ctx) {
 }
 
 function scaledValue(reward, rarity, balance) {
-  return reward.value * balance.rarityMultiplier[rarity];
+  const m = balance.rarityMultiplier[rarity];
+  return m === undefined ? 0 : reward.value * m;
 }
 
 function formatValue(reward, rarity, balance) {
   const v = scaledValue(reward, rarity, balance);
-  return reward.type === 'FLAT_POINTS' ? String(Math.round(v)) : `${Math.round(v * 100)} %`;
+  const fmt = (n) => String(Math.round(n * 10) / 10).replace('.', ',');
+  return reward.type === 'FLAT_POINTS' ? fmt(v) : `${fmt(v * 100)} %`;
 }
 
 function describeEffect(effect, rarity, balance) {

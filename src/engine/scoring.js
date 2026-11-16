@@ -25,10 +25,10 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
   const slots = team.slots || {};
   const riderIds = teamRiderIds({ slots }, cardsById);
   const rows = [];
-  const pending = []; // { card, rarity, effect, riderId }
-  const collect = (ref, riderId) => {
+  const pending = []; // { card, rarity, effect, riderId, rowIndex }
+  const collect = (ref, riderId, rowIndex = null) => {
     const card = cardsById[ref.cardId];
-    if (card) card.effects.forEach((effect) => pending.push({ card, rarity: ref.rarity, effect, riderId }));
+    if (card) card.effects.forEach((effect) => pending.push({ card, rarity: ref.rarity, effect, riderId, rowIndex }));
   };
 
   SLOTS.forEach((slot) => {
@@ -42,8 +42,8 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
       position, cote: rider ? rider.cote : null, points: rider ? riderEventScore(rider, position) : 0,
     });
     if (card) {
-      collect(entry, rider ? rider.id : null);
-      (entry.techniques || []).forEach((t) => collect(t, rider ? rider.id : null));
+      collect(entry, rider ? rider.id : null, rows.length - 1);
+      (entry.techniques || []).forEach((t) => collect(t, rider ? rider.id : null, rows.length - 1));
     }
   });
   (team.equipment || []).forEach((e) => collect(e, null));
@@ -59,8 +59,8 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
   });
 
   const base = rows.map((r) => r.points);
-  ofType('RIDER_MULTIPLIER').filter((f) => f.riderId).forEach((f) => {
-    const i = rows.findIndex((r) => r.riderId === f.riderId);
+  ofType('RIDER_MULTIPLIER').filter((f) => f.riderId && f.rowIndex != null).forEach((f) => {
+    const i = f.rowIndex;
     const gain = base[i] * value(f);
     rows[i].points += gain;
     note(f, gain);
