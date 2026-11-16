@@ -10,6 +10,7 @@
     "test": "jest",
     "gen:seed": "node scripts/gen-dev-seed.js",
     "build:seed": "node scripts/build-seed.js",
+    "sim:economy": "node scripts/sim-economy.js",
     "postinstall": "node scripts/patch-expo-windows.js"
   },
   "dependencies": {
