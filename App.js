@@ -14,6 +14,9 @@ import StandingsScreen from './src/screens/StandingsScreen';
 import SeasonListScreen from './src/screens/SeasonListScreen';
 import SeasonDetailScreen from './src/screens/SeasonDetailScreen';
 import RulesScreen from './src/screens/RulesScreen';
+import CollectionScreen from './src/screens/CollectionScreen';
+import PackRevealScreen from './src/screens/PackRevealScreen';
+import CardDetailScreen from './src/screens/CardDetailScreen';
 import { colors } from './src/ui/theme';
 
 const Tab = createBottomTabNavigator();
@@ -21,8 +24,19 @@ const PlayStack = createNativeStackNavigator();
 const StandingsStack = createNativeStackNavigator();
 const HistoryStack = createNativeStackNavigator();
 const RulesStack = createNativeStackNavigator();
+const CollectionStack = createNativeStackNavigator();
 
 const stackOptions = { headerStyle: { backgroundColor: colors.surface }, headerTintColor: colors.text, contentStyle: { backgroundColor: colors.bg } };
+
+function CollectionNav() {
+  return (
+    <CollectionStack.Navigator screenOptions={stackOptions}>
+      <CollectionStack.Screen name="Collection" component={CollectionScreen} options={{ title: 'Ma collection' }} />
+      <CollectionStack.Screen name="PackReveal" component={PackRevealScreen} options={{ title: 'Ouverture' }} />
+      <CollectionStack.Screen name="CardDetail" component={CardDetailScreen} options={{ title: 'Carte' }} />
+    </CollectionStack.Navigator>
+  );
+}
 
 function PlayNav() {
   return (
@@ -72,6 +86,7 @@ export default function App() {
           <StatusBar style="dark" />
           <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.primary }}>
             <Tab.Screen name="PlayTab" component={PlayNav} options={tab('Jouer', '🎮')} />
+            <Tab.Screen name="CollectionTab" component={CollectionNav} options={tab('Collection', '🃏')} />
             <Tab.Screen name="StandingsTab" component={StandingsNav} options={tab('Classement', '🏆')} />
             <Tab.Screen name="HistoryTab" component={HistoryNav} options={tab('Historique', '📜')} />
             <Tab.Screen name="RulesTab" component={RulesNav} options={tab('Règles', '📖')} />

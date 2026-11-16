@@ -37,10 +37,10 @@ test('open event: Briefing -> Compose shows the 6 typed slots', async () => {
   expect(screen.getByText("Enregistrer l'équipe")).toBeTruthy();
 });
 
-test('4 tabs; history lists the archived 2025 season', async () => {
+test('5 tabs; history lists the archived 2025 season', async () => {
   render(<App />);
   expect(await screen.findByLabelText('Onglet Jouer')).toBeTruthy();
-  ['Onglet Classement', 'Onglet Historique', 'Onglet Règles'].forEach((label) => {
+  ['Onglet Collection', 'Onglet Classement', 'Onglet Historique', 'Onglet Règles'].forEach((label) => {
     expect(screen.getByLabelText(label)).toBeTruthy();
   });
   fireEvent.press(screen.getByLabelText('Onglet Historique'));

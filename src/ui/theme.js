@@ -4,3 +4,4 @@ export const colors = {
 };
 export const space = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
 export const radius = { sm: 8, md: 12, lg: 16 };
+export const rarityColors = { C: '#6B7280', R: '#2563EB', E: '#7C3AED', L: '#D97706' };
