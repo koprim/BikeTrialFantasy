@@ -1,7 +1,5 @@
 const { gameReducer, initialState } = require('./GameContext');
 
-const team = { senior26: 'x' };
-
 test('initial state is the demo player with real time', () => {
   expect(initialState.player).toEqual({ name: 'Démo' });
   expect(Object.keys(initialState.picks)).toHaveLength(6);
@@ -9,16 +7,19 @@ test('initial state is the demo player with real time', () => {
   expect(initialState.collection.starterGiven).toBe(false);
 });
 
-test('SAVE_TEAM stores the team while the event is open', () => {
-  const s = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team, now: '2026-11-15' } });
-  expect(s.picks['2026-r3']).toEqual(team);
+const { DEMO_PLAYER } = require('../data/index');
+const validTeam = DEMO_PLAYER.picks['2026-r1']; // owned by the demo collection
+
+test('SAVE_TEAM stores an owned, valid team while the event is open', () => {
+  const s = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team: validTeam, now: '2026-11-15' } });
+  expect(s.picks['2026-r3']).toEqual(validTeam);
 });
 
-test('SAVE_TEAM is ignored once the event is locked or unknown', () => {
-  const locked = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team, now: '2026-11-29' } });
-  expect(locked).toBe(initialState);
-  const unknown = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: 'nope', team, now: '2026-11-15' } });
-  expect(unknown).toBe(initialState);
+test('SAVE_TEAM is ignored when locked, unknown or invalid', () => {
+  const save = (payload) => gameReducer(initialState, { type: 'SAVE_TEAM', payload });
+  expect(save({ eventId: '2026-r3', team: validTeam, now: '2026-11-29' })).toBe(initialState);
+  expect(save({ eventId: 'nope', team: validTeam, now: '2026-11-15' })).toBe(initialState);
+  expect(save({ eventId: '2026-r3', team: { slots: {}, equipment: [], referee: null }, now: '2026-11-15' })).toBe(initialState);
 });
 
 test('SET_NAME and SET_SIMULATED_DATE', () => {

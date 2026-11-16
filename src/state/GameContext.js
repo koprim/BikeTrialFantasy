@@ -5,6 +5,7 @@ import { eventStatus, today } from '../engine/calendar';
 import { openStarter, openDailyPack, recycle, craft } from '../engine/collection';
 import { makeRng, hashString } from '../engine/rng';
 import { migrateSave } from './migrate';
+import { validateCardTeam } from '../engine/team';
 
 const initialState = {
   player: { name: DEMO_PLAYER.name },
@@ -24,6 +25,8 @@ function gameReducer(state, action) {
       const { eventId, team, now } = action.payload;
       const event = EVENTS_BY_ID[eventId];
       if (!event || eventStatus(event, now) !== 'open') return state;
+      const check = validateCardTeam(team, { cardsById: CARDS_BY_ID, ridersById: RIDERS_BY_ID, owned: state.collection.owned, balance: BALANCE });
+      if (!check.valid) return state;
       return { ...state, picks: { ...state.picks, [eventId]: team } };
     }
     case 'SET_NAME':

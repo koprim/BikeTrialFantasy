@@ -45,3 +45,15 @@ test('card detail shows each rarity with its effect; crafting needs fragments', 
   expect(screen.getAllByText(/^Fabriquer · \d+ fragments$/).length).toBeGreaterThan(0);
   expect(screen.getAllByLabelText(/^Fabriquer .* indisponible$/).length).toBe(4);        // 0 fragments
 });
+
+test('compose: pick an owned pilot card; team section has equipment and referee', async () => {
+  render(<App />);
+  fireEvent.press(await screen.findByText(/^Manche 3 · /));
+  fireEvent.press(await screen.findByText('Composer mon équipe'));
+  expect(await screen.findByText('Équipements (0/2)')).toBeTruthy();
+  expect(screen.getByText('Choisir un arbitre…')).toBeTruthy();
+  fireEvent.press(screen.getByText('Senior 26"'));
+  const options = await screen.findAllByLabelText(/^Choisir .* Commune$/);
+  fireEvent.press(options[0]);
+  expect(await screen.findByText(/^\+ Technique \(0\/1\)$/)).toBeTruthy();
+});
