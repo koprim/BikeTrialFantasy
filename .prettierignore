@@ -1,0 +1,6 @@
+package-lock.json
+src/data/seed/
+supabase/seed.sql
+supabase/functions/_shared/backend.mjs
+.superpowers/
+docs/

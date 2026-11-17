@@ -2,14 +2,15 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import App from './App';
+import { STORAGE_KEY } from './src/state/persistence';
+import { initialState } from './src/state/GameContext';
+
+// babel-jest hoists jest.mock above the imports.
 jest.mock('react-native-safe-area-context', () => {
   const mock = require('react-native-safe-area-context/jest/mock');
   return mock.default || mock;
 });
-
-import App from './App';
-import { STORAGE_KEY } from './src/state/persistence';
-import { initialState } from './src/state/GameContext';
 
 // Freeze "now" at 2026-11-15: 2025 archived, 2026 rounds 1-2 done, 3-4 open.
 beforeEach(async () => {

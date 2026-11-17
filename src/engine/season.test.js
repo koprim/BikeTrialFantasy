@@ -1,7 +1,6 @@
 const { computeEventOutcome, aggregateStandings } = require('./season');
 const { groupByCategory } = require('./team');
 const { createRivals } = require('./bots');
-const { makeRng } = require('./rng');
 
 function mkRiders() {
   const riders = []; const cats = ['SENIOR_26', 'JUNIOR_26', 'SENIOR_20', 'JUNIOR_20', 'ELITE_WOMEN'];

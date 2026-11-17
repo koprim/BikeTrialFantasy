@@ -1,4 +1,4 @@
-const { SLOTS, CATEGORIES } = require('./team');
+const { SLOTS } = require('./team');
 
 function orderForStrategy(list, strategy, rng) {
   const arr = [...list];

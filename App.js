@@ -75,7 +75,10 @@ function RulesNav() {
   );
 }
 
-const icon = (glyph) => () => <Text style={{ fontSize: 18 }}>{glyph}</Text>;
+const icon = (glyph) => {
+  const TabIcon = () => <Text style={{ fontSize: 18 }}>{glyph}</Text>;
+  return TabIcon;
+};
 const tab = (title, glyph) => ({ title, tabBarIcon: icon(glyph), tabBarAccessibilityLabel: `Onglet ${title}` });
 
 export default function App() {

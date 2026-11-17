@@ -76,7 +76,7 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
   const errors = [];
   const used = new Set();
   const riderIds = [];
-  const useCard = (ref, type, where) => {
+  const checkCard = (ref, type, where) => {
     const card = cardsById[ref.cardId];
     if (!card || card.type !== type) { errors.push(`${where} : carte invalide.`); return null; }
     if (!card.rarities.includes(ref.rarity)) { errors.push(`${where} : rareté indisponible.`); return null; }
@@ -89,7 +89,7 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
   SLOTS.forEach((slot) => {
     const entry = slots[slot.id];
     if (!entry) { errors.push(`${slot.label} : emplacement vide.`); return; }
-    const card = useCard(entry, 'PILOT', slot.label);
+    const card = checkCard(entry, 'PILOT', slot.label);
     if (!card) return;
     const rider = ridersById[card.subject];
     if (!rider || rider.category !== slot.category) errors.push(`${slot.label} : mauvaise catégorie.`);
@@ -97,12 +97,12 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
     else riderIds.push(rider.id);
     const techniques = entry.techniques || [];
     if (techniques.length > balance.slots.techniquesByPilotRarity[entry.rarity]) errors.push(`${slot.label} : trop de techniques.`);
-    techniques.forEach((t) => useCard(t, 'TECHNIQUE', slot.label));
+    techniques.forEach((t) => checkCard(t, 'TECHNIQUE', slot.label));
   });
   const equipment = team.equipment || [];
   if (equipment.length > balance.slots.equipment) errors.push('Trop d\'équipements.');
-  equipment.forEach((e) => useCard(e, 'EQUIPMENT', 'Équipement'));
-  if (team.referee) useCard(team.referee, 'REFEREE', 'Arbitre');
+  equipment.forEach((e) => checkCard(e, 'EQUIPMENT', 'Équipement'));
+  if (team.referee) checkCard(team.referee, 'REFEREE', 'Arbitre');
   return { valid: errors.length === 0, errors };
 }
 
