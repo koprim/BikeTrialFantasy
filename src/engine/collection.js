@@ -88,15 +88,19 @@ function canOpenDaily(collection, now) {
   return !collection.lastPackDate || collection.lastPackDate < now;
 }
 
-// Packs do not pile up: one per calendar day, seeded by the date and the pack count.
-function openDailyPack(collection, now, deps) {
+function canOpenStarter(collection) {
+  return !collection.starterGiven;
+}
+
+// Packs do not pile up: one per calendar day. Without an injected rng (local demo) the draw is
+// seeded by the date and the pack count; the server injects real randomness so it cannot be precomputed.
+function openDailyPack(collection, now, { rng = makeRng(hashString(`${now}#${collection.packsOpened}`)), ...deps }) {
   if (!now || !canOpenDaily(collection, now)) return collection;
-  const rng = makeRng(hashString(`${now}#${collection.packsOpened}`));
   return { ...openPack(collection, deps, rng), lastPackDate: now };
 }
 
 function openStarter(collection, { cards, ridersById }, rng) {
-  if (collection.starterGiven) return collection;
+  if (!canOpenStarter(collection)) return collection;
   const take = (list, n) => {
     const pool = [...list];
     const out = [];
@@ -163,6 +167,7 @@ module.exports = {
   addCard,
   openPack,
   canOpenDaily,
+  canOpenStarter,
   openDailyPack,
   openStarter,
   recycle,

@@ -3,6 +3,7 @@ const {
   countOf,
   openPack,
   canOpenDaily,
+  canOpenStarter,
   openDailyPack,
   openStarter,
   recycle,
@@ -79,6 +80,21 @@ test('one daily pack per day, driven by the (simulated) date', () => {
   expect(canOpenDaily(opened, '2026-11-16')).toBe(false);
   expect(openDailyPack(opened, '2026-11-16', deps)).toBe(opened);
   expect(canOpenDaily(opened, '2026-11-17')).toBe(true);
+});
+
+test('an injected rng drives the daily draw; the default stays deterministic', () => {
+  const col = emptyCollection();
+  const draw = (rng) => openDailyPack(col, '2026-11-16', { ...deps, rng }).lastPack;
+  expect(draw(makeRng(1))).toEqual(draw(makeRng(1)));
+  expect(draw(makeRng(1))).not.toEqual(draw(makeRng(2)));
+  expect(openDailyPack(col, '2026-11-16', deps).lastPack).toEqual(openDailyPack(col, '2026-11-16', deps).lastPack);
+});
+
+test('canOpenStarter is true until the starter is given', () => {
+  const col = emptyCollection();
+  expect(canOpenStarter(col)).toBe(true);
+  const given = openStarter(col, { cards: CARDS, ridersById: RIDERS_BY_ID }, makeRng(1));
+  expect(canOpenStarter(given)).toBe(false);
 });
 
 test('starter: 6 Common pilots covering every slot, 3 techniques, 1 equipment, once', () => {

@@ -38,6 +38,28 @@ describe('daily pack', () => {
     deps.wallets.openings.add('daily|2026-11-17');
     await expect(openDailyPack('u1')).rejects.toMatchObject({ code: 'ALREADY_OPENED' });
   });
+
+  test('increments the pack count', async () => {
+    const { openDailyPack } = setup();
+    expect((await openDailyPack('u1')).packsOpened).toBe(1);
+  });
+
+  test('draws with the injected randomness: same seed, same pack; another seed, another pack', async () => {
+    const packFor = async (seed) => {
+      const { deps } = setup();
+      return makeOpenDailyPack({ ...deps, randomSeed: () => seed })('u1').then((collection) => collection.lastPack);
+    };
+    expect(await packFor(1)).toEqual(await packFor(1));
+    expect(await packFor(1)).not.toEqual(await packFor(2));
+  });
+
+  test('retries after a version conflict and still opens the pack', async () => {
+    const { deps, openDailyPack } = setup();
+    deps.wallets.conflictsToSimulate = 1;
+    const collection = await openDailyPack('u1');
+    expect(collection.lastPack).toHaveLength(5);
+    expect(deps.wallets.commits).toHaveLength(1);
+  });
 });
 
 describe('starter pack', () => {
@@ -48,5 +70,18 @@ describe('starter pack', () => {
     expect(collection.lastPack.length).toBeGreaterThan(0);
     expect(collection.lastPack.every((card) => card.rarity === 'C')).toBe(true);
     await expect(openStarter('u1')).rejects.toMatchObject({ code: 'STARTER_ALREADY_OPENED' });
+  });
+
+  test('records an opening of kind starter with the server day', async () => {
+    const { deps, openStarter } = setup();
+    await openStarter('u1');
+    expect(deps.wallets.commits[0].opening).toMatchObject({ kind: 'starter', packDate: '2026-11-17' });
+  });
+
+  test('refuses when a starter opening was recorded concurrently', async () => {
+    const { deps, openStarter } = setup();
+    deps.wallets.openings.add('starter');
+    await expect(openStarter('u1')).rejects.toMatchObject({ code: 'STARTER_ALREADY_OPENED' });
+    expect(deps.wallets.commits).toHaveLength(0);
   });
 });
