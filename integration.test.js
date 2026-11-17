@@ -3,7 +3,7 @@ import { render, fireEvent, screen } from '@testing-library/react-native';
 
 import App from './App';
 import { inMemoryDemoApi } from './src/testing/inMemoryDemoApi';
-import { initialState } from './src/state/GameContext';
+import { initialState } from './src/state/gameReducer';
 
 // babel-jest hoists jest.mock above the imports.
 jest.mock('react-native-safe-area-context', () => {

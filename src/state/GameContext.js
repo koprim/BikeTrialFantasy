@@ -5,8 +5,6 @@ import { RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS_BY_ID, BALANCE, EDITION } from 
 import { today } from '../engine/calendar';
 import { colors, space } from '../ui/theme';
 
-export { gameReducer, initialState } from './gameReducer';
-
 // The GameApi owns the player state and its persistence; the client only mirrors what it returns.
 function clientReducer(state, action) {
   switch (action.type) {
@@ -80,7 +78,16 @@ export function GameProvider({ api: injectedApi, children }) {
     );
   }
   if (!state) return null;
-  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
+  return (
+    <GameContext.Provider value={value}>
+      {state.offline && (
+        <Text accessibilityRole="alert" style={styles.offline}>
+          Hors ligne : dernières données connues. Les actions sont indisponibles.
+        </Text>
+      )}
+      {children}
+    </GameContext.Provider>
+  );
 }
 
 export function useGame() {
@@ -112,4 +119,5 @@ export function useScoring() {
 
 const styles = StyleSheet.create({
   loadError: { color: colors.text, padding: space.md, textAlign: 'center' },
+  offline: { color: colors.text, backgroundColor: colors.surface, padding: space.xs, textAlign: 'center' },
 });

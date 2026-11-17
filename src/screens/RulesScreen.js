@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import { useGame, useNow, initialState } from '../state/GameContext';
+import { useGame, useNow } from '../state/GameContext';
 import { BALANCE } from '../data/index';
 import { confirm } from '../ui/confirm';
 import { errorMessage } from '../ui/errorMessages';
@@ -16,25 +16,27 @@ export default function RulesScreen({ navigation }) {
   const [date, setDate] = useState(state.simulatedDate || '');
   const [error, setError] = useState(null);
 
-  // Runs one action at a time; resolves true on success, otherwise shows the reason.
+  // Runs one action at a time and resolves its ApiResult (undefined if ignored); a refusal shows the reason.
   const { run, busy } = useAsyncAction(async (call) => {
     setError(null);
     const result = await call();
     if (!result.ok) setError(errorMessage(result.error, result.details));
-    return result.ok;
+    return result;
   });
 
   const saveName = () => run(() => actions.setName(name.trim() || 'Joueur'));
   const applyDate = () => run(() => actions.setSimulatedDate(date));
 
   async function clearDate() {
-    if (await run(() => actions.setSimulatedDate(null))) setDate('');
+    const result = await run(() => actions.setSimulatedDate(null));
+    if (result?.ok) setDate('');
   }
 
   async function reset() {
     if (!(await confirm('Réinitialiser la partie ? Tes équipes seront remplacées par les données de démo.'))) return;
-    if (!(await run(actions.reset))) return;
-    setName(initialState.player.name);
+    const result = await run(actions.reset);
+    if (!result?.ok) return;
+    setName(result.patch.player.name); // reset's patch is the full new PlayerState
     setDate('');
   }
 
