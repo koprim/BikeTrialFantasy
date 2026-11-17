@@ -74,6 +74,52 @@ function teamRiderIds(team, cardsById) {
     .map((c) => c.subject);
 }
 
+// Generous upper bound on any card list of a team, so hostile payloads cannot be huge; the real
+// per-rarity limits stay in validateCardTeam (balance).
+const MAX_CARDS_PER_LIST = 10;
+
+const isPlainObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
+
+function sanitizeRef(raw) {
+  if (!isPlainObject(raw) || typeof raw.cardId !== 'string' || typeof raw.rarity !== 'string') return null;
+  return { cardId: raw.cardId, rarity: raw.rarity };
+}
+
+function sanitizeRefList(raw) {
+  if (raw === undefined) return [];
+  if (!Array.isArray(raw) || raw.length > MAX_CARDS_PER_LIST) return null;
+  const refs = raw.map(sanitizeRef);
+  return refs.includes(null) ? null : refs;
+}
+
+function sanitizeSlotEntry(raw) {
+  const ref = sanitizeRef(raw);
+  const techniques = ref && sanitizeRefList(raw.techniques);
+  return techniques ? { ...ref, techniques } : null;
+}
+
+function sanitizeSlots(raw) {
+  if (!isPlainObject(raw)) return null;
+  const slots = {};
+  for (const slot of SLOTS) {
+    if (!(slot.id in raw)) continue;
+    const entry = sanitizeSlotEntry(raw[slot.id]);
+    if (!entry) return null;
+    slots[slot.id] = entry;
+  }
+  return slots;
+}
+
+// Untrusted JSON in, canonical team out (only known fields), or null when the shape is wrong.
+function sanitizeCardTeam(raw) {
+  if (!isPlainObject(raw)) return null;
+  const slots = sanitizeSlots(raw.slots);
+  const equipment = sanitizeRefList(raw.equipment);
+  const referee = raw.referee == null ? null : sanitizeRef(raw.referee);
+  if (!slots || !equipment || (raw.referee != null && !referee)) return null;
+  return { slots, equipment, referee };
+}
+
 function ownsCard(owned, ref) {
   return !!owned[ref.cardId] && (owned[ref.cardId][ref.rarity] || 0) > 0;
 }
@@ -136,4 +182,5 @@ module.exports = {
   normalizeTeam,
   teamRiderIds,
   validateCardTeam,
+  sanitizeCardTeam,
 };

@@ -59,3 +59,35 @@ test('unknown competition and missing team are rejected', async () => {
   await expect(saveTeam('u1', { competitionId: 'nope', team })).rejects.toMatchObject({ code: 'NOT_FOUND' });
   await expect(saveTeam('u1', { competitionId: 'c1' })).rejects.toMatchObject({ code: 'INVALID_INPUT' });
 });
+
+test.each([
+  ['an array team', []],
+  ['a string team', 'team'],
+  ['slots as an array', { slots: [], equipment: [], referee: null }],
+  ['string techniques', { ...team, slots: { ...team.slots, senior26: { ...team.slots.senior26, techniques: 'abc' } } }],
+  ['a null slot entry', { ...team, slots: { ...team.slots, senior26: null } }],
+  ['a malformed referee', { ...team, referee: 'ref' }],
+])('malformed team (%s) is rejected and nothing is saved', async (_label, badTeam) => {
+  const { deps, saveTeam } = setup();
+  await expect(saveTeam('u1', { competitionId: 'c1', team: badTeam })).rejects.toMatchObject({
+    code: 'INVALID_INPUT',
+  });
+  expect(deps.teams.saved).toEqual([]);
+});
+
+test('extra keys are neither validated against nor persisted, and the saved team is returned', async () => {
+  const { deps, saveTeam } = setup();
+  const dirty = { ...team, admin: true, slots: { ...team.slots, hacker: team.slots.senior26 } };
+  const result = await saveTeam('u1', { competitionId: 'c1', team: dirty });
+  expect(result).toEqual(team);
+  expect(deps.teams.saved).toEqual([{ userId: 'u1', competitionId: 'c1', team }]);
+});
+
+test.each([[null], [undefined], ['x'], [[]], [{ team }], [{ competitionId: '', team }], [{ competitionId: 5, team }]])(
+  'invalid input %p is rejected',
+  async (input) => {
+    const { deps, saveTeam } = setup();
+    await expect(saveTeam('u1', input)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect(deps.teams.saved).toEqual([]);
+  },
+);

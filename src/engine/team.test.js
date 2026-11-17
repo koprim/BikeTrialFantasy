@@ -1,4 +1,4 @@
-const { CATEGORIES, SLOTS, groupByCategory, isTeamComplete, validateRiderTeam } = require('./team');
+const { CATEGORIES, SLOTS, groupByCategory, isTeamComplete, validateRiderTeam, sanitizeCardTeam } = require('./team');
 
 test('five categories, six slots', () => {
   expect(CATEGORIES).toHaveLength(5);
@@ -162,5 +162,58 @@ describe('teams without slots', () => {
     expect(out.valid).toBe(false);
     expect(out.errors.length).toBeGreaterThan(0);
     expect(teamRiderIds({}, CARDS_BY_ID)).toEqual([]);
+  });
+});
+
+describe('sanitizeCardTeam', () => {
+  const ref = { cardId: 'c1', rarity: 'C' };
+  const raw = { slots: { senior26: { ...ref, techniques: [ref] } }, equipment: [ref], referee: ref };
+
+  test('rebuilds a canonical team and drops unknown keys', () => {
+    const dirty = {
+      ...raw,
+      admin: true,
+      slots: { senior26: { ...ref, techniques: [{ ...ref, x: 1 }], boost: 9 }, hacker: ref },
+      equipment: [{ ...ref, extra: 1 }],
+    };
+    expect(sanitizeCardTeam(dirty)).toEqual({
+      slots: { senior26: { ...ref, techniques: [ref] } },
+      equipment: [ref],
+      referee: ref,
+    });
+  });
+
+  test('fills defaults for missing optional fields', () => {
+    expect(sanitizeCardTeam({ slots: { senior26: ref } })).toEqual({
+      slots: { senior26: { ...ref, techniques: [] } },
+      equipment: [],
+      referee: null,
+    });
+  });
+
+  test.each([
+    ['null', null],
+    ['undefined', undefined],
+    ['a string', 'team'],
+    ['an array', []],
+    ['slots missing', {}],
+    ['slots an array', { slots: [] }],
+    ['a null slot entry', { slots: { senior26: null } }],
+    ['an entry without rarity', { slots: { senior26: { cardId: 'c1' } } }],
+    ['a non-string cardId', { slots: { senior26: { cardId: 5, rarity: 'C' } } }],
+    ['string techniques', { slots: { senior26: { ...ref, techniques: 'abc' } } }],
+    ['a null technique', { slots: { senior26: { ...ref, techniques: [null] } } }],
+    ['too many techniques', { slots: { senior26: { ...ref, techniques: Array(50).fill(ref) } } }],
+    ['string equipment', { slots: {}, equipment: 'abc' }],
+    ['too much equipment', { slots: {}, equipment: Array(50).fill(ref) }],
+    ['an array referee', { slots: {}, referee: [] }],
+    ['a malformed referee', { slots: {}, referee: { cardId: 1 } }],
+  ])('rejects %s', (_label, input) => {
+    expect(sanitizeCardTeam(input)).toBeNull();
+  });
+
+  test('the result does not alias the input', () => {
+    const result = sanitizeCardTeam(raw);
+    expect(result.slots.senior26).not.toBe(raw.slots.senior26);
   });
 });
