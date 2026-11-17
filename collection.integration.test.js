@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import App from './App';
-import { STORAGE_KEY } from './src/state/persistence';
+import { inMemoryDemoApi } from './src/testing/inMemoryDemoApi';
 import { initialState } from './src/state/GameContext';
 
 // babel-jest hoists jest.mock above the imports.
@@ -12,13 +11,10 @@ jest.mock('react-native-safe-area-context', () => {
   return mock.default || mock;
 });
 
-beforeEach(async () => {
-  await AsyncStorage.clear();
-  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ ...initialState, simulatedDate: '2026-11-15' }));
-});
+const renderApp = () => render(<App api={inMemoryDemoApi({ ...initialState, simulatedDate: '2026-11-15' })} />);
 
 test('collection tab: open the daily pack once, see 5 revealed cards', async () => {
-  render(<App />);
+  renderApp();
   fireEvent.press(await screen.findByLabelText('Onglet Collection'));
   expect(await screen.findByText(/^Fragments : 0$/)).toBeTruthy();
   fireEvent.press(screen.getByText('Ouvrir le pack du jour'));
@@ -29,7 +25,7 @@ test('collection tab: open the daily pack once, see 5 revealed cards', async () 
 });
 
 test('collection tab: the starter pack gives 10 cards', async () => {
-  render(<App />);
+  renderApp();
   fireEvent.press(await screen.findByLabelText('Onglet Collection'));
   fireEvent.press(await screen.findByText('Ouvrir le pack de départ'));
   expect(await screen.findByText('Pack de départ')).toBeTruthy();
@@ -37,7 +33,7 @@ test('collection tab: the starter pack gives 10 cards', async () => {
 });
 
 test('card detail shows each rarity with its effect; crafting needs fragments', async () => {
-  render(<App />);
+  renderApp();
   fireEvent.press(await screen.findByLabelText('Onglet Collection'));
   fireEvent.press(await screen.findByText('Techniques'));
   fireEvent.press((await screen.findAllByLabelText('Gap Commune'))[0]);
@@ -48,7 +44,7 @@ test('card detail shows each rarity with its effect; crafting needs fragments', 
 });
 
 test('compose: pick an owned pilot card; team section has equipment and referee', async () => {
-  render(<App />);
+  renderApp();
   fireEvent.press(await screen.findByText(/^Manche 3 · /));
   fireEvent.press(await screen.findByText('Composer mon équipe'));
   expect(await screen.findByText('Équipements (0/2)')).toBeTruthy();
@@ -60,7 +56,7 @@ test('compose: pick an owned pilot card; team section has equipment and referee'
 });
 
 test('a finished event lists the triggered effects', async () => {
-  render(<App />);
+  renderApp();
   fireEvent.press(await screen.findByText(/^Manche 1 · /));
   expect(await screen.findByText('Effets déclenchés')).toBeTruthy();
 });
@@ -68,7 +64,7 @@ test('a finished event lists the triggered effects', async () => {
 test('flow: open the daily pack, then its cards are offered when composing a team', async () => {
   const { CARDS } = require('./src/data/index');
   const byName = Object.fromEntries(CARDS.map((c) => [c.name, c]));
-  render(<App />);
+  renderApp();
   fireEvent.press(await screen.findByLabelText('Onglet Collection'));
   fireEvent.press(await screen.findByText('Ouvrir le pack du jour'));
   expect(await screen.findByText('Pack du jour')).toBeTruthy();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import { useGame } from '../state/GameContext';
 import { CARDS_BY_ID, RIDERS_BY_ID, BALANCE } from '../data/index';
@@ -6,15 +6,23 @@ import { countOf } from '../engine/collection';
 import { describeEffect } from '../engine/effects';
 import { RARITY_LABELS } from '../engine/rarity';
 import { TYPE_GLYPHS } from '../ui/CardTile';
+import { errorMessage } from '../ui/errorMessages';
 import { colors, rarityColors, space, radius } from '../ui/theme';
 
 const TYPE_LABELS = { PILOT: 'Pilote', TECHNIQUE: 'Technique', EQUIPMENT: 'Équipement', REFEREE: 'Arbitre' };
 
 export default function CardDetailScreen({ route }) {
-  const { state, dispatch } = useGame();
+  const { state, actions } = useGame();
+  const [error, setError] = useState(null);
   const card = CARDS_BY_ID[route.params.cardId];
   const rider = card.type === 'PILOT' ? RIDERS_BY_ID[card.subject] : null;
   const { fragments } = state.collection;
+
+  const run = async (call, rarity) => {
+    setError(null);
+    const result = await call({ cardId: card.id, rarity });
+    if (!result.ok) setError(errorMessage(result.error));
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -25,6 +33,11 @@ export default function CardDetailScreen({ route }) {
         {rider ? ` · ${rider.country} · ${rider.active === false ? 'légende' : `cote ×${rider.cote.toFixed(1)}`}` : ''}
       </Text>
       <Text style={styles.sub}>Fragments : {fragments}</Text>
+      {error && (
+        <Text accessibilityRole="alert" style={styles.error}>
+          {error}
+        </Text>
+      )}
 
       {card.rarities.map((r) => {
         const count = countOf(state.collection, card.id, r);
@@ -45,7 +58,7 @@ export default function CardDetailScreen({ route }) {
                 disabled={!canCraft}
                 accessibilityRole="button"
                 accessibilityLabel={`Fabriquer ${card.name} ${RARITY_LABELS[r]}${canCraft ? '' : ' indisponible'}`}
-                onPress={() => dispatch({ type: 'CRAFT', payload: { cardId: card.id, rarity: r } })}
+                onPress={() => run(actions.craft, r)}
                 style={[styles.btn, !canCraft && styles.disabled]}
               >
                 <Text style={styles.btnText}>Fabriquer · {cost} fragments</Text>
@@ -54,7 +67,7 @@ export default function CardDetailScreen({ route }) {
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel={`Recycler ${card.name} ${RARITY_LABELS[r]}`}
-                  onPress={() => dispatch({ type: 'RECYCLE', payload: { cardId: card.id, rarity: r } })}
+                  onPress={() => run(actions.recycle, r)}
                   style={[styles.btn, styles.secondary]}
                 >
                   <Text style={styles.secondaryText}>Recycler · +{BALANCE.fragments.perDuplicate[r]}</Text>
@@ -82,4 +95,5 @@ const styles = StyleSheet.create({
   secondary: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
   secondaryText: { color: colors.text, fontWeight: '700', fontSize: 12 },
   disabled: { opacity: 0.4 },
+  error: { color: '#DC2626', textAlign: 'center' },
 });

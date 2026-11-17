@@ -1,32 +1,92 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
-import { saveState, loadState } from './persistence';
+import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+import { Text, StyleSheet } from 'react-native';
+import { createApi } from '../data/api';
 import { RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
 import { today } from '../engine/calendar';
-import { gameReducer, initialState } from './gameReducer';
+import { colors, space } from '../ui/theme';
+
+export { gameReducer, initialState } from './gameReducer';
+
+// The GameApi owns the player state and its persistence; the client only mirrors what it returns.
+function clientReducer(state, action) {
+  switch (action.type) {
+    case 'LOADED':
+      return action.payload;
+    case 'PATCH': {
+      const patch = typeof action.payload === 'function' ? action.payload(state) : action.payload;
+      return { ...state, ...patch };
+    }
+    default:
+      return state;
+  }
+}
+
+let defaultApi = null;
+const getDefaultApi = () => defaultApi || (defaultApi = createApi());
+
+const ACTION_NAMES = [
+  'openStarter',
+  'openDailyPack',
+  'recycle',
+  'craft',
+  'saveTeam',
+  'setName',
+  'setSimulatedDate',
+  'reset',
+  'saveAccount',
+  'signIn',
+];
+
+// Each action resolves to the ApiResult; a success patches the mirrored state.
+function bindActions(api, dispatch) {
+  const run =
+    (call) =>
+    async (...args) => {
+      const result = await call(...args);
+      if (result.ok) dispatch({ type: 'PATCH', payload: result.patch });
+      return result;
+    };
+  const actions = Object.fromEntries(ACTION_NAMES.map((name) => [name, run(api[name])]));
+  return { ...actions, account: api.account };
+}
 
 const GameContext = createContext(null);
 
-export function GameProvider({ children }) {
-  const [state, dispatch] = useReducer(gameReducer, initialState);
-  const [hydrated, setHydrated] = useState(false);
+/** @param {{ api?: import('../data/api/demoApi').GameApi, children: React.ReactNode }} props */
+export function GameProvider({ api: injectedApi, children }) {
+  const api = useMemo(() => injectedApi || getDefaultApi(), [injectedApi]);
+  const [state, dispatch] = useReducer(clientReducer, null);
+  const [loadFailed, setLoadFailed] = useState(false);
+
   useEffect(() => {
-    loadState().then((saved) => {
-      if (saved) dispatch({ type: 'HYDRATE', payload: saved });
-      setHydrated(true);
-    });
-  }, []);
-  // Save only after hydration so the initial demo state never overwrites a real save.
-  useEffect(() => {
-    if (hydrated) saveState(state);
-  }, [state, hydrated]);
-  if (!hydrated) return null;
-  return <GameContext.Provider value={{ state, dispatch }}>{children}</GameContext.Provider>;
+    let active = true;
+    api
+      .load()
+      .then((loaded) => active && dispatch({ type: 'LOADED', payload: loaded }))
+      .catch(() => active && setLoadFailed(true));
+    return () => {
+      active = false;
+    };
+  }, [api]);
+
+  const actions = useMemo(() => bindActions(api, dispatch), [api]);
+  const value = useMemo(() => ({ state, actions, features: api.features }), [state, actions, api]);
+
+  if (loadFailed) {
+    return (
+      <Text accessibilityRole="alert" style={styles.loadError}>
+        Connexion impossible. Vérifie ta connexion puis relance l'application.
+      </Text>
+    );
+  }
+  if (!state) return null;
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }
 
 export function useGame() {
-  const ctx = useContext(GameContext);
-  if (!ctx) throw new Error('useGame must be used within GameProvider');
-  return ctx;
+  const context = useContext(GameContext);
+  if (!context) throw new Error('useGame must be used within GameProvider');
+  return context;
 }
 
 export function useNow() {
@@ -50,4 +110,6 @@ export function useScoring() {
   };
 }
 
-export { gameReducer, initialState };
+const styles = StyleSheet.create({
+  loadError: { color: colors.text, padding: space.md, textAlign: 'center' },
+});

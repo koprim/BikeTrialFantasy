@@ -5,6 +5,7 @@ import { CARDS } from '../data/index';
 import { canOpenDaily, countOf } from '../engine/collection';
 import { RARITIES, RARITY_LABELS } from '../engine/rarity';
 import CardTile from '../ui/CardTile';
+import { errorMessage } from '../ui/errorMessages';
 import { colors, space, radius } from '../ui/theme';
 
 const TYPE_FILTERS = [
@@ -35,10 +36,11 @@ function Chips({ options, value, onChange }) {
 }
 
 export default function CollectionScreen({ navigation }) {
-  const { state, dispatch } = useGame();
+  const { state, actions } = useGame();
   const now = useNow();
   const [type, setType] = useState('ALL');
   const [rarity, setRarity] = useState('ALL');
+  const [error, setError] = useState(null);
   const { collection } = state;
 
   const items = CARDS.filter((c) => type === 'ALL' || c.type === type).flatMap((c) =>
@@ -48,6 +50,14 @@ export default function CollectionScreen({ navigation }) {
   );
   const owned = items.filter((i) => i.count > 0).length;
   const daily = canOpenDaily(collection, now);
+
+  // Reveal the pack only once the backend has opened it.
+  const open = async (call, title) => {
+    setError(null);
+    const result = await call();
+    if (result.ok) navigation.navigate('PackReveal', { title });
+    else setError(errorMessage(result.error));
+  };
 
   return (
     <View style={styles.container}>
@@ -61,10 +71,7 @@ export default function CollectionScreen({ navigation }) {
         <Pressable
           style={[styles.cta, styles.starter]}
           accessibilityRole="button"
-          onPress={() => {
-            dispatch({ type: 'OPEN_STARTER' });
-            navigation.navigate('PackReveal', { title: 'Pack de départ' });
-          }}
+          onPress={() => open(actions.openStarter, 'Pack de départ')}
         >
           <Text style={styles.ctaText}>Ouvrir le pack de départ</Text>
         </Pressable>
@@ -73,13 +80,15 @@ export default function CollectionScreen({ navigation }) {
         disabled={!daily}
         style={[styles.cta, !daily && styles.disabled]}
         accessibilityRole="button"
-        onPress={() => {
-          dispatch({ type: 'OPEN_DAILY_PACK', payload: { now } });
-          navigation.navigate('PackReveal', { title: 'Pack du jour' });
-        }}
+        onPress={() => open(() => actions.openDailyPack({ now }), 'Pack du jour')}
       >
         <Text style={styles.ctaText}>{daily ? 'Ouvrir le pack du jour' : 'Prochain pack demain'}</Text>
       </Pressable>
+      {error && (
+        <Text accessibilityRole="alert" style={styles.error}>
+          {error}
+        </Text>
+      )}
       <Chips options={TYPE_FILTERS} value={type} onChange={setType} />
       <Chips options={RARITY_FILTERS} value={rarity} onChange={setRarity} />
       <FlatList
@@ -117,6 +126,7 @@ const styles = StyleSheet.create({
   },
   starter: { backgroundColor: colors.good },
   disabled: { opacity: 0.4 },
+  error: { color: '#DC2626', marginBottom: space.sm, textAlign: 'center' },
   ctaText: { color: '#fff', fontWeight: '700', fontSize: 16 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.xs, marginBottom: space.xs },
   chip: {

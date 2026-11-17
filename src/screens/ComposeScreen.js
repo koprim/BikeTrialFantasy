@@ -7,6 +7,7 @@ import { ownedRefs } from '../engine/collection';
 import { describeEffect } from '../engine/effects';
 import { RARITY_LABELS } from '../engine/rarity';
 import { eventStatus } from '../engine/calendar';
+import { errorMessage } from '../ui/errorMessages';
 import { colors, space, radius } from '../ui/theme';
 
 const refLabel = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '?'} · ${RARITY_LABELS[ref.rarity]}`;
@@ -14,11 +15,12 @@ const sameRef = (a, b) => a.cardId === b.cardId && a.rarity === b.rarity;
 const PICKER_TITLES = { technique: 'Technique', equipment: 'Équipement', referee: 'Arbitre' };
 
 export default function ComposeScreen({ navigation, route }) {
-  const { state, dispatch } = useGame();
+  const { state, actions } = useGame();
   const now = useNow();
   const event = EVENTS_BY_ID[route.params.eventId];
   const [team, setTeam] = useState(normalizeTeam(state.picks[event.id], EDITION) || emptyTeam());
   const [picker, setPicker] = useState(null); // { kind: 'pilot' | 'technique' | 'equipment' | 'referee', slot? }
+  const [saveError, setSaveError] = useState(null);
 
   const result = validateCardTeam(team, {
     cardsById: CARDS_BY_ID,
@@ -73,9 +75,12 @@ export default function ComposeScreen({ navigation, route }) {
     }));
   const removeEquipment = (ref) => setTeam((t) => ({ ...t, equipment: t.equipment.filter((x) => !sameRef(x, ref)) }));
 
-  function save() {
-    dispatch({ type: 'SAVE_TEAM', payload: { eventId: event.id, team, now } });
-    navigation.popToTop();
+  // Leave the screen only once the team is accepted; a refusal stays here with its reason.
+  async function save() {
+    setSaveError(null);
+    const saved = await actions.saveTeam({ eventId: event.id, team, now });
+    if (saved.ok) navigation.popToTop();
+    else setSaveError(errorMessage(saved.error, saved.details));
   }
 
   if (eventStatus(event, now) !== 'open') {
@@ -165,6 +170,11 @@ export default function ComposeScreen({ navigation, route }) {
 
       <View style={styles.footer}>
         {!result.valid && <Text style={styles.error}>{result.errors[0]}</Text>}
+        {saveError && (
+          <Text accessibilityRole="alert" style={styles.error}>
+            {saveError}
+          </Text>
+        )}
         <Pressable
           disabled={!result.valid}
           onPress={save}

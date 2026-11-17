@@ -1,28 +1,19 @@
 import React from 'react';
-import { render, fireEvent, screen, cleanup, act } from '@testing-library/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { render, fireEvent, screen } from '@testing-library/react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { GameProvider } from '../state/GameContext';
 import RulesScreen from './RulesScreen';
+import { inMemoryDemoApi } from '../testing/inMemoryDemoApi';
 
 jest.mock('../ui/confirm', () => ({ confirm: jest.fn(() => Promise.resolve(true)) }));
 
-// GameProvider saves to AsyncStorage from an effect without awaiting it. Unmount, let the in-flight
-// write land, then clear, so it cannot leak into the next test's storage.
-const flushPendingWrites = () => act(() => new Promise((resolve) => setImmediate(resolve)));
-
-beforeEach(() => AsyncStorage.clear());
-
-afterEach(async () => {
-  cleanup();
-  await flushPendingWrites();
-  await AsyncStorage.clear();
-});
-
-function renderRules() {
+function renderRules(api = inMemoryDemoApi()) {
   return render(
-    <GameProvider>
-      <RulesScreen />
-    </GameProvider>,
+    <NavigationContainer>
+      <GameProvider api={api}>
+        <RulesScreen />
+      </GameProvider>
+    </NavigationContainer>,
   );
 }
 
@@ -48,4 +39,25 @@ test('rules explain cards, rarities and packs', async () => {
   renderRules();
   expect(await screen.findByText('Cartes et collection')).toBeTruthy();
   expect(screen.getByText(/Une Épique est garantie au moins tous les 10 packs/)).toBeTruthy();
+});
+
+test('server mode hides the simulated date and reset, and offers to save the account', async () => {
+  renderRules({ ...inMemoryDemoApi(), features: { simulatedDate: false, reset: false, account: true } });
+  expect(await screen.findByText('Sauvegarder mon compte')).toBeTruthy();
+  expect(screen.queryByPlaceholderText('AAAA-MM-JJ')).toBeNull();
+  expect(screen.queryByText('Réinitialiser la partie')).toBeNull();
+});
+
+test('demo mode has no account button', async () => {
+  renderRules();
+  expect(await screen.findByPlaceholderText('AAAA-MM-JJ')).toBeTruthy();
+  expect(screen.queryByText('Sauvegarder mon compte')).toBeNull();
+});
+
+test('a refused rename shows the reason', async () => {
+  renderRules({ ...inMemoryDemoApi(), setName: async () => ({ ok: false, error: 'NETWORK' }) });
+  fireEvent.changeText(await screen.findByDisplayValue('Démo'), 'Zoé');
+  fireEvent.press(screen.getByText('Enregistrer le pseudo'));
+  expect(await screen.findByText('Connexion impossible. Vérifie ta connexion.')).toBeTruthy();
+  expect(screen.getByText('Pseudo actuel : Démo')).toBeTruthy();
 });

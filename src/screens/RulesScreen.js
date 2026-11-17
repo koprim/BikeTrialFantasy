@@ -3,23 +3,36 @@ import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from 'react-
 import { useGame, useNow, initialState } from '../state/GameContext';
 import { BALANCE } from '../data/index';
 import { confirm } from '../ui/confirm';
+import { errorMessage } from '../ui/errorMessages';
 import { colors, space, radius } from '../ui/theme';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-export default function RulesScreen() {
-  const { state, dispatch } = useGame();
+export default function RulesScreen({ navigation }) {
+  const { state, actions, features } = useGame();
   const now = useNow();
   const [name, setName] = useState(state.player.name);
   const [date, setDate] = useState(state.simulatedDate || '');
+  const [error, setError] = useState(null);
 
-  function saveName() {
-    dispatch({ type: 'SET_NAME', payload: { name: name.trim() || 'Joueur' } });
+  // Runs an action; returns true on success, otherwise shows the reason.
+  async function run(call) {
+    setError(null);
+    const result = await call();
+    if (!result.ok) setError(errorMessage(result.error, result.details));
+    return result.ok;
+  }
+
+  const saveName = () => run(() => actions.setName(name.trim() || 'Joueur'));
+  const applyDate = () => run(() => actions.setSimulatedDate(date));
+
+  async function clearDate() {
+    if (await run(() => actions.setSimulatedDate(null))) setDate('');
   }
 
   async function reset() {
     if (!(await confirm('Réinitialiser la partie ? Tes équipes seront remplacées par les données de démo.'))) return;
-    dispatch({ type: 'RESET' });
+    if (!(await run(actions.reset))) return;
     setName(initialState.player.name);
     setDate('');
   }
@@ -64,38 +77,65 @@ export default function RulesScreen() {
       <Pressable onPress={saveName} style={styles.btn} accessibilityRole="button">
         <Text style={styles.btnText}>Enregistrer le pseudo</Text>
       </Pressable>
+      {error && (
+        <Text accessibilityRole="alert" style={styles.error}>
+          {error}
+        </Text>
+      )}
+      {features.account && (
+        <Pressable
+          onPress={() => navigation.navigate('Account')}
+          style={[styles.btn, styles.secondary]}
+          accessibilityRole="button"
+        >
+          <Text style={styles.secondaryText}>Sauvegarder mon compte</Text>
+        </Pressable>
+      )}
 
+      {features.simulatedDate && (
+        <SimulatedDate
+          now={now}
+          simulated={!!state.simulatedDate}
+          date={date}
+          onChange={setDate}
+          onApply={applyDate}
+          onClear={clearDate}
+        />
+      )}
+
+      {features.reset && (
+        <Pressable onPress={reset} style={[styles.btn, styles.danger]} accessibilityRole="button">
+          <Text style={styles.btnText}>Réinitialiser la partie</Text>
+        </Pressable>
+      )}
+    </ScrollView>
+  );
+}
+
+function SimulatedDate({ now, simulated, date, onChange, onApply, onClear }) {
+  const valid = DATE_RE.test(date);
+  return (
+    <>
       <Text style={styles.h2}>Date simulée</Text>
       <Text style={styles.p}>
         Date du jeu : {now}
-        {state.simulatedDate ? ' (simulée)' : ''}
+        {simulated ? ' (simulée)' : ''}
       </Text>
-      <TextInput value={date} onChangeText={setDate} placeholder="AAAA-MM-JJ" style={styles.input} />
+      <TextInput value={date} onChangeText={onChange} placeholder="AAAA-MM-JJ" style={styles.input} />
       <View style={styles.rowBtns}>
         <Pressable
-          disabled={!DATE_RE.test(date)}
-          onPress={() => dispatch({ type: 'SET_SIMULATED_DATE', payload: { date } })}
-          style={[styles.btn, styles.flex, !DATE_RE.test(date) && styles.disabled]}
+          disabled={!valid}
+          onPress={onApply}
+          style={[styles.btn, styles.flex, !valid && styles.disabled]}
           accessibilityRole="button"
         >
           <Text style={styles.btnText}>Appliquer</Text>
         </Pressable>
-        <Pressable
-          onPress={() => {
-            dispatch({ type: 'SET_SIMULATED_DATE', payload: { date: null } });
-            setDate('');
-          }}
-          style={[styles.btn, styles.flex, styles.secondary]}
-          accessibilityRole="button"
-        >
+        <Pressable onPress={onClear} style={[styles.btn, styles.flex, styles.secondary]} accessibilityRole="button">
           <Text style={styles.secondaryText}>Revenir à aujourd'hui</Text>
         </Pressable>
       </View>
-
-      <Pressable onPress={reset} style={[styles.btn, styles.danger]} accessibilityRole="button">
-        <Text style={styles.btnText}>Réinitialiser la partie</Text>
-      </Pressable>
-    </ScrollView>
+    </>
   );
 }
 
@@ -118,5 +158,6 @@ const styles = StyleSheet.create({
   secondary: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
   secondaryText: { color: colors.text, fontWeight: '700' },
   disabled: { opacity: 0.4 },
+  error: { color: '#DC2626' },
   danger: { backgroundColor: '#DC2626', marginTop: space.lg },
 });

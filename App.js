@@ -17,6 +17,7 @@ import RulesScreen from './src/screens/RulesScreen';
 import CollectionScreen from './src/screens/CollectionScreen';
 import PackRevealScreen from './src/screens/PackRevealScreen';
 import CardDetailScreen from './src/screens/CardDetailScreen';
+import AccountScreen from './src/screens/AccountScreen';
 import { colors } from './src/ui/theme';
 
 const Tab = createBottomTabNavigator();
@@ -79,6 +80,7 @@ function RulesNav() {
   return (
     <RulesStack.Navigator screenOptions={stackOptions}>
       <RulesStack.Screen name="Rules" component={RulesScreen} options={{ title: 'Règles & profil' }} />
+      <RulesStack.Screen name="Account" component={AccountScreen} options={{ title: 'Sauvegarder mon compte' }} />
     </RulesStack.Navigator>
   );
 }
@@ -89,10 +91,11 @@ const icon = (glyph) => {
 };
 const tab = (title, glyph) => ({ title, tabBarIcon: icon(glyph), tabBarAccessibilityLabel: `Onglet ${title}` });
 
-export default function App() {
+/** @param {{ api?: import('./src/data/api/demoApi').GameApi }} props injected in tests; defaults to createApi() */
+export default function App({ api }) {
   return (
     <SafeAreaProvider>
-      <GameProvider>
+      <GameProvider api={api}>
         <NavigationContainer>
           <StatusBar style="dark" />
           <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.primary }}>
