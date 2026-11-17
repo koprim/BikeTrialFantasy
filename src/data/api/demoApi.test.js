@@ -78,6 +78,20 @@ describe('actions before load()', () => {
   });
 });
 
+describe('a failing initial load', () => {
+  test('is retried by the next call instead of being memoized', async () => {
+    const storage = memoryStorage(savedState());
+    const realLoad = storage.loadState.bind(storage);
+    storage.loadState = async () => {
+      storage.loadState = realLoad;
+      throw new Error('read failed');
+    };
+    const api = createDemoApi({ storage });
+    await expect(api.load()).rejects.toThrow('read failed');
+    expect((await api.load()).player.name).toBe('Zoé');
+  });
+});
+
 describe('storage failures', () => {
   const failingStorage = () => ({
     loadState: async () => null,

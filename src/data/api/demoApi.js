@@ -45,9 +45,15 @@ export function createDemoApi({ storage = { loadState, saveState } } = {}) {
 
   // Hydrates once; every action waits for it so initial demo state never overwrites a real save.
   function ensureLoaded() {
-    loading ||= storage.loadState().then((saved) => {
-      state = saved ? gameReducer(initialState, { type: 'HYDRATE', payload: saved }) : initialState;
-    });
+    loading ||= storage
+      .loadState()
+      .then((saved) => {
+        state = saved ? gameReducer(initialState, { type: 'HYDRATE', payload: saved }) : initialState;
+      })
+      .catch((error) => {
+        loading = null; // a failed read must not poison later calls
+        throw error;
+      });
     return loading;
   }
 
