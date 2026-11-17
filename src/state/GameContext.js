@@ -36,12 +36,24 @@ const ACTION_NAMES = [
   'signIn',
 ];
 
-// Each action resolves to the ApiResult; a success patches the mirrored state.
+/** The ApiResult standing for a call that threw instead of resolving a result (a bug, not a refusal). */
+const UNEXPECTED_FAILURE = Object.freeze({ ok: false, error: 'INTERNAL' });
+
+async function resultOf(call, args) {
+  try {
+    return await call(...args);
+  } catch {
+    return UNEXPECTED_FAILURE; // reported to the player by the screen like any other failed ApiResult
+  }
+}
+
+// Each action resolves to the ApiResult, never rejects (screens fire them from button presses);
+// a success patches the mirrored state.
 function bindActions(api, dispatch) {
   const run =
     (call) =>
     async (...args) => {
-      const result = await call(...args);
+      const result = await resultOf(call, args);
       if (result.ok) dispatch({ type: 'PATCH', payload: result.patch });
       return result;
     };

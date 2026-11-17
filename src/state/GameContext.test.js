@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Pressable } from 'react-native';
-import { render, screen, fireEvent, act } from '@testing-library/react-native';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { GameProvider, useGame } from './GameContext';
 import { inMemoryDemoApi } from '../testing/inMemoryDemoApi';
 
@@ -56,4 +56,19 @@ test('a refused action keeps the offline notice', async () => {
   const button = await screen.findByRole('button', { name: 'Renommer' });
   await act(async () => fireEvent.press(button));
   expect(screen.getByRole('alert', { name: OFFLINE_NOTICE })).toBeTruthy();
+});
+
+test('an action that throws resolves to an INTERNAL failure instead of rejecting', async () => {
+  let actions;
+  function Capture() {
+    actions = useGame().actions;
+    return null;
+  }
+  renderProvider({ ...inMemoryDemoApi(), setName: async () => Promise.reject(new Error('boom')) }, <Capture />);
+  await waitFor(() => expect(actions).toBeDefined());
+  let result;
+  await act(async () => {
+    result = await actions.setName('Robin');
+  });
+  expect(result).toEqual({ ok: false, error: 'INTERNAL' });
 });

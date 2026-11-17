@@ -21,3 +21,14 @@ test('a double press on the daily pack opens it once', async () => {
   expect(openDailyPack).toHaveBeenCalledTimes(1);
   expect(navigation.navigate).toHaveBeenCalledTimes(1);
 });
+
+test('an unexpected failure while opening the pack is shown, not thrown', async () => {
+  const openDailyPack = async () => Promise.reject(new Error('boom'));
+  render(
+    <GameProvider api={{ ...inMemoryDemoApi(), openDailyPack }}>
+      <CollectionScreen navigation={{ navigate: jest.fn() }} />
+    </GameProvider>,
+  );
+  fireEvent.press(await screen.findByRole('button', { name: 'Ouvrir le pack du jour' }));
+  expect(await screen.findByText('Erreur du serveur, réessaie plus tard.')).toBeTruthy();
+});
