@@ -42,6 +42,14 @@ const collectionPatch = (state) => ({ collection: state.collection });
 export function createDemoApi({ storage = { loadState, saveState } } = {}) {
   let state = initialState;
   let loading = null;
+  let queue = Promise.resolve();
+
+  // Runs tasks one after another, so each action computes from the state its predecessor committed.
+  function serialized(task) {
+    const result = queue.then(task, task);
+    queue = result.catch(() => {}); // a failed task must not block the next ones
+    return result;
+  }
 
   // Hydrates once; every action waits for it so initial demo state never overwrites a real save.
   function ensureLoaded() {
@@ -69,20 +77,22 @@ export function createDemoApi({ storage = { loadState, saveState } } = {}) {
   }
 
   // The reducer returns the same reference when it refuses an action.
-  async function apply(action, toPatch, refusal = 'NOT_ALLOWED') {
-    await ensureLoaded();
-    const next = gameReducer(state, action);
-    if (next === state) return { ok: false, error: refusal };
-    if (!(await commit(next))) return { ok: false, error: 'STORAGE_FAILED' };
-    return { ok: true, patch: toPatch(state) };
-  }
+  const apply = (action, toPatch, refusal = 'NOT_ALLOWED') =>
+    serialized(async () => {
+      await ensureLoaded();
+      const next = gameReducer(state, action);
+      if (next === state) return { ok: false, error: refusal };
+      if (!(await commit(next))) return { ok: false, error: 'STORAGE_FAILED' };
+      return { ok: true, patch: toPatch(state) };
+    });
 
   return {
     features: { simulatedDate: true, reset: true, account: false },
-    async load() {
-      await ensureLoaded();
-      return state;
-    },
+    load: () =>
+      serialized(async () => {
+        await ensureLoaded();
+        return state;
+      }),
     openStarter: () => apply({ type: 'OPEN_STARTER' }, collectionPatch, 'STARTER_ALREADY_OPENED'),
     openDailyPack: ({ now }) => apply({ type: 'OPEN_DAILY_PACK', payload: { now } }, collectionPatch, 'ALREADY_OPENED'),
     recycle: (cardRef) => apply({ type: 'RECYCLE', payload: cardRef }, collectionPatch),
@@ -95,11 +105,12 @@ export function createDemoApi({ storage = { loadState, saveState } } = {}) {
         simulatedDate: current.simulatedDate,
         collection: current.collection,
       })),
-    async reset() {
-      await ensureLoaded();
-      if (!(await commit(initialState))) return { ok: false, error: 'STORAGE_FAILED' };
-      return { ok: true, patch: state };
-    },
+    reset: () =>
+      serialized(async () => {
+        await ensureLoaded();
+        if (!(await commit(initialState))) return { ok: false, error: 'STORAGE_FAILED' };
+        return { ok: true, patch: state };
+      }),
     async account() {
       return null;
     },

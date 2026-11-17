@@ -1,5 +1,6 @@
 import { createDemoApi } from './demoApi';
-import { DEMO_PLAYER } from '../index';
+import { DEMO_PLAYER, CARDS, BALANCE } from '../index';
+import { countOf } from '../../engine/collection';
 import { initialState } from '../../state/gameReducer';
 
 function memoryStorage(saved = null) {
@@ -150,5 +151,43 @@ describe('profile and dev actions', () => {
   test('load ignores an unusable save', async () => {
     const api = createDemoApi({ storage: memoryStorage({ currentIndex: 3 }) });
     expect((await api.load()).player.name).toBe(DEMO_PLAYER.name);
+  });
+});
+
+describe('concurrent actions', () => {
+  const WRITE_LATENCY_TICKS = 10;
+
+  // A device storage whose writes take several ticks, so both actions start before the first is persisted.
+  function slowStorage(saved = null) {
+    const storage = memoryStorage(saved);
+    const write = storage.saveState.bind(storage);
+    storage.saveState = async (state) => {
+      for (let tick = 0; tick < WRITE_LATENCY_TICKS; tick++) await Promise.resolve();
+      return write(state);
+    };
+    return storage;
+  }
+
+  test('open the daily pack only once', async () => {
+    const api = createDemoApi({ storage: slowStorage() });
+    const [first, second] = await Promise.all([
+      api.openDailyPack({ now: '2026-11-17' }),
+      api.openDailyPack({ now: '2026-11-17' }),
+    ]);
+    expect(first.ok).toBe(true);
+    expect(second).toEqual({ ok: false, error: 'ALREADY_OPENED' });
+  });
+
+  test('apply each recycle on top of the previous one', async () => {
+    const [card] = CARDS;
+    const [rarity] = card.rarities;
+    const collection = { ...initialState.collection, owned: { [card.id]: { [rarity]: 3 } }, fragments: 0 };
+    const storage = slowStorage(savedState({ collection }));
+    const api = createDemoApi({ storage });
+    await Promise.all([api.recycle({ cardId: card.id, rarity }), api.recycle({ cardId: card.id, rarity })]);
+    const expected = { count: 1, fragments: 2 * BALANCE.fragments.perDuplicate[rarity] };
+    const { collection: final } = await api.load();
+    expect({ count: countOf(final, card.id, rarity), fragments: final.fragments }).toEqual(expected);
+    expect(countOf(storage.saved.collection, card.id, rarity)).toBe(1);
   });
 });
