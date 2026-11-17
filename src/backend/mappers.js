@@ -1,5 +1,65 @@
 const { emptyCollection } = require('../engine/collection');
 
+/**
+ * @typedef {object} RiderRow
+ * @property {string} id
+ * @property {string} name
+ * @property {string} nation
+ * @property {string} category
+ * @property {string} brand
+ * @property {string|number} cote numeric column, arrives as a string
+ * @property {number|null} uci_rank
+ * @property {boolean} active
+ */
+/**
+ * @typedef {object} CardRow
+ * @property {string} id
+ * @property {string} type
+ * @property {string} edition
+ * @property {string} name
+ * @property {string} subject_id
+ * @property {string[]} rarities
+ * @property {object} effects jsonb
+ */
+/**
+ * @typedef {object} CompetitionRow
+ * @property {string} id
+ * @property {string} season_id
+ * @property {string} name
+ * @property {string} venue
+ * @property {string} country
+ * @property {number} round
+ * @property {string} date_from
+ * @property {string} date_to
+ * @property {string} referee
+ */
+/**
+ * @typedef {object} WalletRow
+ * @property {string} user_id
+ * @property {number} fragments
+ * @property {number} pity_e
+ * @property {number} pity_l
+ * @property {number} packs_opened
+ * @property {string|null} last_pack_date date, null before the first pack
+ * @property {boolean} starter_given
+ * @property {number} version
+ */
+/**
+ * @typedef {object} OwnedCardRow
+ * @property {string} card_id
+ * @property {string} rarity
+ * @property {number} count
+ */
+/**
+ * @typedef {object} TeamRow
+ * @property {string} competition_id
+ * @property {object} team jsonb
+ */
+/** @typedef {Object<string, Object<string, number>>} Owned card id -> rarity -> count */
+/** @typedef {{ version: number, collection: object }} WalletState */
+/** @typedef {{ card_id: string, rarity: string, delta: number }} OwnedChange */
+
+/** @param {RiderRow} row @returns {object} domain rider */
 function toRider(row) {
   return {
     id: row.id,
@@ -13,6 +73,7 @@ function toRider(row) {
   };
 }
 
+/** @param {CardRow} row @returns {object} domain card */
 function toCard(row) {
   return {
     id: row.id,
@@ -25,6 +86,7 @@ function toCard(row) {
   };
 }
 
+/** @param {CompetitionRow} row @returns {object} domain competition */
 function toCompetition(row) {
   return {
     id: row.id,
@@ -39,13 +101,16 @@ function toCompetition(row) {
   };
 }
 
+/** @param {OwnedCardRow[]} ownedRows @returns {Owned} */
 function toOwned(ownedRows) {
-  return ownedRows.reduce(
-    (owned, row) => ({ ...owned, [row.card_id]: { ...owned[row.card_id], [row.rarity]: row.count } }),
-    {},
-  );
+  const owned = {};
+  ownedRows.forEach((row) => {
+    owned[row.card_id] = { ...owned[row.card_id], [row.rarity]: row.count };
+  });
+  return owned;
 }
 
+/** @param {WalletRow} walletRow @param {OwnedCardRow[]} ownedRows @returns {WalletState} */
 function toWalletState(walletRow, ownedRows) {
   return {
     version: walletRow.version,
@@ -61,6 +126,7 @@ function toWalletState(walletRow, ownedRows) {
   };
 }
 
+/** @param {object} collection domain collection @returns {object} wallet columns to persist */
 function toWalletPayload(collection) {
   return {
     fragments: collection.fragments,
@@ -74,6 +140,7 @@ function toWalletPayload(collection) {
 
 const countIn = (owned, cardId, rarity) => (owned[cardId] || {})[rarity] || 0;
 
+/** @param {Owned} before @param {Owned} after @returns {OwnedChange[]} non-zero count changes */
 function diffOwned(before, after) {
   const cardIds = new Set([...Object.keys(before), ...Object.keys(after)]);
   return [...cardIds].flatMap((cardId) => {
@@ -88,6 +155,7 @@ function diffOwned(before, after) {
   });
 }
 
+/** @param {TeamRow[]} teamRows @returns {Object<string, object>} team per competition id */
 function toPicks(teamRows) {
   return Object.fromEntries(teamRows.map((row) => [row.competition_id, row.team]));
 }

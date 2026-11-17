@@ -106,3 +106,9 @@ test('catalog and competition rows use the engine field names', () => {
 test('team rows become picks keyed by competition', () => {
   expect(toPicks([{ competition_id: '2026-r1', team: { slots: {} } }])).toEqual({ '2026-r1': { slots: {} } });
 });
+
+test('a wallet without owned rows nor pack date maps to an empty collection', () => {
+  const { collection } = toWalletState({ ...walletRow, last_pack_date: null }, []);
+  expect(collection.owned).toEqual({});
+  expect(collection.lastPackDate).toBeNull();
+});
