@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['expo', 'prettier'],
-  globals: { Intl: 'readonly', structuredClone: 'readonly' }, // ESLint's es* envs omit Intl and structuredClone; Expo's config enables neither browser nor node globals
+  globals: { Intl: 'readonly', structuredClone: 'readonly', Request: 'readonly', Response: 'readonly' }, // ESLint's es* envs omit Intl and structuredClone; Expo's config enables neither browser nor node globals; Request/Response are the web fetch API globals used by the Edge handler
   ignorePatterns: [
     'node_modules/',
     '.expo/',
