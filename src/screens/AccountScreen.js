@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useGame } from '../state/GameContext';
 import { errorMessage } from '../ui/errorMessages';
+import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,6 +25,10 @@ export default function AccountScreen() {
   const account = useAccount(actions);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
+  const { run: submit, busy } = useAsyncAction(async (call, address, successMessage) => {
+    const result = await call(address);
+    setMessage(result.ok ? successMessage : errorMessage(result.error));
+  });
 
   if (account === undefined) return null;
   if (account && !account.isAnonymous) {
@@ -35,19 +40,15 @@ export default function AccountScreen() {
   }
 
   const address = email.trim();
-  const validAddress = EMAIL_PATTERN.test(address);
-  const submit = (call, successMessage) => async () => {
-    const result = await call(address);
-    setMessage(result.ok ? successMessage : errorMessage(result.error));
-  };
-  const save = submit(
-    actions.saveAccount,
-    `Un lien de confirmation a été envoyé à ${address}. Ouvre-le pour terminer.`,
-  );
-  const signIn = submit(
-    actions.signIn,
-    `Un lien de connexion a été envoyé à ${address}. La partie invitée de ce navigateur sera remplacée.`,
-  );
+  const disabled = busy || !EMAIL_PATTERN.test(address);
+  const save = () =>
+    submit(actions.saveAccount, address, `Un lien de confirmation a été envoyé à ${address}. Ouvre-le pour terminer.`);
+  const signIn = () =>
+    submit(
+      actions.signIn,
+      address,
+      `Un lien de connexion a été envoyé à ${address}. La partie invitée de ce navigateur sera remplacée.`,
+    );
 
   return (
     <View style={styles.page}>
@@ -68,17 +69,19 @@ export default function AccountScreen() {
       />
       <Pressable
         accessibilityRole="button"
-        disabled={!validAddress}
+        disabled={disabled}
+        accessibilityState={{ busy, disabled }}
         onPress={save}
-        style={[styles.cta, !validAddress && styles.disabled]}
+        style={[styles.cta, disabled && styles.disabled]}
       >
         <Text style={styles.ctaText}>Sauvegarder mon compte</Text>
       </Pressable>
       <Pressable
         accessibilityRole="button"
-        disabled={!validAddress}
+        disabled={disabled}
+        accessibilityState={{ busy, disabled }}
         onPress={signIn}
-        style={[styles.secondary, !validAddress && styles.disabled]}
+        style={[styles.secondary, disabled && styles.disabled]}
       >
         <Text style={styles.secondaryText}>J'ai déjà un compte</Text>
       </Pressable>

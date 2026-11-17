@@ -6,6 +6,7 @@ import { canOpenDaily, countOf } from '../engine/collection';
 import { RARITIES, RARITY_LABELS } from '../engine/rarity';
 import CardTile from '../ui/CardTile';
 import { errorMessage } from '../ui/errorMessages';
+import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
 const TYPE_FILTERS = [
@@ -52,12 +53,12 @@ export default function CollectionScreen({ navigation }) {
   const daily = canOpenDaily(collection, now);
 
   // Reveal the pack only once the backend has opened it.
-  const open = async (call, title) => {
+  const { run: open, busy } = useAsyncAction(async (call, title) => {
     setError(null);
     const result = await call();
     if (result.ok) navigation.navigate('PackReveal', { title });
     else setError(errorMessage(result.error));
-  };
+  });
 
   return (
     <View style={styles.container}>
@@ -69,17 +70,20 @@ export default function CollectionScreen({ navigation }) {
       </View>
       {!collection.starterGiven && (
         <Pressable
-          style={[styles.cta, styles.starter]}
+          disabled={busy}
+          style={[styles.cta, styles.starter, busy && styles.disabled]}
           accessibilityRole="button"
+          accessibilityState={{ busy, disabled: busy }}
           onPress={() => open(actions.openStarter, 'Pack de départ')}
         >
           <Text style={styles.ctaText}>Ouvrir le pack de départ</Text>
         </Pressable>
       )}
       <Pressable
-        disabled={!daily}
-        style={[styles.cta, !daily && styles.disabled]}
+        disabled={busy || !daily}
+        style={[styles.cta, (busy || !daily) && styles.disabled]}
         accessibilityRole="button"
+        accessibilityState={{ busy, disabled: busy || !daily }}
         onPress={() => open(() => actions.openDailyPack({ now }), 'Pack du jour')}
       >
         <Text style={styles.ctaText}>{daily ? 'Ouvrir le pack du jour' : 'Prochain pack demain'}</Text>

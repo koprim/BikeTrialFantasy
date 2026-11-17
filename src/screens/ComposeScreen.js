@@ -8,6 +8,7 @@ import { describeEffect } from '../engine/effects';
 import { RARITY_LABELS } from '../engine/rarity';
 import { eventStatus } from '../engine/calendar';
 import { errorMessage } from '../ui/errorMessages';
+import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
 const refLabel = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '?'} · ${RARITY_LABELS[ref.rarity]}`;
@@ -76,12 +77,13 @@ export default function ComposeScreen({ navigation, route }) {
   const removeEquipment = (ref) => setTeam((t) => ({ ...t, equipment: t.equipment.filter((x) => !sameRef(x, ref)) }));
 
   // Leave the screen only once the team is accepted; a refusal stays here with its reason.
-  async function save() {
+  const { run: save, busy: saving } = useAsyncAction(async () => {
     setSaveError(null);
     const saved = await actions.saveTeam({ eventId: event.id, team, now });
     if (saved.ok) navigation.popToTop();
     else setSaveError(errorMessage(saved.error, saved.details));
-  }
+  });
+  const saveDisabled = saving || !result.valid;
 
   if (eventStatus(event, now) !== 'open') {
     return (
@@ -176,10 +178,11 @@ export default function ComposeScreen({ navigation, route }) {
           </Text>
         )}
         <Pressable
-          disabled={!result.valid}
+          disabled={saveDisabled}
           onPress={save}
-          style={[styles.cta, !result.valid && styles.ctaDisabled]}
+          style={[styles.cta, saveDisabled && styles.ctaDisabled]}
           accessibilityRole="button"
+          accessibilityState={{ busy: saving, disabled: saveDisabled }}
         >
           <Text style={styles.ctaText}>Enregistrer l'équipe</Text>
         </Pressable>

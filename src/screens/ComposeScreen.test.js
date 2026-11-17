@@ -1,6 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
 import App from '../../App';
+import { GameProvider } from '../state/GameContext';
+import ComposeScreen from './ComposeScreen';
+import { deferredCall } from '../testing/deferredCall';
 import { inMemoryDemoApi } from '../testing/inMemoryDemoApi';
 import { initialState } from '../state/gameReducer';
 import { DEMO_PLAYER } from '../data/index';
@@ -34,4 +37,21 @@ test('an accepted save returns to the season home', async () => {
   fireEvent.press(await screen.findByText('Composer mon équipe'));
   fireEvent.press(await screen.findByRole('button', { name: /Enregistrer/ }));
   expect(await screen.findByText('Coupe du Monde 2026')).toBeTruthy();
+});
+
+test('a double press on save sends the team once and leaves once', async () => {
+  const { call: saveTeam, settle } = deferredCall();
+  const navigation = { popToTop: jest.fn() };
+  render(
+    <GameProvider api={{ ...inMemoryDemoApi(savedGame), saveTeam }}>
+      <ComposeScreen navigation={navigation} route={{ params: { eventId: '2026-r3' } }} />
+    </GameProvider>,
+  );
+  const save = await screen.findByRole('button', { name: /Enregistrer/ });
+  fireEvent.press(save);
+  fireEvent.press(save);
+  expect(screen.getByRole('button', { name: /Enregistrer/, busy: true, disabled: true })).toBeTruthy();
+  await act(async () => settle({ ok: true, patch: {} }));
+  expect(saveTeam).toHaveBeenCalledTimes(1);
+  expect(navigation.popToTop).toHaveBeenCalledTimes(1);
 });

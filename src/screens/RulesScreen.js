@@ -4,6 +4,7 @@ import { useGame, useNow, initialState } from '../state/GameContext';
 import { BALANCE } from '../data/index';
 import { confirm } from '../ui/confirm';
 import { errorMessage } from '../ui/errorMessages';
+import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -15,13 +16,13 @@ export default function RulesScreen({ navigation }) {
   const [date, setDate] = useState(state.simulatedDate || '');
   const [error, setError] = useState(null);
 
-  // Runs an action; returns true on success, otherwise shows the reason.
-  async function run(call) {
+  // Runs one action at a time; resolves true on success, otherwise shows the reason.
+  const { run, busy } = useAsyncAction(async (call) => {
     setError(null);
     const result = await call();
     if (!result.ok) setError(errorMessage(result.error, result.details));
     return result.ok;
-  }
+  });
 
   const saveName = () => run(() => actions.setName(name.trim() || 'Joueur'));
   const applyDate = () => run(() => actions.setSimulatedDate(date));
@@ -74,7 +75,13 @@ export default function RulesScreen({ navigation }) {
       <Text style={styles.h2}>Profil</Text>
       <Text style={styles.p}>Pseudo actuel : {state.player.name}</Text>
       <TextInput value={name} onChangeText={setName} style={styles.input} />
-      <Pressable onPress={saveName} style={styles.btn} accessibilityRole="button">
+      <Pressable
+        disabled={busy}
+        onPress={saveName}
+        style={[styles.btn, busy && styles.disabled]}
+        accessibilityRole="button"
+        accessibilityState={{ busy, disabled: busy }}
+      >
         <Text style={styles.btnText}>Enregistrer le pseudo</Text>
       </Pressable>
       {error && (
@@ -100,11 +107,18 @@ export default function RulesScreen({ navigation }) {
           onChange={setDate}
           onApply={applyDate}
           onClear={clearDate}
+          busy={busy}
         />
       )}
 
       {features.reset && (
-        <Pressable onPress={reset} style={[styles.btn, styles.danger]} accessibilityRole="button">
+        <Pressable
+          disabled={busy}
+          onPress={reset}
+          style={[styles.btn, styles.danger, busy && styles.disabled]}
+          accessibilityRole="button"
+          accessibilityState={{ busy, disabled: busy }}
+        >
           <Text style={styles.btnText}>Réinitialiser la partie</Text>
         </Pressable>
       )}
@@ -112,8 +126,8 @@ export default function RulesScreen({ navigation }) {
   );
 }
 
-function SimulatedDate({ now, simulated, date, onChange, onApply, onClear }) {
-  const valid = DATE_RE.test(date);
+function SimulatedDate({ now, simulated, date, onChange, onApply, onClear, busy }) {
+  const applyDisabled = busy || !DATE_RE.test(date);
   return (
     <>
       <Text style={styles.h2}>Date simulée</Text>
@@ -124,14 +138,21 @@ function SimulatedDate({ now, simulated, date, onChange, onApply, onClear }) {
       <TextInput value={date} onChangeText={onChange} placeholder="AAAA-MM-JJ" style={styles.input} />
       <View style={styles.rowBtns}>
         <Pressable
-          disabled={!valid}
+          disabled={applyDisabled}
           onPress={onApply}
-          style={[styles.btn, styles.flex, !valid && styles.disabled]}
+          style={[styles.btn, styles.flex, applyDisabled && styles.disabled]}
           accessibilityRole="button"
+          accessibilityState={{ busy, disabled: applyDisabled }}
         >
           <Text style={styles.btnText}>Appliquer</Text>
         </Pressable>
-        <Pressable onPress={onClear} style={[styles.btn, styles.flex, styles.secondary]} accessibilityRole="button">
+        <Pressable
+          disabled={busy}
+          onPress={onClear}
+          style={[styles.btn, styles.flex, styles.secondary, busy && styles.disabled]}
+          accessibilityRole="button"
+          accessibilityState={{ busy, disabled: busy }}
+        >
           <Text style={styles.secondaryText}>Revenir à aujourd'hui</Text>
         </Pressable>
       </View>

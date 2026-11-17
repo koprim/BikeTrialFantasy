@@ -7,6 +7,7 @@ import { describeEffect } from '../engine/effects';
 import { RARITY_LABELS } from '../engine/rarity';
 import { TYPE_GLYPHS } from '../ui/CardTile';
 import { errorMessage } from '../ui/errorMessages';
+import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, rarityColors, space, radius } from '../ui/theme';
 
 const TYPE_LABELS = { PILOT: 'Pilote', TECHNIQUE: 'Technique', EQUIPMENT: 'Équipement', REFEREE: 'Arbitre' };
@@ -18,11 +19,11 @@ export default function CardDetailScreen({ route }) {
   const rider = card.type === 'PILOT' ? RIDERS_BY_ID[card.subject] : null;
   const { fragments } = state.collection;
 
-  const run = async (call, rarity) => {
+  const { run, busy } = useAsyncAction(async (call, rarity) => {
     setError(null);
     const result = await call({ cardId: card.id, rarity });
     if (!result.ok) setError(errorMessage(result.error));
-  };
+  });
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -43,6 +44,7 @@ export default function CardDetailScreen({ route }) {
         const count = countOf(state.collection, card.id, r);
         const cost = BALANCE.fragments.craftCost[r];
         const canCraft = fragments >= cost;
+        const craftDisabled = busy || !canCraft;
         return (
           <View key={r} style={[styles.row, { borderColor: rarityColors[r] }]}>
             <Text style={[styles.rarity, { color: rarityColors[r] }]}>
@@ -55,20 +57,23 @@ export default function CardDetailScreen({ route }) {
             ))}
             <View style={styles.actions}>
               <Pressable
-                disabled={!canCraft}
+                disabled={craftDisabled}
                 accessibilityRole="button"
+                accessibilityState={{ busy, disabled: craftDisabled }}
                 accessibilityLabel={`Fabriquer ${card.name} ${RARITY_LABELS[r]}${canCraft ? '' : ' indisponible'}`}
                 onPress={() => run(actions.craft, r)}
-                style={[styles.btn, !canCraft && styles.disabled]}
+                style={[styles.btn, craftDisabled && styles.disabled]}
               >
                 <Text style={styles.btnText}>Fabriquer · {cost} fragments</Text>
               </Pressable>
               {count > 1 && (
                 <Pressable
+                  disabled={busy}
                   accessibilityRole="button"
+                  accessibilityState={{ busy, disabled: busy }}
                   accessibilityLabel={`Recycler ${card.name} ${RARITY_LABELS[r]}`}
                   onPress={() => run(actions.recycle, r)}
-                  style={[styles.btn, styles.secondary]}
+                  style={[styles.btn, styles.secondary, busy && styles.disabled]}
                 >
                   <Text style={styles.secondaryText}>Recycler · +{BALANCE.fragments.perDuplicate[r]}</Text>
                 </Pressable>
