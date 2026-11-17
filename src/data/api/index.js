@@ -1,7 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDemoApi } from './demoApi';
-import { createSupabaseApi } from './supabaseApi';
-import { createSupabaseClient } from './supabaseClient';
 
 // EXPO_PUBLIC_* variables must be read literally so Expo inlines them at build time.
 const ENV_CONFIG = {
@@ -21,6 +19,9 @@ export function createApi(config = ENV_CONFIG) {
       'EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY are required when EXPO_PUBLIC_BACKEND=supabase',
     );
   }
+  // Required lazily so the demo backend never loads supabase-js and its URL polyfill.
+  const { createSupabaseApi } = require('./supabaseApi');
+  const { createSupabaseClient } = require('./supabaseClient');
   return createSupabaseApi({
     client: createSupabaseClient({ url: config.supabaseUrl, anonKey: config.supabaseAnonKey }),
     storage: AsyncStorage,
