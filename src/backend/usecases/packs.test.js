@@ -1,4 +1,5 @@
 const { makeOpenDailyPack, makeOpenStarter } = require('./packs');
+const { emptyCollection } = require('../../engine/collection');
 const { fakeCatalog, fakeClock, fakeWallets } = require('../../../test/fakes');
 
 function setup() {
@@ -82,6 +83,17 @@ describe('starter pack', () => {
     const { deps, openStarter } = setup();
     deps.wallets.openings.add('starter');
     await expect(openStarter('u1')).rejects.toMatchObject({ code: 'STARTER_ALREADY_OPENED' });
+    expect(deps.wallets.commits).toHaveLength(0);
+  });
+
+  test('refuses a loaded collection whose starter was already given, without committing', async () => {
+    const deps = {
+      clock: fakeClock('2026-11-17'),
+      catalog: fakeCatalog(),
+      wallets: fakeWallets({ ...emptyCollection(), starterGiven: true }),
+      randomSeed: () => 42,
+    };
+    await expect(makeOpenStarter(deps)('u1')).rejects.toMatchObject({ code: 'STARTER_ALREADY_OPENED' });
     expect(deps.wallets.commits).toHaveLength(0);
   });
 });

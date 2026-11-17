@@ -39,3 +39,19 @@ test('an impossible calendar date is rejected', async () => {
   await expect(setSimulatedDate('u1', { date: '2026-02-30' })).rejects.toMatchObject({ code: 'INVALID_INPUT' });
   expect(deps.settings.simulatedDate).toBeNull();
 });
+
+test.each([[null], [undefined], ['x'], [[]], [{ date: 20261115 }], [{ date: {} }], [{ date: ['2026-11-15'] }]])(
+  'invalid input %p is rejected and the date is untouched',
+  async (input) => {
+    const { deps, setSimulatedDate } = setup();
+    await expect(setSimulatedDate('u1', input)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect(deps.settings.simulatedDate).toBeNull();
+  },
+);
+
+test('a missing date clears the simulated date', async () => {
+  const { deps, setSimulatedDate } = setup({ lastPackDate: '2026-11-10' });
+  deps.settings.simulatedDate = '2026-11-15';
+  await setSimulatedDate('u1', {});
+  expect(deps.settings.simulatedDate).toBeNull();
+});
