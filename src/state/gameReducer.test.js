@@ -1,4 +1,4 @@
-const { gameReducer, initialState } = require('./GameContext');
+const { gameReducer, initialState } = require('./gameReducer');
 
 test('initial state is the demo player with real time', () => {
   expect(initialState.player).toEqual({ name: 'Démo' });
