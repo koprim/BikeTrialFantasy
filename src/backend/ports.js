@@ -7,6 +7,7 @@
  * @typedef {{ kind: 'starter'|'daily', packDate: string, cards: object[] }} PackOpening
  * @typedef {{ expectedVersion: number, before: object, after: object, opening: PackOpening|null }} CollectionChange
  * @typedef {'ok'|'conflict'|'duplicate'} CommitOutcome
+ * WalletRepository.commit rejects (throws) when an owned count or the fragments would go negative; nothing is applied then.
  * @typedef {{ load(userId: string): Promise<{ collection: object, version: number }>,
  *             commit(userId: string, change: CollectionChange): Promise<CommitOutcome> }} WalletRepository
  * @typedef {{ get(competitionId: string): Promise<object|null> }} CompetitionReader

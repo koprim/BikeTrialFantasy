@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['expo', 'prettier'],
-  globals: { Intl: 'readonly' }, // ESLint's es* envs omit Intl; Expo's config enables neither browser nor node globals
+  globals: { Intl: 'readonly', structuredClone: 'readonly' }, // ESLint's es* envs omit Intl and structuredClone; Expo's config enables neither browser nor node globals
   ignorePatterns: [
     'node_modules/',
     '.expo/',

@@ -26,28 +26,44 @@ function openingKey(opening) {
   return opening.kind === 'starter' ? 'starter' : `daily|${opening.packDate}`;
 }
 
+function assertNonNegative(after) {
+  const counts = Object.values(after.owned).flatMap((byRarity) => Object.values(byRarity));
+  if (counts.some((count) => count < 0)) throw new Error('commit_collection_change: negative count');
+  if (after.fragments < 0) throw new Error('commit_collection_change: negative fragments');
+}
+
+// In-memory stand-in for the commit_collection_change RPC: same outcomes, same refusals, isolated copies.
 function fakeWallets(collection = emptyCollection()) {
   return {
-    state: { collection, version: 0 },
+    state: { collection: structuredClone(collection), version: 0 },
     openings: new Set(),
     commits: [],
     conflictsToSimulate: 0,
     async load() {
-      return { ...this.state };
+      return structuredClone(this.state);
     },
     async commit(_userId, change) {
       if (this.conflictsToSimulate > 0) {
         this.conflictsToSimulate -= 1;
+        this.simulateExternalWriter();
         return 'conflict';
       }
       if (change.expectedVersion !== this.state.version) return 'conflict';
+      assertNonNegative(change.after); // the RPC raises and rolls back
       if (change.opening) {
         if (this.openings.has(openingKey(change.opening))) return 'duplicate';
         this.openings.add(openingKey(change.opening));
       }
-      this.commits.push(change);
-      this.state = { collection: { ...change.after, lastPack: [] }, version: this.state.version + 1 };
+      this.commits.push(structuredClone(change));
+      // The database does not store lastPack, so a later load has none; callers keep it from change.after.
+      const stored = { ...structuredClone(change.after), lastPack: [] };
+      this.state = { collection: stored, version: this.state.version + 1 };
       return 'ok';
+    },
+    // Another writer got in first: the stored data and version move on.
+    simulateExternalWriter() {
+      const { collection: current, version } = this.state;
+      this.state = { collection: { ...current, fragments: current.fragments + 1 }, version: version + 1 };
     },
   };
 }
