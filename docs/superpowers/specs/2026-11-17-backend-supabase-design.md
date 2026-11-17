@@ -137,6 +137,18 @@ Les PDF de Rzeszów 2026 (Men Elite 20", classement général et quarts de final
 - Import : schéma et validations testés sur les PDF de Rzeszów.
 - Fonctions serveur : contre Supabase local (CLI sur Podman, Docker en repli), sinon contre le projet `dev`.
 
+## Règles de qualité de production
+
+- Code conforme au skill projet `solid-clean-code` (SOLID, TDD, clean code, design patterns) : obligatoire pour tout implémenteur et relecteur.
+- Intégration continue (GitHub Actions) : tests + lint à chaque push, fusion bloquée si rouge.
+- ESLint + Prettier.
+- Migrations SQL versionnées (`supabase/migrations`), jamais de modification manuelle de `prod`.
+- Tests RLS : un joueur ne peut ni lire ni modifier les données d'un autre.
+- Secrets hors du code : clé service uniquement côté serveur, `.env` ignoré par git.
+- Parcours `dev` → `prod` : migrations testées sur `dev` avant déploiement.
+- Suivi des erreurs : Sentry (offre gratuite).
+- Sauvegardes : export programmé de la base (l'offre gratuite n'en garde pas).
+
 ## Découpage en plans
 
 1. **B1** — Supabase (schéma, RLS), comptes invités et rattachement, couche `src/data/api`, fonctions joueurs (starter, pack, recycle, craft, save-team).
