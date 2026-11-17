@@ -1,12 +1,22 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen, cleanup, act } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GameProvider } from '../state/GameContext';
 import RulesScreen from './RulesScreen';
 
 jest.mock('../ui/confirm', () => ({ confirm: jest.fn(() => Promise.resolve(true)) }));
 
+// GameProvider saves to AsyncStorage from an effect without awaiting it. Unmount, let the in-flight
+// write land, then clear, so it cannot leak into the next test's storage.
+const flushPendingWrites = () => act(() => new Promise((resolve) => setImmediate(resolve)));
+
 beforeEach(() => AsyncStorage.clear());
+
+afterEach(async () => {
+  cleanup();
+  await flushPendingWrites();
+  await AsyncStorage.clear();
+});
 
 function renderRules() {
   return render(
