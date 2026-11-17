@@ -33,3 +33,9 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# supabase
+.env
+supabase/.temp/
+supabase/functions/.env
+supabase/functions/_shared/backend.mjs
