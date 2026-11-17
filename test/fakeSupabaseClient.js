@@ -73,6 +73,7 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
 
   const auth = {
     async getSession() {
+      if (state.sessionExpired) return { data: { session: null }, error: authFetchError() };
       return { data: { session: state.session } };
     },
     async signInAnonymously() {
@@ -101,6 +102,10 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
     auth,
     goOffline: () => {
       state.offline = true;
+    },
+    // auth-js getSession() when the access token expired and the refresh could not reach the server.
+    expireSessionOffline: () => {
+      state.sessionExpired = true;
     },
     failUpdatesWith: (error) => {
       state.updateError = error;

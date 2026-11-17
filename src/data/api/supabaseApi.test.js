@@ -81,6 +81,24 @@ describe('load', () => {
       await expect(offlineApi(storage, {}).load()).rejects.toThrow();
     });
 
+    test('serves the cache when the expired session could not be refreshed offline', async () => {
+      const { storage, loaded } = await cacheFrom(createFakeSupabaseClient());
+      const client = createFakeSupabaseClient({ session, offline: true });
+      client.expireSessionOffline();
+      expect(await createSupabaseApi({ client, storage }).load()).toEqual({ ...loaded, offline: true });
+    });
+
+    test('a signed-out device (no session, no error) never serves the cache', async () => {
+      const { storage } = await cacheFrom(createFakeSupabaseClient());
+      await expect(offlineApi(storage, {}).load()).rejects.toThrow('Failed to fetch');
+    });
+
+    test('account() resolves null when the expired session cannot be refreshed offline', async () => {
+      const client = createFakeSupabaseClient({ session, offline: true });
+      client.expireSessionOffline();
+      expect(await createSupabaseApi({ client, storage: memoryStorage() }).account()).toBeNull();
+    });
+
     test('throws the network error when nothing is cached', async () => {
       await expect(offlineApi(memoryStorage()).load()).rejects.toThrow('Failed to fetch');
     });

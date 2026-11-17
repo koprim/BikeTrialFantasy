@@ -53,15 +53,14 @@ function createPlayerReader({ client, allowSimulatedDate }) {
 }
 
 // Only a network failure falls back to the cache; real errors (RLS, missing row, bugs) must surface.
-async function loadWithOfflineCache({ fetchPlayerState, cache, localSessionUser }) {
+async function loadWithOfflineCache({ fetchPlayerState, cache, localUserId }) {
   try {
     const { userId, state } = await fetchPlayerState();
     await cache.write(userId, state);
     return state;
   } catch (error) {
     if (!isNetworkError(error)) throw error;
-    const localUser = await localSessionUser();
-    const cached = await cache.readFor(localUser && localUser.id);
+    const cached = await cache.readFor(await localUserId());
     if (cached) return { ...cached, offline: true };
     throw error;
   }
@@ -73,6 +72,23 @@ function createLocalSessionUser(client) {
     try {
       const { data } = await client.auth.getSession();
       return data.session ? data.session.user : null;
+    } catch {
+      return null;
+    }
+  };
+}
+
+// Identifies the offline user. When the access token expired and auth-js could not refresh it (network error),
+// getSession() reports no session even though the user is still the one who last loaded online on this device
+// (the cache is a single slot), so that owner is used. No session WITHOUT an error means signed out: no identity.
+function createLocalUserId(client, cache) {
+  return async () => {
+    try {
+      const { data, error } = await client.auth.getSession();
+      if (data.session) return data.session.user.id;
+      if (!isNetworkError(error)) return null;
+      const cached = await cache.read();
+      return (cached && cached.userId) || null;
     } catch {
       return null;
     }
@@ -91,7 +107,8 @@ function createAccountActions(client, emailRedirectTo, localSessionUser) {
     error ? { ok: false, error: code, details: error.message } : { ok: true, patch: {} };
   return {
     // Resolves with the server's view of the user; when it cannot be reached, with the locally known session user;
-    // null when there is neither. Never rejects.
+    // null when there is neither (including an expired session that could not be refreshed offline: only the user id
+    // is known then, not the account kind). Never rejects.
     async account() {
       const { data, error } = await client.auth.getUser();
       const user = error ? await localSessionUser() : data.user;
@@ -119,6 +136,7 @@ function createSupabaseApi({ client, storage, allowSimulatedDate = false, emailR
   const { currentUser, fetchPlayerState } = createPlayerReader({ client, allowSimulatedDate });
   const cache = createPlayerCache(storage);
   const localSessionUser = createLocalSessionUser(client);
+  const localUserId = createLocalUserId(client, cache);
 
   const collectionAction = (name) => async (body) => {
     const result = await invokeFunction(client, name, body);
@@ -127,7 +145,7 @@ function createSupabaseApi({ client, storage, allowSimulatedDate = false, emailR
 
   return {
     features: { simulatedDate: allowSimulatedDate, reset: false, account: true },
-    load: () => loadWithOfflineCache({ fetchPlayerState, cache, localSessionUser }),
+    load: () => loadWithOfflineCache({ fetchPlayerState, cache, localUserId }),
     openStarter: collectionAction('open-starter'),
     openDailyPack: collectionAction('open-daily-pack'),
     recycle: collectionAction('recycle'),
