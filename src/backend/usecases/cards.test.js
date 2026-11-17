@@ -34,10 +34,23 @@ test('crafting without enough fragments is refused', async () => {
   await expect(craft('u1', { cardId: card.id, rarity: 'C' })).rejects.toMatchObject({ code: 'NOT_ALLOWED' });
 });
 
-test.each([[{ cardId: 'nope', rarity: 'C' }], [{ cardId: card.id, rarity: 'X' }], [undefined]])(
-  'invalid input %p is rejected',
-  async (input) => {
-    const { recycle } = setup({});
-    await expect(recycle('u1', input)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
-  },
-);
+const missingRarity = ['C', 'R', 'E', 'L'].find((rarity) => !card.rarities.includes(rarity));
+const invalidInputs = [
+  [{ cardId: 'nope', rarity: 'C' }],
+  [{ cardId: card.id, rarity: 'X' }],
+  [{ cardId: 'constructor', rarity: 'C' }],
+  [{ cardId: '__proto__', rarity: 'C' }],
+  [{ cardId: card.id, rarity: 'constructor' }],
+  [{ cardId: { toString: () => card.id }, rarity: 'C' }],
+  [undefined],
+  [null],
+  ['text'],
+  ...(missingRarity ? [[{ cardId: card.id, rarity: missingRarity }]] : []),
+];
+
+describe.each([['recycle'], ['craft']])('%s', (name) => {
+  test.each(invalidInputs)('invalid input %p is rejected', async (input) => {
+    const useCase = setup({ fragments: 99999 })[name];
+    await expect(useCase('u1', input)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+  });
+});

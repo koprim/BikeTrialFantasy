@@ -8,6 +8,8 @@ const {
   openStarter,
   recycle,
   craft,
+  canRecycle,
+  canCraft,
   ownedRefs,
 } = require('./collection');
 const { makeRng } = require('./rng');
@@ -130,6 +132,24 @@ test('craft spends fragments; refused without enough fragments or for a missing 
   expect(craft(poor, card, 'R', BALANCE)).toBe(poor);
   const noL = CARDS_BY_ID['technique-2026-pivot'];
   expect(craft(rich, noL, 'L', BALANCE)).toBe(rich);
+});
+
+test('canRecycle needs a duplicate', () => {
+  const col = { ...emptyCollection(), owned: { x: { R: 2, C: 1 } } };
+  expect(canRecycle(col, 'x', 'R')).toBe(true);
+  expect(canRecycle(col, 'x', 'C')).toBe(false);
+  expect(canRecycle(col, 'x', 'L')).toBe(false);
+  expect(canRecycle(col, 'unknown', 'R')).toBe(false);
+});
+
+test('canCraft needs a card with that rarity and enough fragments', () => {
+  const card = CARDS_BY_ID['technique-2026-gap'];
+  const noL = CARDS_BY_ID['technique-2026-pivot'];
+  const rich = { ...emptyCollection(), fragments: 5000 };
+  expect(canCraft(rich, card, 'R', BALANCE)).toBe(true);
+  expect(canCraft({ ...rich, fragments: BALANCE.fragments.craftCost.R - 1 }, card, 'R', BALANCE)).toBe(false);
+  expect(canCraft(rich, noL, 'L', BALANCE)).toBe(false);
+  expect(canCraft(rich, undefined, 'R', BALANCE)).toBe(false);
 });
 
 test('ownedRefs lists owned card/rarity pairs matching a filter', () => {

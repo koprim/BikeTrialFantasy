@@ -135,9 +135,17 @@ function openStarter(collection, { cards, ridersById }, rng) {
   return { ...collection, owned, lastPack, starterGiven: true };
 }
 
+function canRecycle(collection, cardId, rarity) {
+  return countOf(collection, cardId, rarity) >= 2;
+}
+
+function canCraft(collection, card, rarity, balance) {
+  return !!card && card.rarities.includes(rarity) && collection.fragments >= balance.fragments.craftCost[rarity];
+}
+
 function recycle(collection, cardId, rarity, balance) {
+  if (!canRecycle(collection, cardId, rarity)) return collection;
   const n = countOf(collection, cardId, rarity);
-  if (n < 2) return collection;
   return {
     ...collection,
     owned: { ...collection.owned, [cardId]: { ...collection.owned[cardId], [rarity]: n - 1 } },
@@ -146,8 +154,8 @@ function recycle(collection, cardId, rarity, balance) {
 }
 
 function craft(collection, card, rarity, balance) {
+  if (!canCraft(collection, card, rarity, balance)) return collection;
   const cost = balance.fragments.craftCost[rarity];
-  if (!card || !card.rarities.includes(rarity) || collection.fragments < cost) return collection;
   return { ...collection, owned: addCard(collection.owned, card.id, rarity), fragments: collection.fragments - cost };
 }
 
@@ -170,6 +178,8 @@ module.exports = {
   canOpenStarter,
   openDailyPack,
   openStarter,
+  canRecycle,
+  canCraft,
   recycle,
   craft,
   ownedRefs,
