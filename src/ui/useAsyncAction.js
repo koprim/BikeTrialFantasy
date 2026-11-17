@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 /**
  * Wraps an async call for a button: a press while the call is in flight is ignored (resolves undefined),
@@ -10,16 +10,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export function useAsyncAction(action) {
   const [busy, setBusy] = useState(false);
   const inFlight = useRef(false);
-  const mounted = useRef(true);
   const latestAction = useRef(action);
   latestAction.current = action;
-
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
 
   const run = useCallback(async (...args) => {
     if (inFlight.current) return undefined;
@@ -29,7 +21,7 @@ export function useAsyncAction(action) {
       return await latestAction.current(...args);
     } finally {
       inFlight.current = false;
-      if (mounted.current) setBusy(false);
+      setBusy(false); // React 18 ignores a state update on an unmounted component
     }
   }, []);
 

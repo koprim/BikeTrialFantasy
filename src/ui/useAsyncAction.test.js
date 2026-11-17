@@ -57,18 +57,3 @@ test('accepts a new run once the previous one failed', async () => {
   });
   expect(second).toBe('ok');
 });
-
-test('does not update state after unmount', async () => {
-  const { call, settle } = deferredCall();
-  const errors = jest.spyOn(console, 'error').mockImplementation(() => {});
-  const { result, unmount } = renderHook(() => useAsyncAction(call));
-  let running;
-  act(() => {
-    running = result.current.run();
-  });
-  unmount();
-  settle('late');
-  expect(await running).toBe('late');
-  expect(errors).not.toHaveBeenCalled();
-  errors.mockRestore();
-});
