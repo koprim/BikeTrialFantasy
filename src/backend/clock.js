@@ -1,11 +1,13 @@
-function formatDay(date, timeZone) {
-  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+function dayFormatter(timeZone) {
+  const formatter = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+  return (date) => formatter.format(date);
 }
 
 // The single rule for "today" on the server. readSimulatedDate is consulted only when allowSimulated (dev project).
 function makeClock({ timeZone, allowSimulated = false, readSimulatedDate = async () => null, now = () => new Date() }) {
   if (!timeZone) throw new Error('makeClock: timeZone is required');
-  const realToday = () => formatDay(now(), timeZone);
+  const formatDay = dayFormatter(timeZone);
+  const realToday = () => formatDay(now());
   return {
     realToday,
     async today() {

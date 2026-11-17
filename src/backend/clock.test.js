@@ -19,3 +19,14 @@ test('the simulated date is used only when allowed', async () => {
 test('a timezone is required', () => {
   expect(() => makeClock({})).toThrow('timeZone is required');
 });
+
+// Characterization tests: the day comes from the configured zone, including across DST changes.
+test.each([
+  ['2026-03-29T22:30:00Z', '2026-03-30'],
+  ['2026-10-24T22:30:00Z', '2026-10-25'],
+  ['2026-07-01T21:59:00Z', '2026-07-01'],
+  ['2026-07-01T22:00:00Z', '2026-07-02'],
+])('Europe/Paris day for %s is %s', (instant, day) => {
+  const clock = makeClock({ timeZone: 'Europe/Paris', now: () => new Date(instant) });
+  expect(clock.realToday()).toBe(day);
+});
