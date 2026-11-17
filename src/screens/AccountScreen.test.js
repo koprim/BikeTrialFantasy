@@ -52,3 +52,22 @@ test('a saved account shows its e-mail', async () => {
   renderWith({ account: async () => ({ isAnonymous: false, email: 'robin@example.com', pendingEmail: null }) });
   expect(await screen.findByText('Compte sauvegardé : robin@example.com')).toBeTruthy();
 });
+
+test('an unreachable account service still offers the guest form and says why', async () => {
+  renderWith({ account: async () => Promise.reject(new Error('Failed to fetch')) });
+  expect(await screen.findByText('Connexion impossible. Vérifie ta connexion.')).toBeTruthy();
+  expect(screen.getByLabelText('Adresse e-mail')).toBeTruthy();
+});
+
+test('a successful save shows the pending confirmation', async () => {
+  let pendingEmail = null;
+  const account = async () => ({ isAnonymous: true, email: null, pendingEmail });
+  const saveAccount = async (email) => {
+    pendingEmail = email;
+    return { ok: true, patch: {} };
+  };
+  renderWith({ account, saveAccount });
+  fireEvent.changeText(await screen.findByLabelText('Adresse e-mail'), 'robin@example.com');
+  fireEvent.press(screen.getByRole('button', { name: 'Sauvegarder mon compte' }));
+  expect(await screen.findByText('Confirmation en attente pour robin@example.com.')).toBeTruthy();
+});

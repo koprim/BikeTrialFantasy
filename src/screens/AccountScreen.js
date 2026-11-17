@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useGame } from '../state/GameContext';
 import { errorMessage } from '../ui/errorMessages';
@@ -7,27 +7,45 @@ import { colors, space, radius } from '../ui/theme';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Loads the AccountInfo once; undefined while loading, null without an account.
+// Loads the AccountInfo: undefined while loading, null without an account or when it could not be read (failed).
 function useAccount(actions) {
   const [account, setAccount] = useState(undefined);
-  useEffect(() => {
-    let active = true;
-    actions.account().then((info) => active && setAccount(info));
-    return () => {
-      active = false;
-    };
+  const [failed, setFailed] = useState(false);
+  const mounted = useRef(true);
+
+  const reload = useCallback(async () => {
+    let info = null;
+    let readFailed = false;
+    try {
+      info = await actions.account();
+    } catch {
+      readFailed = true; // reported on screen; the guest form stays usable
+    }
+    if (!mounted.current) return;
+    setAccount(info);
+    setFailed(readFailed);
   }, [actions]);
-  return account;
+
+  useEffect(() => {
+    mounted.current = true;
+    reload();
+    return () => {
+      mounted.current = false;
+    };
+  }, [reload]);
+
+  return { account, failed, reload };
 }
 
 export default function AccountScreen() {
   const { actions } = useGame();
-  const account = useAccount(actions);
+  const { account, failed, reload } = useAccount(actions);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
   const { run: submit, busy } = useAsyncAction(async (call, address, successMessage) => {
     const result = await call(address);
     setMessage(result.ok ? successMessage : errorMessage(result.error));
+    if (result.ok) await reload(); // shows the pending confirmation
   });
 
   if (account === undefined) return null;
@@ -56,6 +74,11 @@ export default function AccountScreen() {
         Tu joues avec un compte invité, lié à ce navigateur ou à cet appareil. Sauvegarde-le pour retrouver ta
         collection partout.
       </Text>
+      {failed ? (
+        <Text accessibilityRole="alert" style={styles.text}>
+          {errorMessage('NETWORK')}
+        </Text>
+      ) : null}
       {account && account.pendingEmail ? (
         <Text style={styles.text}>Confirmation en attente pour {account.pendingEmail}.</Text>
       ) : null}
