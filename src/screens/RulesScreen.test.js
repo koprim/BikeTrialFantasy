@@ -9,7 +9,11 @@ jest.mock('../ui/confirm', () => ({ confirm: jest.fn(() => Promise.resolve(true)
 beforeEach(() => AsyncStorage.clear());
 
 function renderRules() {
-  return render(<GameProvider><RulesScreen /></GameProvider>);
+  return render(
+    <GameProvider>
+      <RulesScreen />
+    </GameProvider>,
+  );
 }
 
 test('applies and clears a simulated date', async () => {

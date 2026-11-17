@@ -1,6 +1,4 @@
-const {
-  pointsForPosition, positionOf, riderEventScore, teamEventScore,
-} = require('./scoring');
+const { pointsForPosition, positionOf, riderEventScore, teamEventScore } = require('./scoring');
 
 describe('pointsForPosition', () => {
   test('podium values', () => {
@@ -42,21 +40,79 @@ describe('teamEventScore', () => {
     leg: { id: 'leg', name: 'Legend', category: 'SENIOR_26', cote: 2.5, active: false },
   };
   const always = (reward, description = 'x') => ({ description, trigger: { type: 'ALWAYS' }, reward });
-  const pilot = (id, effects = []) => ({ id: `p-${id}`, type: 'PILOT', name: id, subject: id, rarities: ['C'], effects });
-  const cardsById = Object.fromEntries([
-    pilot('r1', [always({ type: 'RIDER_MULTIPLIER', value: 0.1 })]),
-    pilot('r2', [{ description: 'top 1', trigger: { type: 'RIDER_TOP_N', n: 1 }, reward: { type: 'FLAT_POINTS', value: 99 } }]),
-    pilot('r3'), pilot('r4'), pilot('r5'), pilot('r6'),
-    pilot('leg', [always({ type: 'FLAT_POINTS', value: 30 }, '+{value} pts')]),
-    { id: 'tech-gap', type: 'TECHNIQUE', name: 'Gap', subject: 'gap', rarities: ['C', 'R'], effects: [{ description: '+{value} pts', trigger: { type: 'RIDER_DID_TECHNIQUE', technique: 'gap' }, reward: { type: 'FLAT_POINTS', value: 20 } }] },
-    { id: 'eq-s26', type: 'EQUIPMENT', name: 'Pneus', subject: 'SENIOR_26', rarities: ['C'], effects: [always({ type: 'CATEGORY_MULTIPLIER', category: 'SENIOR_26', value: 0.1 })] },
-    { id: 'ref', type: 'REFEREE', name: 'Arbitre', subject: 'Arbitre', rarities: ['C'], effects: [always({ type: 'TEAM_MULTIPLIER', value: 0.1 })] },
-  ].map((c) => [c.id, c]));
+  const pilot = (id, effects = []) => ({
+    id: `p-${id}`,
+    type: 'PILOT',
+    name: id,
+    subject: id,
+    rarities: ['C'],
+    effects,
+  });
+  const cardsById = Object.fromEntries(
+    [
+      pilot('r1', [always({ type: 'RIDER_MULTIPLIER', value: 0.1 })]),
+      pilot('r2', [
+        { description: 'top 1', trigger: { type: 'RIDER_TOP_N', n: 1 }, reward: { type: 'FLAT_POINTS', value: 99 } },
+      ]),
+      pilot('r3'),
+      pilot('r4'),
+      pilot('r5'),
+      pilot('r6'),
+      pilot('leg', [always({ type: 'FLAT_POINTS', value: 30 }, '+{value} pts')]),
+      {
+        id: 'tech-gap',
+        type: 'TECHNIQUE',
+        name: 'Gap',
+        subject: 'gap',
+        rarities: ['C', 'R'],
+        effects: [
+          {
+            description: '+{value} pts',
+            trigger: { type: 'RIDER_DID_TECHNIQUE', technique: 'gap' },
+            reward: { type: 'FLAT_POINTS', value: 20 },
+          },
+        ],
+      },
+      {
+        id: 'eq-s26',
+        type: 'EQUIPMENT',
+        name: 'Pneus',
+        subject: 'SENIOR_26',
+        rarities: ['C'],
+        effects: [always({ type: 'CATEGORY_MULTIPLIER', category: 'SENIOR_26', value: 0.1 })],
+      },
+      {
+        id: 'ref',
+        type: 'REFEREE',
+        name: 'Arbitre',
+        subject: 'Arbitre',
+        rarities: ['C'],
+        effects: [always({ type: 'TEAM_MULTIPLIER', value: 0.1 })],
+      },
+    ].map((c) => [c.id, c]),
+  );
   const deps = { ridersById, cardsById, balance };
   const slot = (id, techniques = []) => ({ cardId: `p-${id}`, rarity: 'C', techniques });
-  const plain = { slots: { senior26: slot('r1'), junior26: slot('r2'), senior20: slot('r3'), junior20: slot('r4'), eliteWomen1: slot('r5'), eliteWomen2: slot('r6') }, equipment: [], referee: null };
+  const plain = {
+    slots: {
+      senior26: slot('r1'),
+      junior26: slot('r2'),
+      senior20: slot('r3'),
+      junior20: slot('r4'),
+      eliteWomen1: slot('r5'),
+      eliteWomen2: slot('r6'),
+    },
+    equipment: [],
+    referee: null,
+  };
   const event = {
-    results: { SENIOR_26: ['r1'], JUNIOR_26: ['x', 'r2'], SENIOR_20: ['r3'], JUNIOR_20: ['x', 'x', 'r4'], ELITE_WOMEN: ['r5', 'r6'] },
+    results: {
+      SENIOR_26: ['r1'],
+      JUNIOR_26: ['x', 'r2'],
+      SENIOR_20: ['r3'],
+      JUNIOR_20: ['x', 'x', 'r4'],
+      ELITE_WOMEN: ['r5', 'r6'],
+    },
     stats: { r3: { techniques: ['gap'], cleanSections: 5 } },
   };
 
@@ -65,7 +121,13 @@ describe('teamEventScore', () => {
     // 100 + 104 + 160 + 130 + 250 + 80 = 824 base, r1's ALWAYS ×0.1 adds 10
     expect(out.total).toBeCloseTo(834);
     expect(out.breakdown).toHaveLength(6);
-    expect(out.breakdown[0]).toMatchObject({ slotId: 'senior26', riderId: 'r1', cardId: 'p-r1', rarity: 'C', position: 1 });
+    expect(out.breakdown[0]).toMatchObject({
+      slotId: 'senior26',
+      riderId: 'r1',
+      cardId: 'p-r1',
+      rarity: 'C',
+      position: 1,
+    });
     expect(out.effects.map((e) => e.cardId)).toEqual(['p-r1']); // r2 is P2, its top-1 effect does not fire
   });
 
@@ -81,7 +143,10 @@ describe('teamEventScore', () => {
     // team ×: +84.5 · flat: Gap at Rare 20 × 1.5 = +30 → 959.5
     expect(out.total).toBeCloseTo(959.5);
     expect(out.effects.map((e) => [e.cardId, Math.round(e.points * 10) / 10])).toEqual([
-      ['p-r1', 10], ['eq-s26', 11], ['ref', 84.5], ['tech-gap', 30],
+      ['p-r1', 10],
+      ['eq-s26', 11],
+      ['ref', 84.5],
+      ['tech-gap', 30],
     ]);
     expect(out.effects[3]).toMatchObject({ name: 'Gap', rarity: 'R', description: '+30 pts' });
   });
@@ -106,6 +171,9 @@ describe('teamEventScore', () => {
   });
 
   test('an empty team scores 0', () => {
-    expect(teamEventScore({ slots: {}, equipment: [], referee: null }, event, deps)).toMatchObject({ total: 0, effects: [] });
+    expect(teamEventScore({ slots: {}, equipment: [], referee: null }, event, deps)).toMatchObject({
+      total: 0,
+      effects: [],
+    });
   });
 });

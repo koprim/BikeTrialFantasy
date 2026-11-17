@@ -13,7 +13,9 @@ export const DEMO_PLAYER = demoPlayer;
 export const RIDERS_BY_ID = Object.fromEntries(riders.map((r) => [r.id, r]));
 // Legends (active: false) never race: keep them out of the per-category lists used by bots and the briefing.
 export const RIDERS_BY_CATEGORY = groupByCategory(riders.filter((r) => r.active !== false));
-export function ridersByCategory() { return RIDERS_BY_CATEGORY; }
+export function ridersByCategory() {
+  return RIDERS_BY_CATEGORY;
+}
 export const CARDS = cards;
 export const CARDS_BY_ID = Object.fromEntries(cards.map((c) => [c.id, c]));
 export const BALANCE = balance;

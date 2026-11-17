@@ -1,8 +1,23 @@
 const { migrateSave } = require('./migrate');
 
-const demoCollection = { owned: { 'technique-2026-gap': { C: 1 } }, fragments: 0, pity: { E: 0, L: 0 }, packsOpened: 0, lastPackDate: null, starterGiven: false, lastPack: [] };
+const demoCollection = {
+  owned: { 'technique-2026-gap': { C: 1 } },
+  fragments: 0,
+  pity: { E: 0, L: 0 },
+  packsOpened: 0,
+  lastPackDate: null,
+  starterGiven: false,
+  lastPack: [],
+};
 const opts = { edition: '2026', demoCollection };
-const riderTeam = { senior26: 'senior-26-1', junior26: 'junior-26-1', senior20: 'senior-20-1', junior20: 'junior-20-1', eliteWomen1: 'elite-women-1', eliteWomen2: 'elite-women-2' };
+const riderTeam = {
+  senior26: 'senior-26-1',
+  junior26: 'junior-26-1',
+  senior20: 'senior-20-1',
+  junior20: 'junior-20-1',
+  eliteWomen1: 'elite-women-1',
+  eliteWomen2: 'elite-women-2',
+};
 
 test('old linear saves and saves without picks are dropped', () => {
   expect(migrateSave({ currentIndex: 2, picks: {} }, opts)).toBeNull();
@@ -11,9 +26,16 @@ test('old linear saves and saves without picks are dropped', () => {
 });
 
 test('renames 2026-27 event ids and converts rider teams to Common pilot cards', () => {
-  const out = migrateSave({ player: { name: 'Z' }, picks: { '2026-27-r1': riderTeam, '2025-r1': riderTeam }, simulatedDate: null }, opts);
+  const out = migrateSave(
+    { player: { name: 'Z' }, picks: { '2026-27-r1': riderTeam, '2025-r1': riderTeam }, simulatedDate: null },
+    opts,
+  );
   expect(Object.keys(out.picks).sort()).toEqual(['2025-r1', '2026-r1']);
-  expect(out.picks['2026-r1'].slots.senior26).toEqual({ cardId: 'pilot-2026-senior-26-1', rarity: 'C', techniques: [] });
+  expect(out.picks['2026-r1'].slots.senior26).toEqual({
+    cardId: 'pilot-2026-senior-26-1',
+    rarity: 'C',
+    techniques: [],
+  });
 });
 
 test('a save without collection gets the demo collection plus every pilot it used', () => {

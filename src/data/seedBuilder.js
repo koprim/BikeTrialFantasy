@@ -1,7 +1,11 @@
 const { coteFromRank } = require('../engine/cote');
 
 function slug(name) {
-  return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function parseCsv(text) {
@@ -10,7 +14,9 @@ function parseCsv(text) {
   return lines.slice(1).map((line) => {
     const cells = line.split(',');
     const row = {};
-    headers.forEach((h, i) => { row[h] = (cells[i] || '').trim(); });
+    headers.forEach((h, i) => {
+      row[h] = (cells[i] || '').trim();
+    });
     return row;
   });
 }
@@ -39,12 +45,27 @@ function buildSeason(resultRows, ridersById, competitionsById) {
     byEvent[eventId][row.category].push({ pos: Number(row.position), riderId });
   });
   return Object.keys(byEvent).map((eventId) => {
-    const meta = competitionsById[eventId] || { id: eventId, name: eventId, venue: '', country: '', dateFrom: '', round: 0 };
+    const meta = competitionsById[eventId] || {
+      id: eventId,
+      name: eventId,
+      venue: '',
+      country: '',
+      dateFrom: '',
+      round: 0,
+    };
     const results = {};
     Object.keys(byEvent[eventId]).forEach((cat) => {
       results[cat] = byEvent[eventId][cat].sort((a, b) => a.pos - b.pos).map((x) => x.riderId);
     });
-    return { id: meta.id, name: meta.name, venue: meta.venue, country: meta.country, dateFrom: meta.dateFrom, round: meta.round, results };
+    return {
+      id: meta.id,
+      name: meta.name,
+      venue: meta.venue,
+      country: meta.country,
+      dateFrom: meta.dateFrom,
+      round: meta.round,
+      results,
+    };
   });
 }
 

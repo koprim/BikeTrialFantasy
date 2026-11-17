@@ -8,7 +8,14 @@ function mkRiders() {
   cats.forEach((c) => {
     for (let i = 1; i <= 6; i++) {
       const rank = i * 8;
-      riders.push({ id: `${c}-${i}`, name: `${c} ${i}`, country: 'FRA', category: c, uciRank: rank, cote: rank <= 10 ? 1.3 : rank <= 25 ? 1.6 : 2.0 });
+      riders.push({
+        id: `${c}-${i}`,
+        name: `${c} ${i}`,
+        country: 'FRA',
+        category: c,
+        uciRank: rank,
+        cote: rank <= 10 ? 1.3 : rank <= 25 ? 1.6 : 2.0,
+      });
     }
   });
   return riders;

@@ -24,8 +24,10 @@ function validateCatalog(cards, ridersById) {
       if (!e.description || typeof e.description !== 'string') errors.push(`${where} : description manquante`);
       if (!e.trigger || !TRIGGERS.includes(e.trigger.type)) errors.push(`${where} : déclencheur inconnu`);
       if (!e.reward || !REWARDS.includes(e.reward.type)) errors.push(`${where} : récompense inconnue`);
-      if (teamCard && e.trigger && RIDER_TRIGGERS.includes(e.trigger.type)) errors.push(`${where} : déclencheur pilote sur une carte d'équipe`);
-      if (teamCard && e.reward && e.reward.type === 'RIDER_MULTIPLIER') errors.push(`${where} : multiplicateur pilote sur une carte d'équipe`);
+      if (teamCard && e.trigger && RIDER_TRIGGERS.includes(e.trigger.type))
+        errors.push(`${where} : déclencheur pilote sur une carte d'équipe`);
+      if (teamCard && e.reward && e.reward.type === 'RIDER_MULTIPLIER')
+        errors.push(`${where} : multiplicateur pilote sur une carte d'équipe`);
     });
   });
   return errors;

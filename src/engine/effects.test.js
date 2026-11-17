@@ -68,10 +68,18 @@ test('scaledValue multiplies the reward by the rarity multiplier', () => {
 });
 
 test('describeEffect fills {value}: points for flat, percent for multipliers', () => {
-  const flat = { description: '+{value} pts si un Français gagne', trigger: { type: 'ALWAYS' }, reward: { type: 'FLAT_POINTS', value: 40 } };
+  const flat = {
+    description: '+{value} pts si un Français gagne',
+    trigger: { type: 'ALWAYS' },
+    reward: { type: 'FLAT_POINTS', value: 40 },
+  };
   expect(describeEffect(flat, 'C', balance)).toBe('+40 pts si un Français gagne');
   expect(describeEffect(flat, 'L', balance)).toBe('+120 pts si un Français gagne');
-  const mult = { description: '+{value} sur ses points', trigger: { type: 'ALWAYS' }, reward: { type: 'RIDER_MULTIPLIER', value: 0.1 } };
+  const mult = {
+    description: '+{value} sur ses points',
+    trigger: { type: 'ALWAYS' },
+    reward: { type: 'RIDER_MULTIPLIER', value: 0.1 },
+  };
   expect(describeEffect(mult, 'R', balance)).toBe('+15 % sur ses points');
   expect(describeEffect(mult, 'L', balance)).toBe('+30 % sur ses points');
 });
@@ -89,7 +97,11 @@ test('evaluateTrigger: missing trigger is false; missing stats.techniques is saf
 test('describeEffect shows exact values: one decimal max, French comma', () => {
   const flat = { description: '+{value} pts', trigger: { type: 'ALWAYS' }, reward: { type: 'FLAT_POINTS', value: 25 } };
   expect(describeEffect(flat, 'R', balance)).toBe('+37,5 pts');
-  const mult = { description: '+{value}', trigger: { type: 'ALWAYS' }, reward: { type: 'RIDER_MULTIPLIER', value: 0.03 } };
+  const mult = {
+    description: '+{value}',
+    trigger: { type: 'ALWAYS' },
+    reward: { type: 'RIDER_MULTIPLIER', value: 0.03 },
+  };
   expect(describeEffect(mult, 'R', balance)).toBe('+4,5 %');
   expect(describeEffect(mult, 'C', balance)).toBe('+3 %');
 });

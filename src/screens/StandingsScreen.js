@@ -14,10 +14,14 @@ export default function StandingsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{season.name}</Text>
-      <Text style={styles.sub}>Après {summary.played} / {season.events.length} manches</Text>
-      {summary.played
-        ? <StandingsList standings={summary.standings} />
-        : <Text style={styles.sub}>Aucune manche terminée pour l'instant</Text>}
+      <Text style={styles.sub}>
+        Après {summary.played} / {season.events.length} manches
+      </Text>
+      {summary.played ? (
+        <StandingsList standings={summary.standings} />
+      ) : (
+        <Text style={styles.sub}>Aucune manche terminée pour l'instant</Text>
+      )}
     </View>
   );
 }

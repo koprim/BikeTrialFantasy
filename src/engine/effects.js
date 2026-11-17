@@ -1,6 +1,14 @@
 // Declarative card effects: { description, trigger, reward }. Pure functions only.
-const TRIGGERS = ['ALWAYS', 'RIDER_TOP_N', 'RIDER_DID_TECHNIQUE', 'RIDER_CLEAN_MIN',
-  'NATION_COUNT_IN_TOP', 'CATEGORY_WINNER_NATION', 'TEAM_BRAND_COUNT', 'CATEGORY_WINNER_OUTSIDER'];
+const TRIGGERS = [
+  'ALWAYS',
+  'RIDER_TOP_N',
+  'RIDER_DID_TECHNIQUE',
+  'RIDER_CLEAN_MIN',
+  'NATION_COUNT_IN_TOP',
+  'CATEGORY_WINNER_NATION',
+  'TEAM_BRAND_COUNT',
+  'CATEGORY_WINNER_OUTSIDER',
+];
 const REWARDS = ['FLAT_POINTS', 'RIDER_MULTIPLIER', 'CATEGORY_MULTIPLIER', 'TEAM_MULTIPLIER'];
 const RIDER_TRIGGERS = ['RIDER_TOP_N', 'RIDER_DID_TECHNIQUE', 'RIDER_CLEAN_MIN'];
 
@@ -38,7 +46,9 @@ function evaluateTrigger(trigger, ctx) {
       return !!w && w.country === trigger.nation;
     }
     case 'TEAM_BRAND_COUNT':
-      return teamRiderIds.filter((id) => ridersById[id] && ridersById[id].brand === trigger.brand).length >= trigger.min;
+      return (
+        teamRiderIds.filter((id) => ridersById[id] && ridersById[id].brand === trigger.brand).length >= trigger.min
+      );
     case 'CATEGORY_WINNER_OUTSIDER': {
       const w = winnerOf(event, trigger.category, ridersById);
       return !!w && w.cote >= trigger.minCote;

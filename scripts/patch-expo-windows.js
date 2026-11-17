@@ -4,7 +4,19 @@
 const fs = require('fs');
 const path = require('path');
 
-const file = path.join(__dirname, '..', 'node_modules', '@expo', 'cli', 'build', 'src', 'start', 'server', 'metro', 'externals.js');
+const file = path.join(
+  __dirname,
+  '..',
+  'node_modules',
+  '@expo',
+  'cli',
+  'build',
+  'src',
+  'start',
+  'server',
+  'metro',
+  'externals.js',
+);
 const FROM = 'node-inspect)\\/|\\//.test(x)';
 const TO = 'node-inspect)\\/|\\/|:/.test(x)';
 
@@ -13,6 +25,8 @@ if (!fs.existsSync(file)) {
 } else {
   const src = fs.readFileSync(file, 'utf8');
   if (src.includes(TO)) console.log('patch-expo-windows: already applied');
-  else if (src.includes(FROM)) { fs.writeFileSync(file, src.replace(FROM, TO)); console.log('patch-expo-windows: applied'); }
-  else console.warn('patch-expo-windows: pattern not found — Expo version changed, check manually');
+  else if (src.includes(FROM)) {
+    fs.writeFileSync(file, src.replace(FROM, TO));
+    console.log('patch-expo-windows: applied');
+  } else console.warn('patch-expo-windows: pattern not found — Expo version changed, check manually');
 }

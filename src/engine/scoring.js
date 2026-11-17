@@ -37,9 +37,15 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
     const rider = card && ridersById[card.subject];
     const position = rider ? positionOf(rider.id, rider.category, event.results) : null;
     rows.push({
-      slotId: slot.id, cardId: entry ? entry.cardId : null, rarity: entry ? entry.rarity : null,
-      riderId: rider ? rider.id : null, category: rider ? rider.category : null, name: rider ? rider.name : null,
-      position, cote: rider ? rider.cote : null, points: rider ? riderEventScore(rider, position) : 0,
+      slotId: slot.id,
+      cardId: entry ? entry.cardId : null,
+      rarity: entry ? entry.rarity : null,
+      riderId: rider ? rider.id : null,
+      category: rider ? rider.category : null,
+      name: rider ? rider.name : null,
+      position,
+      cote: rider ? rider.cote : null,
+      points: rider ? riderEventScore(rider, position) : 0,
     });
     if (card) {
       collect(entry, rider ? rider.id : null, rows.length - 1);
@@ -50,35 +56,55 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
   if (team.referee) collect(team.referee, null);
 
   const fired = pending.filter(({ effect, riderId }) =>
-    evaluateTrigger(effect.trigger, { event, ridersById, riderId, teamRiderIds: riderIds }));
+    evaluateTrigger(effect.trigger, { event, ridersById, riderId, teamRiderIds: riderIds }),
+  );
   const ofType = (type) => fired.filter((f) => f.effect.reward.type === type);
   const value = (f) => scaledValue(f.effect.reward, f.rarity, balance);
   const effects = [];
-  const note = (f, points) => effects.push({
-    cardId: f.card.id, name: f.card.name, rarity: f.rarity, description: describeEffect(f.effect, f.rarity, balance), points,
-  });
+  const note = (f, points) =>
+    effects.push({
+      cardId: f.card.id,
+      name: f.card.name,
+      rarity: f.rarity,
+      description: describeEffect(f.effect, f.rarity, balance),
+      points,
+    });
 
   const base = rows.map((r) => r.points);
-  ofType('RIDER_MULTIPLIER').filter((f) => f.riderId && f.rowIndex != null).forEach((f) => {
-    const i = f.rowIndex;
-    const gain = base[i] * value(f);
-    rows[i].points += gain;
-    note(f, gain);
-  });
+  ofType('RIDER_MULTIPLIER')
+    .filter((f) => f.riderId && f.rowIndex != null)
+    .forEach((f) => {
+      const i = f.rowIndex;
+      const gain = base[i] * value(f);
+      rows[i].points += gain;
+      note(f, gain);
+    });
 
   const afterRider = rows.map((r) => r.points);
   ofType('CATEGORY_MULTIPLIER').forEach((f) => {
     let gain = 0;
     rows.forEach((r, i) => {
-      if (r.category === f.effect.reward.category) { const g = afterRider[i] * value(f); r.points += g; gain += g; }
+      if (r.category === f.effect.reward.category) {
+        const g = afterRider[i] * value(f);
+        r.points += g;
+        gain += g;
+      }
     });
     note(f, gain);
   });
 
   let total = rows.reduce((sum, r) => sum + r.points, 0);
   const subtotal = total;
-  ofType('TEAM_MULTIPLIER').forEach((f) => { const gain = subtotal * value(f); total += gain; note(f, gain); });
-  ofType('FLAT_POINTS').forEach((f) => { const gain = value(f); total += gain; note(f, gain); });
+  ofType('TEAM_MULTIPLIER').forEach((f) => {
+    const gain = subtotal * value(f);
+    total += gain;
+    note(f, gain);
+  });
+  ofType('FLAT_POINTS').forEach((f) => {
+    const gain = value(f);
+    total += gain;
+    note(f, gain);
+  });
 
   return { total, breakdown: rows, effects };
 }

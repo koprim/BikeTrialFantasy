@@ -24,7 +24,9 @@ export default function SeasonDetailScreen({ navigation, route }) {
               style={styles.row}
               accessibilityRole="button"
             >
-              <Text style={styles.round}>Manche {item.round} · {item.venue}</Text>
+              <Text style={styles.round}>
+                Manche {item.round} · {item.venue}
+              </Text>
               <Text style={styles.status}>{eventLabel(item, ctx)}</Text>
             </Pressable>
           );
@@ -37,7 +39,16 @@ export default function SeasonDetailScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: space.md },
   title: { fontSize: 20, fontWeight: '800', color: colors.text, marginBottom: space.sm },
-  row: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: colors.surface, borderRadius: radius.sm, padding: space.md, marginVertical: space.xs, borderWidth: 1, borderColor: colors.border },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surface,
+    borderRadius: radius.sm,
+    padding: space.md,
+    marginVertical: space.xs,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   round: { fontWeight: '700', color: colors.text },
   status: { color: colors.primary, fontWeight: '600' },
 });

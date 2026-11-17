@@ -5,7 +5,18 @@ const { normalizeTeam, cardTeamFromRiders, emptyTeam } = require('./team');
 
 // Past seasons rely on cardTeamFromRiders/normalizeTeam assuming every rider has a pilot card in the current
 // EDITION, so archived seasons keep their scores; edition rotation is out of scope.
-function computeEventOutcome({ event, playerName, playerTeam, rivals, ridersById, ridersByCategory, cardsById, balance, edition, seed }) {
+function computeEventOutcome({
+  event,
+  playerName,
+  playerTeam,
+  rivals,
+  ridersById,
+  ridersByCategory,
+  cardsById,
+  balance,
+  edition,
+  seed,
+}) {
   const deps = { ridersById, cardsById, balance };
   const player = teamEventScore(normalizeTeam(playerTeam, edition) || emptyTeam(), event, deps);
   const leaderboard = [{ entrantId: 'player', name: playerName, isPlayer: true, score: player.total }];
@@ -24,7 +35,8 @@ function aggregateStandings(outcomes) {
   const totals = {};
   outcomes.forEach((o) => {
     o.leaderboard.forEach((row) => {
-      if (!totals[row.entrantId]) totals[row.entrantId] = { entrantId: row.entrantId, name: row.name, isPlayer: row.isPlayer, score: 0 };
+      if (!totals[row.entrantId])
+        totals[row.entrantId] = { entrantId: row.entrantId, name: row.name, isPlayer: row.isPlayer, score: 0 };
       totals[row.entrantId].score += row.score;
     });
   });

@@ -11,7 +11,10 @@ const { DEMO_PLAYER } = require('../data/index');
 const validTeam = DEMO_PLAYER.picks['2026-r1']; // owned by the demo collection
 
 test('SAVE_TEAM stores an owned, valid team while the event is open', () => {
-  const s = gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team: validTeam, now: '2026-11-15' } });
+  const s = gameReducer(initialState, {
+    type: 'SAVE_TEAM',
+    payload: { eventId: '2026-r3', team: validTeam, now: '2026-11-15' },
+  });
   expect(s.picks['2026-r3']).toEqual(validTeam);
 });
 
@@ -19,7 +22,9 @@ test('SAVE_TEAM is ignored when locked, unknown or invalid', () => {
   const save = (payload) => gameReducer(initialState, { type: 'SAVE_TEAM', payload });
   expect(save({ eventId: '2026-r3', team: validTeam, now: '2026-11-29' })).toBe(initialState);
   expect(save({ eventId: 'nope', team: validTeam, now: '2026-11-15' })).toBe(initialState);
-  expect(save({ eventId: '2026-r3', team: { slots: {}, equipment: [], referee: null }, now: '2026-11-15' })).toBe(initialState);
+  expect(save({ eventId: '2026-r3', team: { slots: {}, equipment: [], referee: null }, now: '2026-11-15' })).toBe(
+    initialState,
+  );
 });
 
 test('SET_NAME and SET_SIMULATED_DATE', () => {
@@ -59,7 +64,10 @@ test('OPEN_DAILY_PACK opens one pack per day', () => {
 });
 
 test('RECYCLE and CRAFT', () => {
-  const withDup = { ...initialState, collection: { ...initialState.collection, owned: { 'technique-2026-gap': { C: 2 } }, fragments: 200 } };
+  const withDup = {
+    ...initialState,
+    collection: { ...initialState.collection, owned: { 'technique-2026-gap': { C: 2 } }, fragments: 200 },
+  };
   const recycled = gameReducer(withDup, { type: 'RECYCLE', payload: { cardId: 'technique-2026-gap', rarity: 'C' } });
   expect(recycled.collection.owned['technique-2026-gap'].C).toBe(1);
   expect(recycled.collection.fragments).toBe(205);
@@ -78,9 +86,13 @@ test('setting the simulated date back lets the daily pack be opened again', () =
   expect(again.collection.lastPackDate).toBe('2026-11-16');
   expect(again.collection.packsOpened).toBe(opened.collection.packsOpened + 1);
   // moving forward leaves lastPackDate alone
-  expect(gameReducer(opened, { type: 'SET_SIMULATED_DATE', payload: { date: '2027-03-05' } }).collection.lastPackDate).toBe('2027-03-01');
+  expect(
+    gameReducer(opened, { type: 'SET_SIMULATED_DATE', payload: { date: '2027-03-05' } }).collection.lastPackDate,
+  ).toBe('2027-03-01');
 });
 
 test('SAVE_TEAM ignores a missing team', () => {
-  expect(gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team: null, now: '2026-11-15' } })).toBe(initialState);
+  expect(
+    gameReducer(initialState, { type: 'SAVE_TEAM', payload: { eventId: '2026-r3', team: null, now: '2026-11-15' } }),
+  ).toBe(initialState);
 });

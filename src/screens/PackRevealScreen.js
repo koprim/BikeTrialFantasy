@@ -19,8 +19,12 @@ export default function PackRevealScreen({ navigation, route }) {
         renderItem={({ item }) => {
           const card = CARDS_BY_ID[item.cardId];
           return (
-            <CardTile card={card} rarity={item.rarity} badge={item.isNew ? 'Nouvelle !' : 'Doublon'}
-              label={`Carte révélée ${card.name} ${RARITY_LABELS[item.rarity]}`} />
+            <CardTile
+              card={card}
+              rarity={item.rarity}
+              badge={item.isNew ? 'Nouvelle !' : 'Doublon'}
+              label={`Carte révélée ${card.name} ${RARITY_LABELS[item.rarity]}`}
+            />
           );
         }}
       />
@@ -34,6 +38,12 @@ export default function PackRevealScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: space.md },
   title: { fontSize: 22, fontWeight: '800', color: colors.text, textAlign: 'center', marginBottom: space.md },
-  cta: { backgroundColor: colors.primary, padding: space.md, borderRadius: radius.md, alignItems: 'center', marginTop: space.sm },
+  cta: {
+    backgroundColor: colors.primary,
+    padding: space.md,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    marginTop: space.sm,
+  },
   ctaText: { color: '#fff', fontWeight: '700', fontSize: 16 },
 });

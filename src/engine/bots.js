@@ -30,10 +30,16 @@ function generateBotTeam(strategy, ridersByCategory, rng) {
 }
 
 const RIVAL_PLAN = [
-  ['Aigle', 'FAVORIS'], ['Bison', 'FAVORIS'], ['Cobra', 'FAVORIS'],
-  ['Drago', 'EQUILIBRE'], ['Echo', 'EQUILIBRE'], ['Falco', 'EQUILIBRE'],
-  ['Gecko', 'OUTSIDER'], ['Hydra', 'OUTSIDER'],
-  ['Ibex', 'ALEATOIRE'], ['Jaguar', 'ALEATOIRE'],
+  ['Aigle', 'FAVORIS'],
+  ['Bison', 'FAVORIS'],
+  ['Cobra', 'FAVORIS'],
+  ['Drago', 'EQUILIBRE'],
+  ['Echo', 'EQUILIBRE'],
+  ['Falco', 'EQUILIBRE'],
+  ['Gecko', 'OUTSIDER'],
+  ['Hydra', 'OUTSIDER'],
+  ['Ibex', 'ALEATOIRE'],
+  ['Jaguar', 'ALEATOIRE'],
 ];
 
 function createRivals() {

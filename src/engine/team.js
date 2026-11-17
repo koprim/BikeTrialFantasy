@@ -11,8 +11,12 @@ const SLOTS = [
 
 function groupByCategory(riders) {
   const out = {};
-  CATEGORIES.forEach((c) => { out[c] = []; });
-  riders.forEach((r) => { if (out[r.category]) out[r.category].push(r); });
+  CATEGORIES.forEach((c) => {
+    out[c] = [];
+  });
+  riders.forEach((r) => {
+    if (out[r.category]) out[r.category].push(r);
+  });
   return out;
 }
 
@@ -37,9 +41,13 @@ function validateRiderTeam(team, ridersById) {
   return { valid: errors.length === 0, errors };
 }
 
-function pilotCardId(edition, riderId) { return `pilot-${edition}-${riderId}`; }
+function pilotCardId(edition, riderId) {
+  return `pilot-${edition}-${riderId}`;
+}
 
-function emptyTeam() { return { slots: {}, equipment: [], referee: null }; }
+function emptyTeam() {
+  return { slots: {}, equipment: [], referee: null };
+}
 
 function cardTeamFromRiders(riderTeam, edition) {
   const slots = {};
@@ -78,8 +86,14 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
   const riderIds = [];
   const checkCard = (ref, type, where) => {
     const card = cardsById[ref.cardId];
-    if (!card || card.type !== type) { errors.push(`${where} : carte invalide.`); return null; }
-    if (!card.rarities.includes(ref.rarity)) { errors.push(`${where} : rareté indisponible.`); return null; }
+    if (!card || card.type !== type) {
+      errors.push(`${where} : carte invalide.`);
+      return null;
+    }
+    if (!card.rarities.includes(ref.rarity)) {
+      errors.push(`${where} : rareté indisponible.`);
+      return null;
+    }
     if (!ownsCard(owned, ref)) errors.push(`${where} : carte non possédée.`);
     const key = `${ref.cardId}:${ref.rarity}`;
     if (used.has(key)) errors.push(`${where} : carte déjà utilisée.`);
@@ -88,7 +102,10 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
   };
   SLOTS.forEach((slot) => {
     const entry = slots[slot.id];
-    if (!entry) { errors.push(`${slot.label} : emplacement vide.`); return; }
+    if (!entry) {
+      errors.push(`${slot.label} : emplacement vide.`);
+      return;
+    }
     const card = checkCard(entry, 'PILOT', slot.label);
     if (!card) return;
     const rider = ridersById[card.subject];
@@ -96,17 +113,27 @@ function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
     else if (riderIds.includes(rider.id)) errors.push(`${slot.label} : pilote déjà dans l'équipe.`);
     else riderIds.push(rider.id);
     const techniques = entry.techniques || [];
-    if (techniques.length > balance.slots.techniquesByPilotRarity[entry.rarity]) errors.push(`${slot.label} : trop de techniques.`);
+    if (techniques.length > balance.slots.techniquesByPilotRarity[entry.rarity])
+      errors.push(`${slot.label} : trop de techniques.`);
     techniques.forEach((t) => checkCard(t, 'TECHNIQUE', slot.label));
   });
   const equipment = team.equipment || [];
-  if (equipment.length > balance.slots.equipment) errors.push('Trop d\'équipements.');
+  if (equipment.length > balance.slots.equipment) errors.push("Trop d'équipements.");
   equipment.forEach((e) => checkCard(e, 'EQUIPMENT', 'Équipement'));
   if (team.referee) checkCard(team.referee, 'REFEREE', 'Arbitre');
   return { valid: errors.length === 0, errors };
 }
 
 module.exports = {
-  CATEGORIES, SLOTS, groupByCategory, isTeamComplete, validateRiderTeam,
-  pilotCardId, emptyTeam, cardTeamFromRiders, normalizeTeam, teamRiderIds, validateCardTeam,
+  CATEGORIES,
+  SLOTS,
+  groupByCategory,
+  isTeamComplete,
+  validateRiderTeam,
+  pilotCardId,
+  emptyTeam,
+  cardTeamFromRiders,
+  normalizeTeam,
+  teamRiderIds,
+  validateCardTeam,
 };

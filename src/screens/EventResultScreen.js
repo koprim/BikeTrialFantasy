@@ -15,7 +15,11 @@ export default function EventResultScreen({ route }) {
   const outcome = eventOutcome({ event, ...ctx });
 
   if (outcome) {
-    return <View style={styles.container}><OutcomeView event={event} outcome={outcome} /></View>;
+    return (
+      <View style={styles.container}>
+        <OutcomeView event={event} outcome={outcome} />
+      </View>
+    );
   }
 
   // Live event: team is locked, results not revealed yet.
@@ -25,17 +29,31 @@ export default function EventResultScreen({ route }) {
     <View style={styles.container}>
       <Text style={styles.title}>{event.name}</Text>
       <Text style={styles.sub}>Résultats après le {event.dateTo || event.dateFrom}</Text>
-      {team ? SLOTS.map((slot) => {
-        const entry = team.slots[slot.id];
-        return (
-          <View key={slot.id} style={styles.row}>
-            <Text style={styles.label}>{slot.label}</Text>
-            <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
-            {entry && entry.techniques.map((t) => <Text key={`${t.cardId}:${t.rarity}`} style={styles.label}>+ {label(t)}</Text>)}
-          </View>
-        );
-      }) : <Text style={styles.sub}>Aucune équipe enregistrée</Text>}
-      {team && team.equipment.map((e) => <Text key={`${e.cardId}:${e.rarity}`} style={styles.sub}>Équipement : {label(e)}</Text>)}
+      {team ? (
+        SLOTS.map((slot) => {
+          const entry = team.slots[slot.id];
+          return (
+            <View key={slot.id} style={styles.row}>
+              <Text style={styles.label}>{slot.label}</Text>
+              <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
+              {entry &&
+                entry.techniques.map((t) => (
+                  <Text key={`${t.cardId}:${t.rarity}`} style={styles.label}>
+                    + {label(t)}
+                  </Text>
+                ))}
+            </View>
+          );
+        })
+      ) : (
+        <Text style={styles.sub}>Aucune équipe enregistrée</Text>
+      )}
+      {team &&
+        team.equipment.map((e) => (
+          <Text key={`${e.cardId}:${e.rarity}`} style={styles.sub}>
+            Équipement : {label(e)}
+          </Text>
+        ))}
       {team && team.referee && <Text style={styles.sub}>Arbitre : {label(team.referee)}</Text>}
     </View>
   );
@@ -45,7 +63,14 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: space.md },
   title: { fontSize: 20, fontWeight: '700', color: colors.text },
   sub: { color: colors.muted, marginVertical: space.sm },
-  row: { backgroundColor: colors.surface, borderRadius: radius.sm, padding: space.sm, marginVertical: 2, borderWidth: 1, borderColor: colors.border },
+  row: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.sm,
+    padding: space.sm,
+    marginVertical: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   label: { fontSize: 12, color: colors.muted },
   rider: { color: colors.text, fontWeight: '600' },
 });

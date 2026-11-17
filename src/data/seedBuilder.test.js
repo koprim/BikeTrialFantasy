@@ -10,9 +10,19 @@ tri-2026-wc-dole,SENIOR_26,1,Outsider GUY,FRA
 tri-2026-wc-dole,SENIOR_26,2,Jack CARTHY,GBR
 tri-2026-wc-dole,ELITE_WOMEN,1,Top WOMAN,ESP`;
 
-const competitions = { competitions: [
-  { id: 'tri-2026-wc-dole', name: 'UCI Trials World Cup', venue: 'Dole', country: 'FRA', dateFrom: '2026-05-08', round: 1, playable: true },
-] };
+const competitions = {
+  competitions: [
+    {
+      id: 'tri-2026-wc-dole',
+      name: 'UCI Trials World Cup',
+      venue: 'Dole',
+      country: 'FRA',
+      dateFrom: '2026-05-08',
+      round: 1,
+      playable: true,
+    },
+  ],
+};
 
 test('parseCsv yields row objects', () => {
   const rows = parseCsv(rankingsCsv);

@@ -26,7 +26,11 @@ const HistoryStack = createNativeStackNavigator();
 const RulesStack = createNativeStackNavigator();
 const CollectionStack = createNativeStackNavigator();
 
-const stackOptions = { headerStyle: { backgroundColor: colors.surface }, headerTintColor: colors.text, contentStyle: { backgroundColor: colors.bg } };
+const stackOptions = {
+  headerStyle: { backgroundColor: colors.surface },
+  headerTintColor: colors.text,
+  contentStyle: { backgroundColor: colors.bg },
+};
 
 function CollectionNav() {
   return (
@@ -41,7 +45,11 @@ function CollectionNav() {
 function PlayNav() {
   return (
     <PlayStack.Navigator screenOptions={stackOptions}>
-      <PlayStack.Screen name="SeasonHome" component={SeasonHomeScreen} options={{ title: 'Super Fantasy Bike Trial' }} />
+      <PlayStack.Screen
+        name="SeasonHome"
+        component={SeasonHomeScreen}
+        options={{ title: 'Super Fantasy Bike Trial' }}
+      />
       <PlayStack.Screen name="Briefing" component={BriefingScreen} options={{ title: 'Briefing' }} />
       <PlayStack.Screen name="Compose" component={ComposeScreen} options={{ title: 'Mon équipe' }} />
       <PlayStack.Screen name="EventResult" component={EventResultScreen} options={{ title: 'Résultats' }} />

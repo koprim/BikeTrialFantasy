@@ -5,8 +5,11 @@ import { SLOTS } from '../engine/team';
 import { colors, space, radius } from '../ui/theme';
 
 const CATEGORY_LABEL = {
-  SENIOR_26: 'Senior 26"', JUNIOR_26: 'Junior 26"', SENIOR_20: 'Senior 20"',
-  JUNIOR_20: 'Junior 20"', ELITE_WOMEN: 'Elite Femme 20"',
+  SENIOR_26: 'Senior 26"',
+  JUNIOR_26: 'Junior 26"',
+  SENIOR_20: 'Senior 20"',
+  JUNIOR_20: 'Junior 20"',
+  ELITE_WOMEN: 'Elite Femme 20"',
 };
 
 export default function BriefingScreen({ navigation, route }) {
@@ -22,7 +25,9 @@ export default function BriefingScreen({ navigation, route }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{event.name}</Text>
-        <Text style={styles.sub}>Manche {event.round} · {event.venue} ({event.country}) · {event.dateFrom}</Text>
+        <Text style={styles.sub}>
+          Manche {event.round} · {event.venue} ({event.country}) · {event.dateFrom}
+        </Text>
         <Text style={styles.sub}>Équipe verrouillée le {event.dateFrom}</Text>
       </View>
       <SectionList
@@ -39,7 +44,11 @@ export default function BriefingScreen({ navigation, route }) {
         )}
         stickySectionHeadersEnabled={false}
       />
-      <Pressable accessibilityRole="button" onPress={() => navigation.navigate('Compose', { eventId: event.id })} style={styles.cta}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => navigation.navigate('Compose', { eventId: event.id })}
+        style={styles.cta}
+      >
         <Text style={styles.ctaText}>Composer mon équipe</Text>
       </Pressable>
     </View>
@@ -52,11 +61,27 @@ const styles = StyleSheet.create({
   title: { fontSize: 20, fontWeight: '700', color: colors.text },
   sub: { color: colors.muted, marginTop: space.xs },
   section: { fontWeight: '700', color: colors.accent, marginTop: space.md, marginBottom: space.xs },
-  row: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radius.sm, padding: space.sm, marginVertical: 2, borderWidth: 1, borderColor: colors.border, gap: space.sm },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderRadius: radius.sm,
+    padding: space.sm,
+    marginVertical: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+    gap: space.sm,
+  },
   rank: { width: 40, color: colors.muted },
   name: { flex: 1, color: colors.text },
   country: { width: 44, color: colors.muted },
   cote: { width: 44, textAlign: 'right', fontWeight: '700', color: colors.primary },
-  cta: { backgroundColor: colors.primary, padding: space.md, borderRadius: radius.md, alignItems: 'center', marginTop: space.sm },
+  cta: {
+    backgroundColor: colors.primary,
+    padding: space.md,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    marginTop: space.sm,
+  },
   ctaText: { color: '#fff', fontWeight: '700', fontSize: 16 },
 });

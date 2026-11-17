@@ -17,12 +17,12 @@ Open the actual module, table or type you depend on (`src/engine/*`, migrations,
 
 ## Layers (dependencies point inward)
 
-| Layer | Here | May depend on |
-|---|---|---|
-| Domain | `src/engine/*` — pure, deterministic, no I/O | nothing |
-| Application | use cases / handlers: orchestrate domain + ports | domain, port interfaces |
-| Adapters | Supabase repositories, row↔domain mappers, AI extractor | application ports, SDKs |
-| Entry points | Edge `index.ts`, screens, admin pages | wiring only |
+| Layer        | Here                                                     | May depend on           |
+| ------------ | -------------------------------------------------------- | ----------------------- |
+| Domain       | `src/engine/*` — pure, deterministic, no I/O             | nothing                 |
+| Application  | use cases / handlers: orchestrate domain + ports         | domain, port interfaces |
+| Adapters     | Supabase repositories, row↔domain mappers, AI extractor | application ports, SDKs |
+| Entry points | Edge `index.ts`, screens, admin pages                    | wiring only             |
 
 - Domain code is **shared, never copied**. One source (`src/engine`), imported by app and functions.
 - Entry points only wire dependencies (composition root). No logic there.
@@ -47,14 +47,14 @@ Open the actual module, table or type you depend on (`src/engine/*`, migrations,
 
 ## Design patterns — use when they remove a real problem
 
-| Problem | Pattern |
-|---|---|
-| DB rows ≠ domain objects | Mapper (pure, unit-tested both ways) |
-| Persistence behind use cases | Repository + port interface |
-| Variant behaviour (triggers, rewards, PDF sources) | Strategy + registry |
-| Wiring prod vs test vs demo | Dependency injection / composition root |
-| One API, two backends (`demo`, `supabase`) | Adapter behind one interface |
-| Several writes must succeed together | Transaction script in a Postgres RPC |
+| Problem                                            | Pattern                                 |
+| -------------------------------------------------- | --------------------------------------- |
+| DB rows ≠ domain objects                           | Mapper (pure, unit-tested both ways)    |
+| Persistence behind use cases                       | Repository + port interface             |
+| Variant behaviour (triggers, rewards, PDF sources) | Strategy + registry                     |
+| Wiring prod vs test vs demo                        | Dependency injection / composition root |
+| One API, two backends (`demo`, `supabase`)         | Adapter behind one interface            |
+| Several writes must succeed together               | Transaction script in a Postgres RPC    |
 
 YAGNI: no pattern without a current second use or a test-seam need.
 
@@ -77,10 +77,10 @@ YAGNI: no pattern without a current second use or a test-seam need.
 
 ## Rationalizations
 
-| Excuse | Reality |
-|---|---|
-| "User is waiting / it's late" | Rework after a data bug costs far more. The rules are the fast path. |
-| "Adjust the mapping if it differs" | You can read it now. Guessing ships corrupt data. |
-| "Copy the engine to `_shared` for now" | Two engines diverge; scores differ between app and server. |
-| "Atomicity later via RPC" | Later never comes; write the RPC now. |
-| "Handler tests cover it" | Mocked handler tests skip the mapper, where the bug is. |
+| Excuse                                 | Reality                                                              |
+| -------------------------------------- | -------------------------------------------------------------------- |
+| "User is waiting / it's late"          | Rework after a data bug costs far more. The rules are the fast path. |
+| "Adjust the mapping if it differs"     | You can read it now. Guessing ships corrupt data.                    |
+| "Copy the engine to `_shared` for now" | Two engines diverge; scores differ between app and server.           |
+| "Atomicity later via RPC"              | Later never comes; write the RPC now.                                |
+| "Handler tests cover it"               | Mocked handler tests skip the mapper, where the bug is.              |

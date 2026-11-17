@@ -14,8 +14,20 @@ test('eventStatus falls back to dateFrom when dateTo is missing', () => {
   expect(eventStatus({ dateFrom: '2026-05-08' }, '2026-05-09')).toBe('done');
 });
 
-const s2025 = { id: '2025', events: [{ dateFrom: '2025-05-10', dateTo: '2025-05-11' }, { dateFrom: '2025-09-20', dateTo: '2025-09-21' }] };
-const s2026 = { id: '2026', events: [{ dateFrom: '2026-10-18', dateTo: '2026-10-19' }, { dateFrom: '2026-12-20', dateTo: '2026-12-21' }] };
+const s2025 = {
+  id: '2025',
+  events: [
+    { dateFrom: '2025-05-10', dateTo: '2025-05-11' },
+    { dateFrom: '2025-09-20', dateTo: '2025-09-21' },
+  ],
+};
+const s2026 = {
+  id: '2026',
+  events: [
+    { dateFrom: '2026-10-18', dateTo: '2026-10-19' },
+    { dateFrom: '2026-12-20', dateTo: '2026-12-21' },
+  ],
+};
 const s2027 = { id: '2027', events: [{ dateFrom: '2027-05-01', dateTo: '2027-05-02' }] };
 
 test('seasonStatus', () => {

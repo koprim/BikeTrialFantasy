@@ -41,10 +41,10 @@ test('card detail shows each rarity with its effect; crafting needs fragments', 
   fireEvent.press(await screen.findByLabelText('Onglet Collection'));
   fireEvent.press(await screen.findByText('Techniques'));
   fireEvent.press((await screen.findAllByLabelText('Gap Commune'))[0]);
-  expect(await screen.findByText('+25 pts si le pilote réussit un Gap')).toBeTruthy();   // Commune
-  expect(screen.getByText('+75 pts si le pilote réussit un Gap')).toBeTruthy();          // Légendaire
+  expect(await screen.findByText('+25 pts si le pilote réussit un Gap')).toBeTruthy(); // Commune
+  expect(screen.getByText('+75 pts si le pilote réussit un Gap')).toBeTruthy(); // Légendaire
   expect(screen.getAllByText(/^Fabriquer · \d+ fragments$/).length).toBeGreaterThan(0);
-  expect(screen.getAllByLabelText(/^Fabriquer .* indisponible$/).length).toBe(4);        // 0 fragments
+  expect(screen.getAllByLabelText(/^Fabriquer .* indisponible$/).length).toBe(4); // 0 fragments
 });
 
 test('compose: pick an owned pilot card; team section has equipment and referee', async () => {
@@ -75,7 +75,11 @@ test('flow: open the daily pack, then its cards are offered when composing a tea
   const revealed = screen.getAllByLabelText(/^Carte révélée/).map((n) => {
     const label = n.props.accessibilityLabel.replace(/^Carte révélée /, '');
     const rarity = label.split(' ').pop();
-    return { name: label.slice(0, label.length - rarity.length - 1), rarity, type: byName[label.slice(0, label.length - rarity.length - 1)].type };
+    return {
+      name: label.slice(0, label.length - rarity.length - 1),
+      rarity,
+      type: byName[label.slice(0, label.length - rarity.length - 1)].type,
+    };
   });
   fireEvent.press(screen.getByText('Voir ma collection'));
 
@@ -85,7 +89,9 @@ test('flow: open the daily pack, then its cards are offered when composing a tea
   await screen.findByText('Équipements (0/2)');
 
   // Open the picker that matches a card of the pack (equipment, referee, technique, else pilot).
-  const target = ['EQUIPMENT', 'REFEREE', 'TECHNIQUE', 'PILOT'].map((t) => revealed.find((c) => c.type === t)).find(Boolean);
+  const target = ['EQUIPMENT', 'REFEREE', 'TECHNIQUE', 'PILOT']
+    .map((t) => revealed.find((c) => c.type === t))
+    .find(Boolean);
   if (target.type === 'EQUIPMENT') fireEvent.press(screen.getByText('+ Équipement'));
   else if (target.type === 'REFEREE') fireEvent.press(screen.getByText('Choisir un arbitre…'));
   else if (target.type === 'TECHNIQUE') {
@@ -94,7 +100,10 @@ test('flow: open the daily pack, then its cards are offered when composing a tea
     fireEvent.press(await screen.findByText(/^\+ Technique \(0\//));
   } else {
     const { RIDERS_BY_ID } = require('./src/data/index');
-    const slot = { SENIOR_26: 'Senior 26"', JUNIOR_26: 'Junior 26"', SENIOR_20: 'Senior 20"', JUNIOR_20: 'Junior 20"' }[RIDERS_BY_ID[byName[target.name].subject].category] || 'Elite Women 1';
+    const slot =
+      { SENIOR_26: 'Senior 26"', JUNIOR_26: 'Junior 26"', SENIOR_20: 'Senior 20"', JUNIOR_20: 'Junior 20"' }[
+        RIDERS_BY_ID[byName[target.name].subject].category
+      ] || 'Elite Women 1';
     fireEvent.press(screen.getByText(slot));
   }
   expect((await screen.findAllByLabelText(`Choisir ${target.name} ${target.rarity}`)).length).toBeGreaterThan(0);

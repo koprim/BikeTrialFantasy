@@ -1,5 +1,13 @@
 const {
-  emptyCollection, countOf, openPack, canOpenDaily, openDailyPack, openStarter, recycle, craft, ownedRefs,
+  emptyCollection,
+  countOf,
+  openPack,
+  canOpenDaily,
+  openDailyPack,
+  openStarter,
+  recycle,
+  craft,
+  ownedRefs,
 } = require('./collection');
 const { makeRng } = require('./rng');
 const { atLeast } = require('./rarity');
@@ -9,7 +17,15 @@ const deps = { cards: CARDS, balance: BALANCE };
 const allCommon = { ...BALANCE, pack: { ...BALANCE.pack, odds: { C: 1, R: 0, E: 0, L: 0 } } };
 
 test('emptyCollection', () => {
-  expect(emptyCollection()).toEqual({ owned: {}, fragments: 0, pity: { E: 0, L: 0 }, packsOpened: 0, lastPackDate: null, starterGiven: false, lastPack: [] });
+  expect(emptyCollection()).toEqual({
+    owned: {},
+    fragments: 0,
+    pity: { E: 0, L: 0 },
+    packsOpened: 0,
+    lastPackDate: null,
+    starterGiven: false,
+    lastPack: [],
+  });
 });
 
 test('a pack has 5 cards, at least one Rare, all added to the collection', () => {
@@ -24,7 +40,9 @@ test('a pack has 5 cards, at least one Rare, all added to the collection', () =>
 });
 
 test('same seed, same pack', () => {
-  expect(openPack(emptyCollection(), deps, makeRng(3)).lastPack).toEqual(openPack(emptyCollection(), deps, makeRng(3)).lastPack);
+  expect(openPack(emptyCollection(), deps, makeRng(3)).lastPack).toEqual(
+    openPack(emptyCollection(), deps, makeRng(3)).lastPack,
+  );
 });
 
 test('pity counters grow without E/L and force an Épique on the 10th pack', () => {
@@ -38,7 +56,11 @@ test('pity counters grow without E/L and force an Épique on the 10th pack', () 
 });
 
 test('pity forces a Légendaire on the 60th pack', () => {
-  const col = openPack({ ...emptyCollection(), pity: { E: 0, L: 59 } }, { cards: CARDS, balance: allCommon }, makeRng(5));
+  const col = openPack(
+    { ...emptyCollection(), pity: { E: 0, L: 59 } },
+    { cards: CARDS, balance: allCommon },
+    makeRng(5),
+  );
   expect(col.lastPack.at(-1).rarity).toBe('L');
   expect(col.pity).toEqual({ E: 0, L: 0 });
 });
@@ -95,9 +117,13 @@ test('craft spends fragments; refused without enough fragments or for a missing 
 });
 
 test('ownedRefs lists owned card/rarity pairs matching a filter', () => {
-  const col = { ...emptyCollection(), owned: { 'technique-2026-gap': { C: 2, R: 0 }, 'equipment-2026-alpha': { C: 1 } } };
-  expect(ownedRefs(col, CARDS, (c) => c.type === 'TECHNIQUE').map(({ cardId, rarity, count }) => [cardId, rarity, count]))
-    .toEqual([['technique-2026-gap', 'C', 2]]);
+  const col = {
+    ...emptyCollection(),
+    owned: { 'technique-2026-gap': { C: 2, R: 0 }, 'equipment-2026-alpha': { C: 1 } },
+  };
+  expect(
+    ownedRefs(col, CARDS, (c) => c.type === 'TECHNIQUE').map(({ cardId, rarity, count }) => [cardId, rarity, count]),
+  ).toEqual([['technique-2026-gap', 'C', 2]]);
 });
 
 test('openDailyPack without a date does nothing', () => {
@@ -114,7 +140,9 @@ test('pack odds over 2000 packs match the balance (non-guaranteed slots) and eve
   for (let i = 0; i < N; i++) {
     col = openPack(col, deps, rng);
     expect(col.lastPack.some((c) => atLeast(c.rarity, 'R'))).toBe(true);
-    col.lastPack.slice(0, 4).forEach((c) => { counts[c.rarity] += 1; });
+    col.lastPack.slice(0, 4).forEach((c) => {
+      counts[c.rarity] += 1;
+    });
   }
   const odds = BALANCE.pack.odds;
   const total = N * 4;

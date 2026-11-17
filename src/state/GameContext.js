@@ -1,6 +1,15 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { saveState, loadState } from './persistence';
-import { DEMO_PLAYER, EVENTS_BY_ID, RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
+import {
+  DEMO_PLAYER,
+  EVENTS_BY_ID,
+  RIDERS_BY_ID,
+  RIDERS_BY_CATEGORY,
+  CARDS,
+  CARDS_BY_ID,
+  BALANCE,
+  EDITION,
+} from '../data/index';
 import { eventStatus, today, dayBefore } from '../engine/calendar';
 import { openStarter, openDailyPack, recycle, craft } from '../engine/collection';
 import { makeRng, hashString } from '../engine/rng';
@@ -9,8 +18,8 @@ import { validateCardTeam } from '../engine/team';
 
 const initialState = {
   player: { name: DEMO_PLAYER.name },
-  picks: DEMO_PLAYER.picks,           // { [eventId]: card Team }
-  simulatedDate: null,                // null = real date, else 'YYYY-MM-DD'
+  picks: DEMO_PLAYER.picks, // { [eventId]: card Team }
+  simulatedDate: null, // null = real date, else 'YYYY-MM-DD'
   collection: DEMO_PLAYER.collection, // see src/engine/collection.js
 };
 
@@ -26,7 +35,12 @@ function gameReducer(state, action) {
       const event = EVENTS_BY_ID[eventId];
       if (!team) return state;
       if (!event || eventStatus(event, now) !== 'open') return state;
-      const check = validateCardTeam(team, { cardsById: CARDS_BY_ID, ridersById: RIDERS_BY_ID, owned: state.collection.owned, balance: BALANCE });
+      const check = validateCardTeam(team, {
+        cardsById: CARDS_BY_ID,
+        ridersById: RIDERS_BY_ID,
+        owned: state.collection.owned,
+        balance: BALANCE,
+      });
       if (!check.valid) return state;
       return { ...state, picks: { ...state.picks, [eventId]: team } };
     }
@@ -37,18 +51,31 @@ function gameReducer(state, action) {
       const effective = date || today();
       const last = state.collection.lastPackDate;
       // Going back in time must not lock the daily pack behind a future date.
-      const collection = last && effective <= last ? { ...state.collection, lastPackDate: dayBefore(effective) } : state.collection;
+      const collection =
+        last && effective <= last ? { ...state.collection, lastPackDate: dayBefore(effective) } : state.collection;
       return { ...state, simulatedDate: date, collection };
     }
     case 'OPEN_STARTER':
-      return withCollection(state, openStarter(state.collection, { cards: CARDS, ridersById: RIDERS_BY_ID },
-        makeRng(hashString(`starter#${state.player.name}`))));
+      return withCollection(
+        state,
+        openStarter(
+          state.collection,
+          { cards: CARDS, ridersById: RIDERS_BY_ID },
+          makeRng(hashString(`starter#${state.player.name}`)),
+        ),
+      );
     case 'OPEN_DAILY_PACK':
-      return withCollection(state, openDailyPack(state.collection, action.payload.now, { cards: CARDS, balance: BALANCE }));
+      return withCollection(
+        state,
+        openDailyPack(state.collection, action.payload.now, { cards: CARDS, balance: BALANCE }),
+      );
     case 'RECYCLE':
       return withCollection(state, recycle(state.collection, action.payload.cardId, action.payload.rarity, BALANCE));
     case 'CRAFT':
-      return withCollection(state, craft(state.collection, CARDS_BY_ID[action.payload.cardId], action.payload.rarity, BALANCE));
+      return withCollection(
+        state,
+        craft(state.collection, CARDS_BY_ID[action.payload.cardId], action.payload.rarity, BALANCE),
+      );
     case 'RESET':
       return initialState;
     case 'HYDRATE': {
@@ -72,7 +99,9 @@ export function GameProvider({ children }) {
     });
   }, []);
   // Save only after hydration so the initial demo state never overwrites a real save.
-  useEffect(() => { if (hydrated) saveState(state); }, [state, hydrated]);
+  useEffect(() => {
+    if (hydrated) saveState(state);
+  }, [state, hydrated]);
   if (!hydrated) return null;
   return <GameContext.Provider value={{ state, dispatch }}>{children}</GameContext.Provider>;
 }
@@ -93,8 +122,14 @@ export function useScoring() {
   const { state } = useGame();
   const now = useNow();
   return {
-    picks: state.picks, playerName: state.player.name, now,
-    ridersById: RIDERS_BY_ID, ridersByCategory: RIDERS_BY_CATEGORY, cardsById: CARDS_BY_ID, balance: BALANCE, edition: EDITION,
+    picks: state.picks,
+    playerName: state.player.name,
+    now,
+    ridersById: RIDERS_BY_ID,
+    ridersByCategory: RIDERS_BY_CATEGORY,
+    cardsById: CARDS_BY_ID,
+    balance: BALANCE,
+    edition: EDITION,
   };
 }
 

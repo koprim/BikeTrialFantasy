@@ -12,9 +12,15 @@ function dayBefore(iso) {
   return d.toISOString().slice(0, 10);
 }
 
-function endOf(event) { return event.dateTo || event.dateFrom; }
-function seasonStart(season) { return season.events[0].dateFrom; }
-function seasonEnd(season) { return endOf(season.events[season.events.length - 1]); }
+function endOf(event) {
+  return event.dateTo || event.dateFrom;
+}
+function seasonStart(season) {
+  return season.events[0].dateFrom;
+}
+function seasonEnd(season) {
+  return endOf(season.events[season.events.length - 1]);
+}
 
 function eventStatus(event, now) {
   if (now < event.dateFrom) return 'open';

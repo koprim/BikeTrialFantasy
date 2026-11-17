@@ -32,19 +32,31 @@ export default function CardDetailScreen({ route }) {
         const canCraft = fragments >= cost;
         return (
           <View key={r} style={[styles.row, { borderColor: rarityColors[r] }]}>
-            <Text style={[styles.rarity, { color: rarityColors[r] }]}>{RARITY_LABELS[r]} · ×{count}</Text>
-            {card.effects.map((e, i) => <Text key={i} style={styles.effect}>{describeEffect(e, r, BALANCE)}</Text>)}
+            <Text style={[styles.rarity, { color: rarityColors[r] }]}>
+              {RARITY_LABELS[r]} · ×{count}
+            </Text>
+            {card.effects.map((e, i) => (
+              <Text key={i} style={styles.effect}>
+                {describeEffect(e, r, BALANCE)}
+              </Text>
+            ))}
             <View style={styles.actions}>
-              <Pressable disabled={!canCraft} accessibilityRole="button"
+              <Pressable
+                disabled={!canCraft}
+                accessibilityRole="button"
                 accessibilityLabel={`Fabriquer ${card.name} ${RARITY_LABELS[r]}${canCraft ? '' : ' indisponible'}`}
                 onPress={() => dispatch({ type: 'CRAFT', payload: { cardId: card.id, rarity: r } })}
-                style={[styles.btn, !canCraft && styles.disabled]}>
+                style={[styles.btn, !canCraft && styles.disabled]}
+              >
                 <Text style={styles.btnText}>Fabriquer · {cost} fragments</Text>
               </Pressable>
               {count > 1 && (
-                <Pressable accessibilityRole="button" accessibilityLabel={`Recycler ${card.name} ${RARITY_LABELS[r]}`}
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Recycler ${card.name} ${RARITY_LABELS[r]}`}
                   onPress={() => dispatch({ type: 'RECYCLE', payload: { cardId: card.id, rarity: r } })}
-                  style={[styles.btn, styles.secondary]}>
+                  style={[styles.btn, styles.secondary]}
+                >
                   <Text style={styles.secondaryText}>Recycler · +{BALANCE.fragments.perDuplicate[r]}</Text>
                 </Pressable>
               )}

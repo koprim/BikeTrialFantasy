@@ -1,7 +1,14 @@
 module.exports = {
   root: true,
   extends: ['expo', 'prettier'],
-  ignorePatterns: ['node_modules/', '.expo/', 'dist/', 'web-build/', '.superpowers/', 'supabase/functions/_shared/backend.mjs'],
+  ignorePatterns: [
+    'node_modules/',
+    '.expo/',
+    'dist/',
+    'web-build/',
+    '.superpowers/',
+    'supabase/functions/_shared/backend.mjs',
+  ],
   overrides: [
     { files: ['scripts/**/*.js', '*.config.js', '.eslintrc.js'], env: { node: true } }, // Node scripts and configs use __dirname/require
     { files: ['**/*.test.js', 'jest.setup.js', 'test/**/*.js'], env: { jest: true } },
