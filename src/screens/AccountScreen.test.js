@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent, act } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { GameProvider } from '../state/GameContext';
 import AccountScreen from './AccountScreen';
 import { inMemoryDemoApi } from '../testing/inMemoryDemoApi';
+import { deferredCall } from '../testing/deferredCall';
 
 const guest = async () => ({ isAnonymous: true, email: null, pendingEmail: null });
 
@@ -70,4 +71,29 @@ test('a successful save shows the pending confirmation', async () => {
   fireEvent.changeText(await screen.findByLabelText('Adresse e-mail'), 'robin@example.com');
   fireEvent.press(screen.getByRole('button', { name: 'Sauvegarder mon compte' }));
   expect(await screen.findByText('Confirmation en attente pour robin@example.com.')).toBeTruthy();
+});
+
+test('a double press on save sends one request and shows the button busy', async () => {
+  const { call: saveAccount, settle } = deferredCall();
+  renderWith({ account: guest, saveAccount });
+  fireEvent.changeText(await screen.findByLabelText('Adresse e-mail'), 'robin@example.com');
+  const button = screen.getByRole('button', { name: 'Sauvegarder mon compte' });
+  fireEvent.press(button);
+  fireEvent.press(button);
+  expect(screen.getByRole('button', { name: 'Sauvegarder mon compte', busy: true, disabled: true })).toBeTruthy();
+  await act(async () => settle({ ok: true, patch: {} }));
+  expect(saveAccount).toHaveBeenCalledTimes(1);
+});
+
+test('a save that succeeds but cannot refresh the status keeps the success and only notes the stale status', async () => {
+  const account = jest
+    .fn()
+    .mockImplementationOnce(guest)
+    .mockImplementation(async () => Promise.reject(new Error('Failed to fetch')));
+  renderWith({ account, saveAccount: async () => ({ ok: true, patch: {} }) });
+  fireEvent.changeText(await screen.findByLabelText('Adresse e-mail'), 'robin@example.com');
+  fireEvent.press(screen.getByRole('button', { name: 'Sauvegarder mon compte' }));
+  expect(await screen.findByText(/lien de confirmation a été envoyé à robin@example.com/)).toBeTruthy();
+  expect(screen.getByText(/Le statut du compte n'a pas pu être actualisé\./)).toBeTruthy();
+  expect(screen.queryByText('Connexion impossible. Vérifie ta connexion.')).toBeNull();
 });

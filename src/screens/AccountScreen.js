@@ -7,45 +7,59 @@ import { colors, space, radius } from '../ui/theme';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const STALE_STATUS_NOTE = "Le statut du compte n'a pas pu être actualisé.";
+
 // Loads the AccountInfo: undefined while loading, null without an account or when it could not be read (failed).
+// `refresh` re-reads it after an action and resolves whether it could; a failed refresh keeps the last status.
 function useAccount(actions) {
   const [account, setAccount] = useState(undefined);
   const [failed, setFailed] = useState(false);
   const mounted = useRef(true);
 
-  const reload = useCallback(async () => {
-    let info = null;
-    let readFailed = false;
-    try {
-      info = await actions.account();
-    } catch {
-      readFailed = true; // reported on screen; the guest form stays usable
-    }
-    if (!mounted.current) return;
-    setAccount(info);
-    setFailed(readFailed);
-  }, [actions]);
-
   useEffect(() => {
     mounted.current = true;
-    reload();
+    actions
+      .account()
+      .then((info) => mounted.current && setAccount(info))
+      .catch(() => {
+        if (!mounted.current) return;
+        setAccount(null);
+        setFailed(true); // reported on screen; the guest form stays usable
+      });
     return () => {
       mounted.current = false;
     };
-  }, [reload]);
+  }, [actions]);
 
-  return { account, failed, reload };
+  const refresh = useCallback(async () => {
+    try {
+      const info = await actions.account();
+      if (mounted.current) {
+        setAccount(info);
+        setFailed(false);
+      }
+      return true;
+    } catch {
+      return false; // the caller notes the stale status
+    }
+  }, [actions]);
+
+  return { account, failed, refresh };
 }
 
 export default function AccountScreen() {
   const { actions } = useGame();
-  const { account, failed, reload } = useAccount(actions);
+  const { account, failed, refresh } = useAccount(actions);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
   const { run: submit, busy } = useAsyncAction(async (call, address, successMessage) => {
     const result = await call(address);
-    setMessage(result.ok ? successMessage : errorMessage(result.error));
-    if (result.ok) await reload(); // shows the pending confirmation
+    if (!result.ok) {
+      setMessage(errorMessage(result.error));
+      return;
+    }
+    const refreshed = await refresh(); // shows the pending confirmation
+    setMessage(refreshed ? successMessage : `${successMessage} ${STALE_STATUS_NOTE}`);
   });
 
   if (account === undefined) return null;
