@@ -22,7 +22,7 @@ class GameError extends Error {
 }
 
 function gameError(code, details) {
-  if (!(code in HTTP_STATUS_BY_CODE)) throw new Error(`Unknown game error ${code}`);
+  if (!Object.prototype.hasOwnProperty.call(HTTP_STATUS_BY_CODE, code)) throw new Error(`Unknown game error ${code}`);
   return new GameError(code, HTTP_STATUS_BY_CODE[code], details);
 }
 

@@ -9,3 +9,8 @@ test('a game error carries its code, HTTP status and details', () => {
 test('unknown codes are programming errors', () => {
   expect(() => gameError('NOPE')).toThrow('Unknown game error NOPE');
 });
+
+test('inherited object keys are not game error codes', () => {
+  expect(() => gameError('toString')).toThrow('Unknown game error toString');
+  expect(() => gameError('constructor')).toThrow('Unknown game error constructor');
+});
