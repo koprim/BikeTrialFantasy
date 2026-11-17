@@ -6,13 +6,14 @@ import { today } from '../engine/calendar';
 import { colors, space } from '../ui/theme';
 
 // The GameApi owns the player state and its persistence; the client only mirrors what it returns.
+// A patch comes from a successful action, which proves the backend is reachable again: it clears `offline`.
 function clientReducer(state, action) {
   switch (action.type) {
     case 'LOADED':
       return action.payload;
     case 'PATCH': {
       const patch = typeof action.payload === 'function' ? action.payload(state) : action.payload;
-      return { ...state, ...patch };
+      return { ...state, ...patch, offline: false };
     }
     default:
       return state;
@@ -82,7 +83,7 @@ export function GameProvider({ api: injectedApi, children }) {
     <GameContext.Provider value={value}>
       {state.offline && (
         <Text accessibilityRole="alert" style={styles.offline}>
-          Hors ligne : dernières données connues. Les actions sont indisponibles.
+          Hors ligne : dernières données connues. Les actions peuvent échouer tant que la connexion n'est pas revenue.
         </Text>
       )}
       {children}
