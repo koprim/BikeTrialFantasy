@@ -1,6 +1,9 @@
 const { toWalletState, toPicks } = require('../../backend/mappers');
+const { isNetworkError } = require('./networkError');
+const { createPlayerCache } = require('./playerCache');
 
-const CACHE_KEY = 'sfbt:supabase-cache:v1';
+const PG_INSUFFICIENT_PRIVILEGE = '42501';
+const PG_CHECK_VIOLATION = '23514';
 
 function unwrap({ data, error }) {
   if (error) throw error;
@@ -36,37 +39,64 @@ function createPlayerReader({ client, allowSimulatedDate }) {
       client.from('app_settings').select('value').eq('key', 'simulated_date').maybeSingle().then(unwrap),
     ]);
     return {
-      player: { name: profile.display_name },
-      picks: toPicks(teams),
-      collection: toWalletState(wallet, owned).collection,
-      simulatedDate: allowSimulatedDate && setting ? setting.value : null,
+      userId: user.id,
+      state: {
+        player: { name: profile.display_name },
+        picks: toPicks(teams),
+        collection: toWalletState(wallet, owned).collection,
+        simulatedDate: allowSimulatedDate && setting ? setting.value : null,
+      },
     };
   }
 
   return { currentUser, fetchPlayerState };
 }
 
-async function loadWithOfflineCache(fetchPlayerState, storage) {
+// Only a network failure falls back to the cache; real errors (RLS, missing row, bugs) must surface.
+async function loadWithOfflineCache({ fetchPlayerState, cache, localSessionUser }) {
   try {
-    const state = await fetchPlayerState();
-    await storage.setItem(CACHE_KEY, JSON.stringify(state));
+    const { userId, state } = await fetchPlayerState();
+    await cache.write(userId, state);
     return state;
   } catch (error) {
-    const cached = await storage.getItem(CACHE_KEY);
-    if (cached) return { ...JSON.parse(cached), offline: true };
+    if (!isNetworkError(error)) throw error;
+    const localUser = await localSessionUser();
+    const cached = await cache.readFor(localUser && localUser.id);
+    if (cached) return { ...cached, offline: true };
     throw error;
   }
 }
 
+// The session lives in local storage, so it is readable offline.
+function createLocalSessionUser(client) {
+  return async () => {
+    try {
+      const { data } = await client.auth.getSession();
+      return data.session ? data.session.user : null;
+    } catch {
+      return null;
+    }
+  };
+}
+
+function toWriteFailure(error) {
+  if (isNetworkError(error)) return { ok: false, error: 'NETWORK' };
+  const notAllowed = error.code === PG_INSUFFICIENT_PRIVILEGE || error.code === PG_CHECK_VIOLATION;
+  return { ok: false, error: notAllowed ? 'NOT_ALLOWED' : 'INTERNAL', details: error.message };
+}
+
 // Existing saved account on a new browser: magic link; the guest session of this browser is replaced on return.
-function createAccountActions(client, emailRedirectTo) {
+function createAccountActions(client, emailRedirectTo, localSessionUser) {
   const outcome = (error, code) =>
     error ? { ok: false, error: code, details: error.message } : { ok: true, patch: {} };
   return {
+    // Resolves with the server's view of the user; when it cannot be reached, with the locally known session user;
+    // null when there is neither. Never rejects.
     async account() {
-      const { data } = await client.auth.getUser();
-      if (!data.user) return null;
-      const { is_anonymous: isAnonymous, email, new_email: pendingEmail } = data.user;
+      const { data, error } = await client.auth.getUser();
+      const user = error ? await localSessionUser() : data.user;
+      if (!user) return null;
+      const { is_anonymous: isAnonymous, email, new_email: pendingEmail } = user;
       return { isAnonymous: Boolean(isAnonymous), email: email || null, pendingEmail: pendingEmail || null };
     },
     async saveAccount(email) {
@@ -87,6 +117,8 @@ function createAccountActions(client, emailRedirectTo) {
 /** @returns {import('./demoApi').GameApi} */
 function createSupabaseApi({ client, storage, allowSimulatedDate = false, emailRedirectTo }) {
   const { currentUser, fetchPlayerState } = createPlayerReader({ client, allowSimulatedDate });
+  const cache = createPlayerCache(storage);
+  const localSessionUser = createLocalSessionUser(client);
 
   const collectionAction = (name) => async (body) => {
     const result = await invokeFunction(client, name, body);
@@ -95,7 +127,7 @@ function createSupabaseApi({ client, storage, allowSimulatedDate = false, emailR
 
   return {
     features: { simulatedDate: allowSimulatedDate, reset: false, account: true },
-    load: () => loadWithOfflineCache(fetchPlayerState, storage),
+    load: () => loadWithOfflineCache({ fetchPlayerState, cache, localSessionUser }),
     openStarter: collectionAction('open-starter'),
     openDailyPack: collectionAction('open-daily-pack'),
     recycle: collectionAction('recycle'),
@@ -106,9 +138,14 @@ function createSupabaseApi({ client, storage, allowSimulatedDate = false, emailR
       return { ok: true, patch: (state) => ({ picks: { ...state.picks, [eventId]: result.data.team } }) };
     },
     async setName(name) {
-      const user = await currentUser();
-      const { error } = await client.from('profiles').update({ display_name: name }).eq('user_id', user.id);
-      return error ? { ok: false, error: 'NETWORK' } : { ok: true, patch: { player: { name } } };
+      try {
+        const user = await currentUser();
+        const { error } = await client.from('profiles').update({ display_name: name }).eq('user_id', user.id);
+        if (error) throw error;
+        return { ok: true, patch: { player: { name } } };
+      } catch (error) {
+        return toWriteFailure(error);
+      }
     },
     async setSimulatedDate(date) {
       const result = await invokeFunction(client, 'set-simulated-date', { date });
@@ -118,7 +155,7 @@ function createSupabaseApi({ client, storage, allowSimulatedDate = false, emailR
     async reset() {
       return { ok: false, error: 'NOT_AVAILABLE' };
     },
-    ...createAccountActions(client, emailRedirectTo),
+    ...createAccountActions(client, emailRedirectTo, localSessionUser),
   };
 }
 

@@ -22,25 +22,54 @@ const DEFAULT_TABLES = {
 
 // Mimics supabase-js FunctionsHttpError: the HTTP response lives in error.context.
 function httpError(code, details) {
-  return { context: { json: async () => ({ error: code, details }) } };
+  return Object.assign(new Error('Edge Function returned a non-2xx status code'), {
+    name: 'FunctionsHttpError',
+    context: { json: async () => ({ error: code, details }) },
+  });
 }
 
-function createFakeSupabaseClient({ session = null, tables = {}, functions = {}, failReads = false } = {}) {
+// Mimics supabase-js FunctionsFetchError: the request never reached the server (context is the fetch TypeError).
+function fetchError() {
+  return Object.assign(new Error('Failed to send a request to the Edge Function'), {
+    name: 'FunctionsFetchError',
+    context: new TypeError('Failed to fetch'),
+  });
+}
+
+// Mimics supabase-js auth when the network is down.
+function authFetchError() {
+  return Object.assign(new Error('Failed to fetch'), { name: 'AuthRetryableFetchError', status: 0 });
+}
+
+// Mimics PostgREST single() when the result is not exactly one row.
+function singleRowError(count) {
+  return {
+    code: 'PGRST116',
+    message: 'JSON object requested, multiple (or no) rows returned',
+    details: `The result contains ${count} rows`,
+    hint: null,
+  };
+}
+
+function createFakeSupabaseClient({ session = null, tables = {}, functions = {}, offline = false } = {}) {
   const data = { ...DEFAULT_TABLES, ...tables };
-  const state = { session, user: session ? session.user : null, authError: null };
+  const state = { session, user: session ? session.user : null, authError: null, offline };
   const calls = { anonymousSignIns: 0, invocations: [], updateUser: [], signInWithOtp: [], updates: [] };
 
   function query(rows) {
-    const run = (result) => (failReads ? { data: null, error: new Error('offline') } : { data: result, error: null });
+    const run = (result, error = null) =>
+      state.offline ? { data: null, error: new TypeError('Failed to fetch') } : { data: error ? null : result, error };
     return {
       then: (resolve, reject) => Promise.resolve(run(rows)).then(resolve, reject),
-      single: async () => run(rows[0] || null),
+      single: async () => (rows.length === 1 ? run(rows[0]) : run(null, singleRowError(rows.length))),
       maybeSingle: async () => run(rows[0] || null),
     };
   }
 
-  const authResult = (payload) =>
-    state.authError ? { data: null, error: state.authError } : { data: payload, error: null };
+  const authResult = (payload) => {
+    if (state.offline) return { data: null, error: authFetchError() };
+    return state.authError ? { data: null, error: state.authError } : { data: payload, error: null };
+  };
 
   const auth = {
     async getSession() {
@@ -48,11 +77,13 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
     },
     async signInAnonymously() {
       calls.anonymousSignIns += 1;
+      if (state.offline) return { data: { user: null, session: null }, error: authFetchError() };
       state.user = { id: GUEST_ID, is_anonymous: true, email: null };
       state.session = { user: state.user };
       return { data: { user: state.user, session: state.session }, error: null };
     },
     async getUser() {
+      if (state.offline) return { data: { user: null }, error: authFetchError() };
       return { data: { user: state.user } };
     },
     async updateUser(attributes, options) {
@@ -68,6 +99,12 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
   return {
     calls,
     auth,
+    goOffline: () => {
+      state.offline = true;
+    },
+    failUpdatesWith: (error) => {
+      state.updateError = error;
+    },
     failAuthWith: (message) => {
       state.authError = new Error(message);
     },
@@ -79,7 +116,8 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
           eq: async (column, value) => {
             calls.updates.push({ table, values, column, value });
             matching(column, value).forEach((row) => Object.assign(row, values));
-            return { error: failReads ? new Error('offline') : null };
+            if (state.offline) return { error: new TypeError('Failed to fetch') };
+            return { error: state.updateError || null };
           },
         }),
       };
@@ -88,7 +126,7 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
       async invoke(name, { body }) {
         calls.invocations.push({ name, body });
         const handler = functions[name];
-        if (!handler) return { data: null, error: new Error('Failed to send a request to the Edge Function') };
+        if (state.offline || !handler) return { data: null, error: fetchError() };
         return handler(body);
       },
     },

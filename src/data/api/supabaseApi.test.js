@@ -54,24 +54,88 @@ describe('load', () => {
     expect(client.calls.anonymousSignIns).toBe(0);
   });
 
-  test('caches the state and serves it offline when the read fails', async () => {
-    const storage = memoryStorage();
-    const online = createSupabaseApi({ client: createFakeSupabaseClient(), storage });
-    const loaded = await online.load();
-    const offlineClient = createFakeSupabaseClient({ failReads: true });
-    const offline = await createSupabaseApi({ client: offlineClient, storage }).load();
-    expect(offline).toEqual({ ...loaded, offline: true });
+  describe('offline cache', () => {
+    const session = { user: { id: GUEST_ID } };
+
+    async function cacheFrom(onlineClient) {
+      const storage = memoryStorage();
+      const loaded = await createSupabaseApi({ client: onlineClient, storage }).load();
+      return { storage, loaded };
+    }
+    const offlineApi = (storage, clientOptions = { session }) =>
+      createSupabaseApi({ client: createFakeSupabaseClient({ ...clientOptions, offline: true }), storage });
+
+    test('serves the cached state of the same user when the network is down', async () => {
+      const { storage, loaded } = await cacheFrom(createFakeSupabaseClient());
+      expect(await offlineApi(storage).load()).toEqual({ ...loaded, offline: true });
+    });
+
+    test('does not serve the cache of another user', async () => {
+      const { storage } = await cacheFrom(createFakeSupabaseClient());
+      const otherUser = { session: { user: { id: 'someone-else' } } };
+      await expect(offlineApi(storage, otherUser).load()).rejects.toThrow('Failed to fetch');
+    });
+
+    test('does not serve the cache without a local session', async () => {
+      const { storage } = await cacheFrom(createFakeSupabaseClient());
+      await expect(offlineApi(storage, {}).load()).rejects.toThrow();
+    });
+
+    test('throws the network error when nothing is cached', async () => {
+      await expect(offlineApi(memoryStorage()).load()).rejects.toThrow('Failed to fetch');
+    });
+
+    test('treats a corrupt cache as no cache', async () => {
+      const storage = memoryStorage();
+      await storage.setItem(CACHE_KEY, '{not json');
+      await expect(offlineApi(storage).load()).rejects.toThrow('Failed to fetch');
+    });
+
+    test('ignores a cache written without a user id', async () => {
+      const storage = memoryStorage();
+      await storage.setItem(CACHE_KEY, JSON.stringify({ player: { name: 'Old' } }));
+      await expect(offlineApi(storage).load()).rejects.toThrow('Failed to fetch');
+    });
+
+    test('a real read error propagates instead of serving the cache', async () => {
+      const { storage } = await cacheFrom(createFakeSupabaseClient());
+      const missingProfile = createFakeSupabaseClient({ session, tables: { profiles: [] } });
+      await expect(createSupabaseApi({ client: missingProfile, storage }).load()).rejects.toMatchObject({
+        code: 'PGRST116',
+      });
+    });
+
+    test('a mapping failure propagates instead of serving the cache', async () => {
+      const { storage } = await cacheFrom(createFakeSupabaseClient());
+      const brokenRow = createFakeSupabaseClient({ session, tables: { profiles: [{ user_id: GUEST_ID }] } });
+      brokenRow.from = () => ({
+        select: () => ({ eq: () => ({ single: async () => ({ data: null, error: null }) }) }),
+      });
+      await expect(createSupabaseApi({ client: brokenRow, storage }).load()).rejects.toThrow(TypeError);
+    });
+
+    test('a failing cache write does not discard fresh data', async () => {
+      const storage = memoryStorage();
+      storage.setItem = async () => {
+        throw new Error('quota exceeded');
+      };
+      const state = await createSupabaseApi({ client: createFakeSupabaseClient(), storage }).load();
+      expect(state.player.name).toBe('Joueur');
+      expect(state.offline).toBeUndefined();
+    });
   });
 
   test('throws when the read fails and nothing is cached', async () => {
-    const { api } = build({ failReads: true });
-    await expect(api.load()).rejects.toThrow('offline');
+    const { api } = build({ offline: true });
+    await expect(api.load()).rejects.toThrow();
   });
 
   test('writes the cache under its versioned key', async () => {
     const { api, storage } = build();
     await api.load();
-    expect(JSON.parse(await storage.getItem(CACHE_KEY)).player.name).toBe('Joueur');
+    const cached = JSON.parse(await storage.getItem(CACHE_KEY));
+    expect(cached.userId).toBe(GUEST_ID);
+    expect(cached.state.player.name).toBe('Joueur');
   });
 });
 
@@ -93,7 +157,7 @@ describe('collection actions', () => {
   });
 
   test('a network error without a JSON body maps to NETWORK', async () => {
-    const { api } = build();
+    const { api } = build({ offline: true, functions: { 'open-starter': okFunction({ collection }) } });
     expect(await api.openStarter()).toMatchObject({ ok: false, error: 'NETWORK' });
   });
 });
@@ -120,9 +184,29 @@ describe('profile and simulated date', () => {
     expect(client.calls.updates[0]).toMatchObject({ table: 'profiles', values: { display_name: 'Robin' } });
   });
 
-  test('setName reports a failed update as NETWORK', async () => {
-    const { api } = build({ failReads: true });
+  test('setName reports a network failure as NETWORK', async () => {
+    const { api } = build({ session: { user: { id: GUEST_ID } }, offline: true });
     expect(await api.setName('Robin')).toEqual({ ok: false, error: 'NETWORK' });
+  });
+
+  test('setName resolves NETWORK when the guest sign-in cannot reach the server', async () => {
+    const { api } = build({ offline: true });
+    expect(await api.setName('Robin')).toEqual({ ok: false, error: 'NETWORK' });
+  });
+
+  test.each([
+    ['row level security', '42501'],
+    ['a check violation', '23514'],
+  ])('setName maps %s to NOT_ALLOWED', async (_label, code) => {
+    const { api, client } = build({ session: { user: { id: GUEST_ID } } });
+    client.failUpdatesWith({ code, message: 'rejected' });
+    expect(await api.setName('Robin')).toEqual({ ok: false, error: 'NOT_ALLOWED', details: 'rejected' });
+  });
+
+  test('setName maps other errors to INTERNAL with details', async () => {
+    const { api, client } = build({ session: { user: { id: GUEST_ID } } });
+    client.failUpdatesWith({ code: 'XX000', message: 'boom' });
+    expect(await api.setName('Robin')).toEqual({ ok: false, error: 'INTERNAL', details: 'boom' });
   });
 
   test('setSimulatedDate returns the date and the collection', async () => {
@@ -153,6 +237,15 @@ describe('account', () => {
   test('maps the auth user', async () => {
     const { api } = build({ session: { user } });
     expect(await api.account()).toEqual({ isAnonymous: false, email: 'a@b.c', pendingEmail: 'n@b.c' });
+  });
+
+  test('falls back to the local session user when the server is unreachable', async () => {
+    const { api } = build({ session: { user }, offline: true });
+    expect(await api.account()).toEqual({ isAnonymous: false, email: 'a@b.c', pendingEmail: 'n@b.c' });
+  });
+
+  test('is null when the server is unreachable and there is no local session', async () => {
+    expect(await build({ offline: true }).api.account()).toBeNull();
   });
 
   test('is null without a user', async () => {
