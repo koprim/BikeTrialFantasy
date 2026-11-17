@@ -4,10 +4,19 @@ import { loadState, saveState } from '../../state/persistence';
 /**
  * @typedef {{ player: { name: string }, picks: Object, collection: Object, simulatedDate: (string|null) }} PlayerState
  * @typedef {{ ok: true, patch: (Partial<PlayerState>|function(PlayerState): Partial<PlayerState>) }} ApiSuccess
- * @typedef {{ ok: false, error: string, details?: * }} ApiFailure
+ * @typedef {{ ok: false, error: ApiErrorCode, details?: * }} ApiFailure
  * @typedef {ApiSuccess|ApiFailure} ApiResult
  *
+ * Error codes. Demo: NOT_ALLOWED, ALREADY_OPENED, STARTER_ALREADY_OPENED, NOT_AVAILABLE, STORAGE_FAILED.
+ * Server: INVALID_INPUT, INVALID_TEAM, TEAM_LOCKED, NOT_FOUND, FORBIDDEN, BUSY, UNAUTHENTICATED, INTERNAL,
+ * NETWORK, ACCOUNT_SAVE_FAILED, SIGN_IN_FAILED.
+ * @typedef {string} ApiErrorCode
+ *
+ * @typedef {{ isAnonymous: boolean, email: (string|null), pendingEmail: (string|null) }} AccountInfo
+ *
  * Contract shared by the demo (local) and Supabase backends. Every action resolves to an ApiResult.
+ * load() hydrates the player state (the demo backend also self-loads on the first action).
+ * reset()'s patch is a full PlayerState; other patches are partial. account() is null without an account.
  * @typedef {Object} GameApi
  * @property {{ simulatedDate: boolean, reset: boolean, account: boolean }} features
  * @property {function(): Promise<PlayerState>} load
@@ -19,32 +28,53 @@ import { loadState, saveState } from '../../state/persistence';
  * @property {function(string): Promise<ApiResult>} setName
  * @property {function((string|null)): Promise<ApiResult>} setSimulatedDate
  * @property {function(): Promise<ApiResult>} reset
- * @property {function(): Promise<(Object|null)>} account
+ * @property {function(): Promise<(AccountInfo|null)>} account
  * @property {function(string): Promise<ApiResult>} saveAccount
  * @property {function(string): Promise<ApiResult>} signIn
  */
 
 const collectionPatch = (state) => ({ collection: state.collection });
 
-// Offline demo backend: the local reducer is the authority and the device storage is the database.
-/** @returns {GameApi} */
+/**
+ * Offline demo backend: the local reducer is the authority and the device storage is the database.
+ * @returns {GameApi}
+ */
 export function createDemoApi({ storage = { loadState, saveState } } = {}) {
   let state = initialState;
+  let loading = null;
+
+  // Hydrates once; every action waits for it so initial demo state never overwrites a real save.
+  function ensureLoaded() {
+    loading ||= storage.loadState().then((saved) => {
+      state = saved ? gameReducer(initialState, { type: 'HYDRATE', payload: saved }) : initialState;
+    });
+    return loading;
+  }
+
+  // The new state is committed in memory only once it is persisted.
+  async function commit(next) {
+    try {
+      await storage.saveState(next);
+    } catch {
+      return false;
+    }
+    state = next;
+    return true;
+  }
 
   // The reducer returns the same reference when it refuses an action.
   async function apply(action, toPatch, refusal = 'NOT_ALLOWED') {
+    await ensureLoaded();
     const next = gameReducer(state, action);
     if (next === state) return { ok: false, error: refusal };
-    state = next;
-    await storage.saveState(state);
+    if (!(await commit(next))) return { ok: false, error: 'STORAGE_FAILED' };
     return { ok: true, patch: toPatch(state) };
   }
 
   return {
     features: { simulatedDate: true, reset: true, account: false },
     async load() {
-      const saved = await storage.loadState();
-      state = saved ? gameReducer(initialState, { type: 'HYDRATE', payload: saved }) : initialState;
+      await ensureLoaded();
       return state;
     },
     openStarter: () => apply({ type: 'OPEN_STARTER' }, collectionPatch, 'STARTER_ALREADY_OPENED'),
@@ -60,8 +90,8 @@ export function createDemoApi({ storage = { loadState, saveState } } = {}) {
         collection: current.collection,
       })),
     async reset() {
-      state = initialState;
-      await storage.saveState(state);
+      await ensureLoaded();
+      if (!(await commit(initialState))) return { ok: false, error: 'STORAGE_FAILED' };
       return { ok: true, patch: state };
     },
     async account() {
