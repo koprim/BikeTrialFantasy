@@ -1,0 +1,53 @@
+name: CI
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npx jest --ci
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Skip services no test needs (no mail, dashboard, image proxy or log shipping).
+      - run: npx supabase start -x studio,imgproxy,mailpit,postgres-meta,vector
+      - run: npm run test:int
+      - run: cp supabase/functions/.env.example supabase/functions/.env
+      - run: npm run build:edge
+      - name: Serve Edge Functions
+        run: nohup npx supabase functions serve --env-file supabase/functions/.env > functions-serve.log 2>&1 &
+      - name: Wait for Edge Functions
+        run: |
+          # Any HTTP status (even 401) proves the function is served; curl exits non-zero until then.
+          for i in $(seq 1 60); do
+            if curl -s -o /dev/null http://127.0.0.1:54321/functions/v1/open-daily-pack; then exit 0; fi
+            sleep 1
+          done
+          echo 'Edge Functions did not start within 60s' && cat functions-serve.log
+          exit 1
+      - run: npm run test:functions
