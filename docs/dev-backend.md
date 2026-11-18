@@ -117,6 +117,19 @@ Au premier lancement l'app ouvre une session anonyme (compte invite). Les liens 
 dans Mailpit (`MAILPIT_URL` de `supabase status`, http://127.0.0.1:54324) et ouvrir le lien dans le
 meme navigateur.
 
+Date simulee : `ALLOW_SIMULATED_DATE` (serveur, `supabase/functions/.env`) et
+`EXPO_PUBLIC_ALLOW_SIMULATED_DATE` (app) doivent etre positionnes ensemble, sinon la date simulee est
+ignoree d'un cote. De plus, `today()` cote app utilise le fuseau de l'appareil alors que le serveur
+utilise `PACK_TIMEZONE` : vers minuit, un pack peut etre refuse avec `ALREADY_OPENED`.
+
+## Production
+
+- Ne jamais positionner `ALLOW_SIMULATED_DATE` ni `EXPO_PUBLIC_ALLOW_SIMULATED_DATE`.
+- Renseigner `site_url` et `additional_redirect_urls` d'auth pour le vrai domaine (`config.toml` ne
+  contient que localhost).
+- Revoir la limite de debit des connexions anonymes.
+- Optionnel : ne pas deployer `set-simulated-date`.
+
 ## CI
 
 `.github/workflows/ci.yml` : job `checks` (lint, format:check, jest) et job `backend` (stack Supabase

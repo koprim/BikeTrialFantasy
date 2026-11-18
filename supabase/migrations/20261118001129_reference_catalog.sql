@@ -50,6 +50,8 @@ create table public.app_settings (
   value text
 );
 
+comment on table public.app_settings is 'Settings readable by everyone (anon and authenticated): never store secrets here.';
+
 -- Public read, admin-only write (writes happen with the service role, which bypasses RLS).
 do $$
 declare t text;
