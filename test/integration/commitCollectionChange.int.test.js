@@ -2,6 +2,9 @@ const { serviceClient, anonClient, newPlayer } = require('../supabaseTestKit');
 
 const service = serviceClient();
 const INSUFFICIENT_PRIVILEGE = '42501';
+const RAISE_EXCEPTION = 'P0001';
+const NO_DATA_FOUND = 'P0002';
+const INVALID_PARAMETER = '22023';
 const CARD = { id: 'test-rpc-card', type: 'EQUIPMENT', edition: '2026', name: 'Test', subject_id: null, rarities: ['C', 'R'], effects: [] };
 const WALLET = { fragments: 10, pityE: 1, pityL: 1, packsOpened: 1, lastPackDate: '2026-11-17', starterGiven: true };
 
@@ -34,10 +37,15 @@ async function commitOk(userId, overrides) {
 }
 
 const ownedCount = async (userId) => {
-  const { data } = await service.from('owned_cards').select('count').eq('user_id', userId).eq('card_id', CARD.id);
+  const { data, error } = await service.from('owned_cards').select('count').eq('user_id', userId).eq('card_id', CARD.id);
+  if (error) throw error;
   return data.length ? data[0].count : 0;
 };
-const wallet = async (userId) => (await service.from('wallets').select('*').eq('user_id', userId).single()).data;
+const wallet = async (userId) => {
+  const { data, error } = await service.from('wallets').select('*').eq('user_id', userId).single();
+  if (error) throw error;
+  return data;
+};
 
 test('applies deltas and wallet, and bumps the version', async () => {
   const { userId } = await newPlayer();
@@ -90,7 +98,7 @@ test('rolls back everything when a count would go below zero', async () => {
     p_wallet: { ...WALLET, fragments: 99 },
     p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: -3 }],
   });
-  expect(below.error).not.toBeNull();
+  expect(below.error).toMatchObject({ code: RAISE_EXCEPTION, message: 'insufficient cards' });
   expect(await ownedCount(userId)).toBe(2);
   expect(await wallet(userId)).toMatchObject({ fragments: 10, version: 1 });
 });
@@ -98,7 +106,7 @@ test('rolls back everything when a count would go below zero', async () => {
 test('raises when removing a card the player does not own', async () => {
   const { userId } = await newPlayer();
   const { error } = await commit(userId, { p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: -1 }] });
-  expect(error).not.toBeNull();
+  expect(error).toMatchObject({ code: RAISE_EXCEPTION, message: 'insufficient cards' });
   expect(await ownedCount(userId)).toBe(0);
   expect((await wallet(userId)).version).toBe(0);
 });
@@ -108,4 +116,53 @@ test('players and anonymous callers cannot call it', async () => {
   const args = { p_user_id: userId, p_expected_version: 0, p_wallet: WALLET, p_owned_deltas: [], p_opening: null };
   expect((await client.rpc('commit_collection_change', args)).error.code).toBe(INSUFFICIENT_PRIVILEGE);
   expect((await anonClient().rpc('commit_collection_change', args)).error.code).toBe(INSUFFICIENT_PRIVILEGE);
+});
+
+test('refuses a null expected version instead of bypassing the lock', async () => {
+  const { userId } = await newPlayer();
+  const { data, error } = await commit(userId, { p_expected_version: null });
+  expect(error).toBeNull();
+  expect(data).toBe('conflict');
+  expect(await ownedCount(userId)).toBe(0);
+});
+
+test('rejects a wallet missing a key, but allows an explicit null lastPackDate', async () => {
+  const { userId } = await newPlayer();
+  const { lastPackDate, ...incomplete } = WALLET;
+  const missing = await commit(userId, { p_wallet: incomplete });
+  expect(missing.error.code).toBe(INVALID_PARAMETER);
+  expect((await wallet(userId)).version).toBe(0);
+  await commitOk(userId, { p_wallet: { ...WALLET, lastPackDate: null } });
+  expect((await wallet(userId)).last_pack_date).toBeNull();
+});
+
+test('raises a stable error for an unknown wallet', async () => {
+  const { error } = await commit('00000000-0000-0000-0000-000000000000');
+  expect(error.code).toBe(NO_DATA_FOUND);
+});
+
+test('removes several deltas on the same owned row', async () => {
+  const { userId } = await newPlayer();
+  await commitOk(userId);
+  await commitOk(userId, {
+    p_expected_version: 1,
+    p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: -1 }, { card_id: CARD.id, rarity: 'C', delta: -1 }],
+  });
+  expect(await ownedCount(userId)).toBe(0);
+});
+
+test('nets mixed deltas on the same new row', async () => {
+  const { userId } = await newPlayer();
+  await commitOk(userId, {
+    p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: 3 }, { card_id: CARD.id, rarity: 'C', delta: -1 }],
+  });
+  expect(await ownedCount(userId)).toBe(2);
+});
+
+test('adds several positive deltas on the same row', async () => {
+  const { userId } = await newPlayer();
+  await commitOk(userId, {
+    p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: 1 }, { card_id: CARD.id, rarity: 'C', delta: 2 }],
+  });
+  expect(await ownedCount(userId)).toBe(3);
 });
