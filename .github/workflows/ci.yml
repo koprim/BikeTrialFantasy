@@ -34,11 +34,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # The Edge Functions import the generated, gitignored _shared/backend.mjs, and `supabase start`
+      # reads their imports while starting the edge runtime: build the bundle first.
+      - run: npm run build:edge
       # Skip services no test needs (no mail, dashboard, image proxy or log shipping).
       - run: npx supabase start -x studio,imgproxy,mailpit,postgres-meta,vector
       - run: npm run test:int
       - run: cp supabase/functions/.env.example supabase/functions/.env
-      - run: npm run build:edge
       - name: Serve Edge Functions
         run: nohup npx supabase functions serve --env-file supabase/functions/.env > functions-serve.log 2>&1 &
       - name: Wait for Edge Functions
