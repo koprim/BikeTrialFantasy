@@ -20,6 +20,9 @@
     "functions:deploy": "npm run build:edge && supabase functions deploy",
     "test:functions": "node scripts/with-supabase-env.js jest -c jest.functions.config.js",
     "sim:economy": "node scripts/sim-economy.js",
+    "sonar:up": "docker compose -f tools/sonarqube/docker-compose.yml up -d",
+    "sonar:down": "docker compose -f tools/sonarqube/docker-compose.yml down",
+    "sonar": "node scripts/sonar.js",
     "postinstall": "node scripts/patch-expo-windows.js"
   },
   "dependencies": {

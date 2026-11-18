@@ -5,3 +5,5 @@ supabase/functions/_shared/backend.mjs
 .superpowers/
 docs/
 .claude/settings.json
+coverage/
+.scannerwork/

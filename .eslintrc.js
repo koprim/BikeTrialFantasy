@@ -9,6 +9,8 @@ module.exports = {
     'web-build/',
     '.superpowers/',
     'supabase/functions/_shared/backend.mjs',
+    'coverage/',
+    '.scannerwork/',
   ],
   overrides: [
     { files: ['scripts/**/*.js', '*.config.js', '.eslintrc.js'], env: { node: true } }, // Node scripts and configs use __dirname/require

@@ -39,3 +39,8 @@ yarn-error.*
 supabase/.temp/
 supabase/functions/.env
 supabase/functions/_shared/backend.mjs
+
+# code quality (SonarQube)
+coverage/
+.scannerwork/
+.sonar-token
