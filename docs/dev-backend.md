@@ -48,6 +48,9 @@ Le CLI Supabase appelle `docker.exe` directement et n'est pas concerne.
 
 ## Commandes
 
+Apres un clone neuf, lancer `npm run build:edge` une fois avant le premier `supabase start` :
+les Edge Functions importent `_shared/backend.mjs` (genere, ignore par git) et le demarrage echoue sans lui.
+
 ```powershell
 npx supabase start      # demarre la stack (URL API http://127.0.0.1:54321)
 npx supabase status     # URLs et cles (-o json pour les scripts)
