@@ -1,6 +1,6 @@
 # Fonctionnalités — Super Fantasy Bike Trial
 
-Mis à jour à la fin de chaque EPIC. Données simulées et locales (pas de serveur).
+Mis à jour à la fin de chaque EPIC. Deux modes : connecté à un serveur Supabase, ou démo (données simulées et locales, sans serveur).
 
 ## Livré
 
@@ -15,6 +15,8 @@ Mis à jour à la fin de chaque EPIC. Données simulées et locales (pas de serv
 | Saisons | saisons annuelles pilotées par les dates, verrouillage au départ, résultats à l'arrivée, archivage, date simulée pour tester |
 | Rivaux | 10 rivaux (favoris, équilibrés, outsiders, aléatoires) jouant des cartes Communes |
 | Navigation | onglets Jouer, Collection, Classement, Historique, Règles & profil |
+| Comptes | compte invité créé au premier lancement, « Sauvegarder mon compte » (lien envoyé par e-mail), « J'ai déjà un compte » (connexion par lien), état du compte dans Règles & profil |
+| Serveur | packs, recyclage, fabrication et équipes validés côté serveur (Edge Functions), messages d'erreur en français, mode démo conservé |
 | Données | catalogue `cards.json` (63 cartes, édition 2026), équilibrage `balance.json`, statistiques de course simulées |
 
 ## Prévu
@@ -25,5 +27,5 @@ Mis à jour à la fin de chaque EPIC. Données simulées et locales (pas de serv
 | Packs gagnés | packs en récompense d'objectifs et de résultats |
 | Saisons | nouvelles éditions de cartes chaque saison, rotation des collections |
 | Administration | outil pour ajouter compétitions et manches, corriger les résultats |
-| En ligne | comptes, sauvegarde serveur, vraies données UCI |
+| En ligne | vraies données UCI, hébergement du serveur en production |
 | Menu | corrections reportées de la relecture (voir la spec du menu) |

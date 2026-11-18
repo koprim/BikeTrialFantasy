@@ -89,4 +89,35 @@ repond 401 `UNAUTHENTICATED`.
 
 ## App contre Supabase
 
-A completer par les taches suivantes.
+`EXPO_PUBLIC_BACKEND` choisit l'adaptateur (`src/data/api/index.js`) : `supabase` utilise le
+serveur ; toute autre valeur (ou absente) lance le mode demo, local, sans serveur.
+
+```powershell
+npx supabase start                       # si la stack ne tourne pas deja
+npx supabase db reset                    # schema + catalogue a jour
+Copy-Item .env.example .env.local        # premiere fois, puis editer (voir ci-dessous)
+npm run functions:serve                  # terminal separe, laisser tourner
+npx expo start --web --port 8081         # 8081 = URL de redirection autorisee par config.toml
+```
+
+`.env.local` :
+
+```
+EXPO_PUBLIC_BACKEND=supabase
+EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+EXPO_PUBLIC_SUPABASE_ANON_KEY=<ANON_KEY de npx supabase status -o env>
+EXPO_PUBLIC_ALLOW_SIMULATED_DATE=true    # optionnel : date simulee dans Regles & profil
+```
+
+Expo inline ces variables au demarrage : relancer `expo start` (avec `--clear`) apres modification.
+Si `EXPO_PUBLIC_BACKEND=supabase` sans URL ou cle, l'app leve une erreur explicite au demarrage.
+
+Au premier lancement l'app ouvre une session anonyme (compte invite). Les liens magiques de
+« Sauvegarder mon compte » et « J'ai deja un compte » ne partent pas par e-mail reel : les lire
+dans Mailpit (`MAILPIT_URL` de `supabase status`, http://127.0.0.1:54324) et ouvrir le lien dans le
+meme navigateur.
+
+## CI
+
+`.github/workflows/ci.yml` : job `checks` (lint, format:check, jest) et job `backend` (stack Supabase
+sans les services inutiles, `test:int`, fonctions servies, `test:functions`).
