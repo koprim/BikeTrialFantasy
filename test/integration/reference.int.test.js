@@ -7,7 +7,10 @@ beforeAll(async () => {
   const { error } = await service.from('cards').upsert(CARD);
   if (error) throw error;
 });
-afterAll(() => service.from('cards').delete().eq('id', CARD.id));
+afterAll(async () => {
+  const { error } = await service.from('cards').delete().eq('id', CARD.id);
+  if (error) throw error;
+});
 
 test('players can read the catalog', async () => {
   const { client } = await newPlayer();

@@ -57,6 +57,7 @@ begin
   foreach t in array array['seasons', 'riders', 'competitions', 'cards', 'balance', 'app_settings'] loop
     execute format('alter table public.%I enable row level security', t);
     execute format('create policy "public read" on public.%I for select to anon, authenticated using (true)', t);
+    execute format('grant select on public.%I to anon, authenticated', t);
     execute format('revoke insert, update, delete on public.%I from anon, authenticated', t);
   end loop;
 end $$;
