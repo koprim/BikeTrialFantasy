@@ -2,9 +2,9 @@ const { toCard, toRider, toCompetition, toWalletState, toWalletPayload, diffOwne
 const { buildCatalog } = require('../catalog');
 const { gameError } = require('../errors');
 
-// Throws on a Supabase error, keeping the Postgres error code (e.g. P0001) reachable as error.code.
+// Throws on a Supabase error, keeping the Postgres error code (e.g. P0001), details and hint reachable.
 function unwrap({ data, error }) {
-  if (error) throw Object.assign(new Error(error.message), { code: error.code });
+  if (error) throw Object.assign(new Error(error.message), { code: error.code, details: error.details, hint: error.hint });
   return data;
 }
 
@@ -82,12 +82,17 @@ function makeSettings(db) {
   };
 }
 
+const BEARER_PATTERN = /^Bearer\s+(\S+)$/i;
+const TOKEN_REJECTED_STATUSES = [400, 401, 403];
+
 /** @returns {(request: Request) => Promise<string>} resolves the user id from the bearer token */
 function makeAuthenticator(db) {
   return async (request) => {
-    const token = (request.headers.get('Authorization') || '').replace(/^Bearer /, '');
-    if (!token) throw gameError('UNAUTHENTICATED');
-    const { data, error } = await db.auth.getUser(token);
+    const match = BEARER_PATTERN.exec(request.headers.get('Authorization') || '');
+    if (!match) throw gameError('UNAUTHENTICATED');
+    const { data, error } = await db.auth.getUser(match[1]);
+    // Only a genuine token rejection is UNAUTHENTICATED: during an auth outage clients must not drop their session.
+    if (error && !TOKEN_REJECTED_STATUSES.includes(error.status)) throw new Error(`Auth lookup failed: ${error.message}`);
     if (error || !data.user) throw gameError('UNAUTHENTICATED');
     return data.user.id;
   };

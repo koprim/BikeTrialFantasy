@@ -8,6 +8,7 @@ const { makeSetSimulatedDate } = require('./usecases/devDate');
 
 // Composition root: wiring only. Returns one HTTP handler per Edge Function name.
 function buildServer({ db, env, randomSeed }) {
+  if (typeof randomSeed !== 'function') throw new Error('buildServer: randomSeed must be a function');
   const allowSimulated = env.ALLOW_SIMULATED_DATE === 'true';
   const settings = adapters.makeSettings(db);
   const deps = {
@@ -20,7 +21,8 @@ function buildServer({ db, env, randomSeed }) {
     competitions: adapters.makeCompetitions(db),
     teams: adapters.makeTeams(db),
   };
-  const http = (action) => makeHttpHandler({ authenticate: adapters.makeAuthenticator(db), action });
+  const authenticate = adapters.makeAuthenticator(db);
+  const http = (action) => makeHttpHandler({ authenticate, action });
   const withCollection = (useCase) => http(async (userId, body) => ({ collection: await useCase(userId, body) }));
   const saveTeam = makeSaveTeam(deps);
   return {

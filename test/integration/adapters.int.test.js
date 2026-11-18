@@ -67,15 +67,24 @@ test('an insufficient-cards commit rejects with the Postgres error code', async 
 });
 
 test('the simulated date can be set, read and cleared', async () => {
-  await settings.setSimulatedDate('2026-12-24');
-  expect(await settings.getSimulatedDate()).toBe('2026-12-24');
-  await settings.setSimulatedDate('2026-12-25');
-  expect(await settings.getSimulatedDate()).toBe('2026-12-25');
-  await settings.setSimulatedDate(null);
-  expect(await settings.getSimulatedDate()).toBeNull();
-  const { data, error } = await db.from('app_settings').select('key').eq('key', SIMULATED_DATE_KEY);
-  expect(error).toBeNull();
-  expect(data).toEqual([]);
+  const original = await settings.getSimulatedDate();
+  try {
+    await settings.setSimulatedDate('2026-12-24');
+    expect(await settings.getSimulatedDate()).toBe('2026-12-24');
+    await settings.setSimulatedDate('2026-12-25');
+    expect(await settings.getSimulatedDate()).toBe('2026-12-25');
+    await settings.setSimulatedDate(null);
+    expect(await settings.getSimulatedDate()).toBeNull();
+    const { data, error } = await db.from('app_settings').select('key').eq('key', SIMULATED_DATE_KEY);
+    expect(error).toBeNull();
+    expect(data).toEqual([]);
+  } finally {
+    await settings.setSimulatedDate(original);
+  }
+});
+
+test('buildServer refuses a missing randomSeed', () => {
+  expect(() => buildServer({ db, env: { PACK_TIMEZONE: 'Europe/Paris' } })).toThrow(/randomSeed/);
 });
 
 test('the authenticator resolves the user from the bearer token', async () => {
