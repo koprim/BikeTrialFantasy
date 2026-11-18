@@ -43,9 +43,13 @@ jobs:
         run: nohup npx supabase functions serve --env-file supabase/functions/.env > functions-serve.log 2>&1 &
       - name: Wait for Edge Functions
         run: |
-          # Any HTTP status (even 401) proves the function is served; curl exits non-zero until then.
+          # Without a token the gateway answers 401 before routing, so call with the anon key:
+          # our authenticator then answers 401, while an unserved function gives a 5xx (or no answer).
+          ANON_KEY=$(npx supabase status -o env | grep '^ANON_KEY=' | cut -d= -f2- | tr -d '"')
           for i in $(seq 1 60); do
-            if curl -s -o /dev/null http://127.0.0.1:54321/functions/v1/open-daily-pack; then exit 0; fi
+            code=$(curl -s -o /dev/null -w '%{http_code}' -X POST -H "Authorization: Bearer $ANON_KEY" \
+              http://127.0.0.1:54321/functions/v1/open-daily-pack || true)
+            if [ "$code" != "000" ] && [ "$code" -lt 500 ]; then exit 0; fi
             sleep 1
           done
           echo 'Edge Functions did not start within 60s' && cat functions-serve.log
