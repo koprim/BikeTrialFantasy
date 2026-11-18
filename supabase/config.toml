@@ -427,3 +427,22 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# Edge Functions: JWT verified at the gateway; our authenticator then resolves the user.
+[functions.open-starter]
+verify_jwt = true
+
+[functions.open-daily-pack]
+verify_jwt = true
+
+[functions.recycle]
+verify_jwt = true
+
+[functions.craft]
+verify_jwt = true
+
+[functions.save-team]
+verify_jwt = true
+
+[functions.set-simulated-date]
+verify_jwt = true

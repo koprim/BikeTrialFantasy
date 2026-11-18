@@ -78,7 +78,7 @@ npm run functions:serve    # build:edge puis supabase functions serve (long, lai
 npm run test:functions     # tests *.fn.test.js contre les fonctions servies
 ```
 
-Deploiement : `npm run build:edge && npx supabase functions deploy`.
+Deploiement : `npm run functions:deploy` (= `npm run build:edge && supabase functions deploy`).
 
 Variables (`supabase/functions/.env`) : `PACK_TIMEZONE`, `ALLOW_SIMULATED_DATE`. `SUPABASE_URL` et
 `SUPABASE_SERVICE_ROLE_KEY` sont injectees par la plateforme.
