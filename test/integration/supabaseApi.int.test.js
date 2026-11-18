@@ -37,7 +37,7 @@ test('the last state stays readable offline', async () => {
   await api.load();
   const offlineClient = Object.create(client);
   offlineClient.from = () => {
-    throw new Error('offline');
+    throw new TypeError('Failed to fetch');
   };
   const offline = await createSupabaseApi({ client: offlineClient, storage }).load();
   expect(offline).toMatchObject({ offline: true, player: { name: 'Joueur' } });
