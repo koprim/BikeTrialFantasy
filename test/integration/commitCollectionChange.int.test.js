@@ -5,7 +5,15 @@ const INSUFFICIENT_PRIVILEGE = '42501';
 const RAISE_EXCEPTION = 'P0001';
 const NO_DATA_FOUND = 'P0002';
 const INVALID_PARAMETER = '22023';
-const CARD = { id: 'test-rpc-card', type: 'EQUIPMENT', edition: '2026', name: 'Test', subject_id: null, rarities: ['C', 'R'], effects: [] };
+const CARD = {
+  id: 'test-rpc-card',
+  type: 'EQUIPMENT',
+  edition: '2026',
+  name: 'Test',
+  subject_id: null,
+  rarities: ['C', 'R'],
+  effects: [],
+};
 const WALLET = { fragments: 10, pityE: 1, pityL: 1, packsOpened: 1, lastPackDate: '2026-11-17', starterGiven: true };
 
 beforeAll(async () => {
@@ -37,7 +45,11 @@ async function commitOk(userId, overrides) {
 }
 
 const ownedCount = async (userId) => {
-  const { data, error } = await service.from('owned_cards').select('count').eq('user_id', userId).eq('card_id', CARD.id);
+  const { data, error } = await service
+    .from('owned_cards')
+    .select('count')
+    .eq('user_id', userId)
+    .eq('card_id', CARD.id);
   if (error) throw error;
   return data.length ? data[0].count : 0;
 };
@@ -51,7 +63,12 @@ test('applies deltas and wallet, and bumps the version', async () => {
   const { userId } = await newPlayer();
   await commitOk(userId);
   expect(await ownedCount(userId)).toBe(2);
-  expect(await wallet(userId)).toMatchObject({ fragments: 10, packs_opened: 1, last_pack_date: '2026-11-17', version: 1 });
+  expect(await wallet(userId)).toMatchObject({
+    fragments: 10,
+    packs_opened: 1,
+    last_pack_date: '2026-11-17',
+    version: 1,
+  });
 });
 
 test('refuses a stale version without changing anything', async () => {
@@ -77,7 +94,10 @@ test('refuses a second daily pack for the same date', async () => {
 test('refuses a second starter even on another day', async () => {
   const { userId } = await newPlayer();
   await commitOk(userId, { p_opening: { kind: 'starter', packDate: '2026-11-17', cards: [] } });
-  const second = await commit(userId, { p_expected_version: 1, p_opening: { kind: 'starter', packDate: '2026-11-18', cards: [] } });
+  const second = await commit(userId, {
+    p_expected_version: 1,
+    p_opening: { kind: 'starter', packDate: '2026-11-18', cards: [] },
+  });
   expect(second.error).toBeNull();
   expect(second.data).toBe('duplicate');
 });
@@ -146,7 +166,10 @@ test('removes several deltas on the same owned row', async () => {
   await commitOk(userId);
   await commitOk(userId, {
     p_expected_version: 1,
-    p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: -1 }, { card_id: CARD.id, rarity: 'C', delta: -1 }],
+    p_owned_deltas: [
+      { card_id: CARD.id, rarity: 'C', delta: -1 },
+      { card_id: CARD.id, rarity: 'C', delta: -1 },
+    ],
   });
   expect(await ownedCount(userId)).toBe(0);
 });
@@ -154,7 +177,10 @@ test('removes several deltas on the same owned row', async () => {
 test('nets mixed deltas on the same new row', async () => {
   const { userId } = await newPlayer();
   await commitOk(userId, {
-    p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: 3 }, { card_id: CARD.id, rarity: 'C', delta: -1 }],
+    p_owned_deltas: [
+      { card_id: CARD.id, rarity: 'C', delta: 3 },
+      { card_id: CARD.id, rarity: 'C', delta: -1 },
+    ],
   });
   expect(await ownedCount(userId)).toBe(2);
 });
@@ -162,7 +188,10 @@ test('nets mixed deltas on the same new row', async () => {
 test('adds several positive deltas on the same row', async () => {
   const { userId } = await newPlayer();
   await commitOk(userId, {
-    p_owned_deltas: [{ card_id: CARD.id, rarity: 'C', delta: 1 }, { card_id: CARD.id, rarity: 'C', delta: 2 }],
+    p_owned_deltas: [
+      { card_id: CARD.id, rarity: 'C', delta: 1 },
+      { card_id: CARD.id, rarity: 'C', delta: 2 },
+    ],
   });
   expect(await ownedCount(userId)).toBe(3);
 });

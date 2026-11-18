@@ -1,7 +1,15 @@
 const { serviceClient, newPlayer } = require('../supabaseTestKit');
 
 const service = serviceClient();
-const CARD = { id: 'test-ref-card', type: 'EQUIPMENT', edition: '2026', name: 'Test', subject_id: null, rarities: ['C'], effects: [] };
+const CARD = {
+  id: 'test-ref-card',
+  type: 'EQUIPMENT',
+  edition: '2026',
+  name: 'Test',
+  subject_id: null,
+  rarities: ['C'],
+  effects: [],
+};
 
 beforeAll(async () => {
   const { error } = await service.from('cards').upsert(CARD);

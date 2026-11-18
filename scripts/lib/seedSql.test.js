@@ -10,9 +10,47 @@ test('escapes quotes and maps null, numbers and booleans', () => {
 
 test('builds one insert per table from the JSON seeds', () => {
   const sql = buildSeedSql({
-    seasons: [{ id: '2026', name: 'Saison 2026', events: [{ id: '2026-r1', name: 'M1', venue: 'Les Gets', country: 'FRA', round: 1, dateFrom: '2026-10-18', dateTo: '2026-10-19', referee: 'M. Durand' }] }],
-    riders: [{ id: 'r1', name: 'Pilote', country: 'FRA', category: 'SENIOR_26', brand: 'Torq', cote: 1, uciRank: 3, active: true }],
-    cards: [{ id: 'pilot-2026-r1', type: 'PILOT', edition: '2026', name: 'Pilote', subject: 'r1', rarities: ['C', 'R'], effects: [] }],
+    seasons: [
+      {
+        id: '2026',
+        name: 'Saison 2026',
+        events: [
+          {
+            id: '2026-r1',
+            name: 'M1',
+            venue: 'Les Gets',
+            country: 'FRA',
+            round: 1,
+            dateFrom: '2026-10-18',
+            dateTo: '2026-10-19',
+            referee: 'M. Durand',
+          },
+        ],
+      },
+    ],
+    riders: [
+      {
+        id: 'r1',
+        name: 'Pilote',
+        country: 'FRA',
+        category: 'SENIOR_26',
+        brand: 'Torq',
+        cote: 1,
+        uciRank: 3,
+        active: true,
+      },
+    ],
+    cards: [
+      {
+        id: 'pilot-2026-r1',
+        type: 'PILOT',
+        edition: '2026',
+        name: 'Pilote',
+        subject: 'r1',
+        rarities: ['C', 'R'],
+        effects: [],
+      },
+    ],
     balance: { pack: { size: 5 } },
   });
   expect(sql).toContain("insert into public.seasons (id, name) values\n  ('2026', 'Saison 2026');");
@@ -26,7 +64,8 @@ describe('fail fast on bad seed values', () => {
   const season = { id: 's', name: 'S', events: [] };
   const rider = { id: 'r1', name: 'P', country: 'FRA', category: 'SENIOR_26', cote: 1, active: true };
   const card = { id: 'c1', type: 'PILOT', edition: '2026', name: 'C', subject: null, rarities: ['C'], effects: [] };
-  const build = (overrides) => buildSeedSql({ seasons: [season], riders: [rider], cards: [card], balance: {}, ...overrides });
+  const build = (overrides) =>
+    buildSeedSql({ seasons: [season], riders: [rider], cards: [card], balance: {}, ...overrides });
 
   test('sqlLiteral rejects non-finite numbers', () => {
     expect(() => sqlLiteral(NaN)).toThrow(/finite/);
@@ -48,7 +87,15 @@ describe('fail fast on bad seed values', () => {
 
 test('the committed supabase/seed.sql is up to date with the JSON seeds', () => {
   const seed = (name) => require(`../../src/data/seed/${name}.json`);
-  const expected = buildSeedSql({ seasons: seed('seasons'), riders: seed('riders'), cards: seed('cards'), balance: seed('balance') });
-  const committed = require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'supabase', 'seed.sql'), 'utf8');
+  const expected = buildSeedSql({
+    seasons: seed('seasons'),
+    riders: seed('riders'),
+    cards: seed('cards'),
+    balance: seed('balance'),
+  });
+  const committed = require('fs').readFileSync(
+    require('path').join(__dirname, '..', '..', 'supabase', 'seed.sql'),
+    'utf8',
+  );
   expect(committed).toBe(expected);
 });

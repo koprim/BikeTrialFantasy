@@ -4,7 +4,8 @@ const { gameError } = require('../errors');
 
 // Throws on a Supabase error, keeping the Postgres error code (e.g. P0001), details and hint reachable.
 function unwrap({ data, error }) {
-  if (error) throw Object.assign(new Error(error.message), { code: error.code, details: error.details, hint: error.hint });
+  if (error)
+    throw Object.assign(new Error(error.message), { code: error.code, details: error.details, hint: error.hint });
   return data;
 }
 
@@ -18,7 +19,11 @@ function makeCatalog(db) {
         db.from('balance').select('data').order('version', { ascending: false }).limit(1).then(unwrap),
       ]);
       if (!balanceRows.length) throw new Error('No balance configured');
-      return buildCatalog({ cards: cardRows.map(toCard), riders: riderRows.map(toRider), balance: balanceRows[0].data });
+      return buildCatalog({
+        cards: cardRows.map(toCard),
+        riders: riderRows.map(toRider),
+        balance: balanceRows[0].data,
+      });
     },
   };
 }
@@ -61,7 +66,11 @@ function makeCompetitions(db) {
 function makeTeams(db) {
   return {
     async save(userId, competitionId, team) {
-      unwrap(await db.from('teams').upsert({ user_id: userId, competition_id: competitionId, team, updated_at: new Date().toISOString() }));
+      unwrap(
+        await db
+          .from('teams')
+          .upsert({ user_id: userId, competition_id: competitionId, team, updated_at: new Date().toISOString() }),
+      );
     },
   };
 }
@@ -92,7 +101,8 @@ function makeAuthenticator(db) {
     if (!match) throw gameError('UNAUTHENTICATED');
     const { data, error } = await db.auth.getUser(match[1]);
     // Only a genuine token rejection is UNAUTHENTICATED: during an auth outage clients must not drop their session.
-    if (error && !TOKEN_REJECTED_STATUSES.includes(error.status)) throw new Error(`Auth lookup failed: ${error.message}`);
+    if (error && !TOKEN_REJECTED_STATUSES.includes(error.status))
+      throw new Error(`Auth lookup failed: ${error.message}`);
     if (error || !data.user) throw gameError('UNAUTHENTICATED');
     return data.user.id;
   };

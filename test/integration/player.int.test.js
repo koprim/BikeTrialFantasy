@@ -12,7 +12,15 @@ const COMPETITION = {
   date_from: '2026-01-01',
   date_to: '2026-01-02',
 };
-const CARD = { id: 'test-player-card', type: 'EQUIPMENT', edition: '2026', name: 'Test', subject_id: null, rarities: ['C'], effects: [] };
+const CARD = {
+  id: 'test-player-card',
+  type: 'EQUIPMENT',
+  edition: '2026',
+  name: 'Test',
+  subject_id: null,
+  rarities: ['C'],
+  effects: [],
+};
 
 let bob;
 
@@ -26,8 +34,12 @@ beforeAll(async () => {
   await mustSucceed(service.from('competitions').upsert(COMPETITION));
   await mustSucceed(service.from('cards').upsert(CARD));
   bob = await newPlayer();
-  await mustSucceed(service.from('owned_cards').insert({ user_id: bob.userId, card_id: CARD.id, rarity: 'C', count: 1 }));
-  await mustSucceed(service.from('pack_openings').insert({ user_id: bob.userId, kind: 'daily', pack_date: '2026-01-01', cards: [] }));
+  await mustSucceed(
+    service.from('owned_cards').insert({ user_id: bob.userId, card_id: CARD.id, rarity: 'C', count: 1 }),
+  );
+  await mustSucceed(
+    service.from('pack_openings').insert({ user_id: bob.userId, kind: 'daily', pack_date: '2026-01-01', cards: [] }),
+  );
   await mustSucceed(service.from('teams').insert({ user_id: bob.userId, competition_id: COMPETITION.id, team: {} }));
 });
 
@@ -44,12 +56,23 @@ afterAll(async () => {
 
 test('a new account gets a profile and an empty wallet', async () => {
   const { client, userId } = await newPlayer();
-  const { data: profile, error: profileError } = await client.from('profiles').select('display_name').eq('user_id', userId).single();
+  const { data: profile, error: profileError } = await client
+    .from('profiles')
+    .select('display_name')
+    .eq('user_id', userId)
+    .single();
   const { data: wallet, error: walletError } = await client.from('wallets').select('*').eq('user_id', userId).single();
   expect(profileError).toBeNull();
   expect(walletError).toBeNull();
   expect(profile.display_name).toBe('Joueur');
-  expect(wallet).toMatchObject({ fragments: 0, pity_e: 0, pity_l: 0, packs_opened: 0, starter_given: false, version: 0 });
+  expect(wallet).toMatchObject({
+    fragments: 0,
+    pity_e: 0,
+    pity_l: 0,
+    packs_opened: 0,
+    starter_given: false,
+    version: 0,
+  });
 });
 
 test("a player cannot read another player's data", async () => {
@@ -92,7 +115,10 @@ test('a player can rename only their own profile', async () => {
   const rename = await alice.client.from('profiles').update({ display_name: 'Alice' }).eq('user_id', alice.userId);
   expect(rename.error).toBeNull();
   await alice.client.from('profiles').update({ display_name: 'Pirate' }).eq('user_id', bobPlayer.userId);
-  const { data } = await service.from('profiles').select('user_id, display_name').in('user_id', [alice.userId, bobPlayer.userId]);
+  const { data } = await service
+    .from('profiles')
+    .select('user_id, display_name')
+    .in('user_id', [alice.userId, bobPlayer.userId]);
   const names = Object.fromEntries(data.map((row) => [row.user_id, row.display_name]));
   expect(names).toEqual({ [alice.userId]: 'Alice', [bobPlayer.userId]: 'Joueur' });
 });
