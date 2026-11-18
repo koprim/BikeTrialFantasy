@@ -8,6 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest",
+    "test:int": "node scripts/with-supabase-env.js jest -c jest.integration.config.js",
     "lint": "eslint . --ext .js,.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
