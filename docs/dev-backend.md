@@ -1,4 +1,4 @@
-﻿# Backend local (Supabase)
+# Backend local (Supabase)
 
 CLI : `supabase` 3.2.0 (devDependency, version exacte, lancee via `npx supabase ...`).
 Les images Docker sont tirees depuis public.ecr.aws / ghcr.io / Docker Hub.
@@ -31,6 +31,20 @@ Sur cette machine : Docker 29.1.3 demarre, mais le premier `supabase start` (tir
 plusieurs Go) a rempli le disque C: (1 Go libre) : `input/output error` pendant le pull puis
 `Docker Desktop is unable to start` (distro WSL `docker-desktop` arretee). Liberer au moins
 ~10 Go sur C: (ou deplacer le disque virtuel Docker Desktop) avant de relancer.
+
+Resolu le 2026-11-18 : disque virtuel deplace sur `F:\Docker` (Settings -> Resources ->
+Advanced -> Disk image location). La stack demarre avec Docker Desktop 29.
+
+### Images corrompues (`unable to find user nobody`, `exit 125`)
+
+Les images tirees pendant la panne de disque peuvent etre incompletes : taille annoncee
+normale mais fichiers vides (`/etc/passwd` a 0 octet). Symptome : `supabase start` echoue a
+`Initialising schema...` avec `unable to find user nobody` ou `exec format error`.
+Correctif : supprimer les images `public.ecr.aws/supabase/*` (`docker rmi ...`) et relancer
+`npx supabase start`, qui les retelecharge.
+
+Note : `~/.bashrc` contient `alias docker=podman` ; dans Git Bash, `docker` vise donc Podman.
+Le CLI Supabase appelle `docker.exe` directement et n'est pas concerne.
 
 ## Commandes
 
