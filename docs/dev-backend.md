@@ -66,7 +66,26 @@ demande le socket Docker, incompatible Podman).
 
 ## Edge Functions
 
-A completer par les taches suivantes.
+Les 6 fonctions (`open-starter`, `open-daily-pack`, `recycle`, `craft`, `save-team`,
+`set-simulated-date`) sont des points d'entree d'une ligne (`serve('<nom>')` dans
+`supabase/functions/_shared/serve.ts`). Elles importent `supabase/functions/_shared/backend.mjs`,
+bundle genere par esbuild depuis `src/backend` + `src/engine` (source unique, jamais copiee).
+`backend.mjs` est ignore par git : `npm run build:edge` le regenere (appele par `functions:serve`).
+
+```powershell
+Copy-Item supabase\functions\.env.example supabase\functions\.env   # premiere fois
+npm run functions:serve    # build:edge puis supabase functions serve (long, laisser tourner)
+npm run test:functions     # tests *.fn.test.js contre les fonctions servies
+```
+
+Deploiement : `npm run build:edge && npx supabase functions deploy`.
+
+Variables (`supabase/functions/.env`) : `PACK_TIMEZONE`, `ALLOW_SIMULATED_DATE`. `SUPABASE_URL` et
+`SUPABASE_SERVICE_ROLE_KEY` sont injectees par la plateforme.
+
+Auth : `verify_jwt` reste actif (defaut). Sans en-tete Authorization, la passerelle (Kong) repond
+401 `UNAUTHORIZED_NO_AUTH_HEADER` ; avec un JWT sans utilisateur (cle anon), notre authentificateur
+repond 401 `UNAUTHENTICATED`.
 
 ## App contre Supabase
 
