@@ -21,3 +21,34 @@ test('builds one insert per table from the JSON seeds', () => {
   expect(sql).toContain("array['C', 'R']::text[]");
   expect(sql).toContain(`(1, '{"pack":{"size":5}}'::jsonb)`);
 });
+
+describe('fail fast on bad seed values', () => {
+  const season = { id: 's', name: 'S', events: [] };
+  const rider = { id: 'r1', name: 'P', country: 'FRA', category: 'SENIOR_26', cote: 1, active: true };
+  const card = { id: 'c1', type: 'PILOT', edition: '2026', name: 'C', subject: null, rarities: ['C'], effects: [] };
+  const build = (overrides) => buildSeedSql({ seasons: [season], riders: [rider], cards: [card], balance: {}, ...overrides });
+
+  test('sqlLiteral rejects non-finite numbers', () => {
+    expect(() => sqlLiteral(NaN)).toThrow(/finite/);
+    expect(() => sqlLiteral(Infinity)).toThrow(/finite/);
+  });
+
+  test('a missing NOT NULL value names the table and id', () => {
+    expect(() => build({ riders: [{ ...rider, country: undefined }] })).toThrow(/riders r1.*country/);
+    expect(() => build({ cards: [{ ...card, rarities: undefined }] })).toThrow(/cards c1.*rarities/);
+    expect(() => build({ cards: [{ ...card, effects: undefined }] })).toThrow(/cards c1.*effects/);
+    expect(() => build({ seasons: [{ ...season, name: null }] })).toThrow(/seasons s.*name/);
+  });
+
+  test('jsonLiteral doubles quotes and keeps backslashes verbatim', () => {
+    const sql = build({ cards: [{ ...card, effects: [{ description: 'L\'Ange 26"' }] }] });
+    expect(sql).toContain(String.raw`'[{"description":"L''Ange 26\""}]'::jsonb`);
+  });
+});
+
+test('the committed supabase/seed.sql is up to date with the JSON seeds', () => {
+  const seed = (name) => require(`../../src/data/seed/${name}.json`);
+  const expected = buildSeedSql({ seasons: seed('seasons'), riders: seed('riders'), cards: seed('cards'), balance: seed('balance') });
+  const committed = require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'supabase', 'seed.sql'), 'utf8');
+  expect(committed).toBe(expected);
+});

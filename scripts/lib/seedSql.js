@@ -2,9 +2,18 @@ const BALANCE_VERSION = 1;
 
 function sqlLiteral(value) {
   if (value === null || value === undefined) return 'null';
+  if (typeof value === 'number' && !Number.isFinite(value)) throw new Error(`Cannot seed a non-finite number: ${value}`);
   if (typeof value === 'number' || typeof value === 'boolean') return String(value);
   return `'${String(value).replace(/'/g, "''")}'`;
 }
+
+// Guards NOT NULL columns so a bad seed fails here, naming the table and id, not in Postgres.
+function required(row, key, table) {
+  const value = row[key];
+  if (value === null || value === undefined) throw new Error(`Seed ${table} ${row.id}: missing required "${key}"`);
+  return value;
+}
+
 const jsonLiteral = (value) => `${sqlLiteral(JSON.stringify(value))}::jsonb`;
 const textArray = (values) => `array[${values.map(sqlLiteral).join(', ')}]::text[]`;
 
@@ -14,18 +23,21 @@ function insert(table, columns, rows) {
   return `insert into public.${table} (${columns.join(', ')}) values\n${values};\n`;
 }
 
-const seasonRow = (season) => [sqlLiteral(season.id), sqlLiteral(season.name)];
+const seasonRow = (season) => [sqlLiteral(required(season, 'id', 'seasons')), sqlLiteral(required(season, 'name', 'seasons'))];
 const riderRow = (rider) => [
-  sqlLiteral(rider.id), sqlLiteral(rider.name), sqlLiteral(rider.country), sqlLiteral(rider.category),
+  sqlLiteral(required(rider, 'id', 'riders')), sqlLiteral(required(rider, 'name', 'riders')),
+  sqlLiteral(required(rider, 'country', 'riders')), sqlLiteral(required(rider, 'category', 'riders')),
   sqlLiteral(rider.brand), sqlLiteral(rider.cote), sqlLiteral(rider.uciRank), sqlLiteral(rider.active !== false),
 ];
 const competitionRow = (season, event) => [
-  sqlLiteral(event.id), sqlLiteral(season.id), sqlLiteral(event.name), sqlLiteral(event.venue), sqlLiteral(event.country),
-  sqlLiteral(event.round), sqlLiteral(event.dateFrom), sqlLiteral(event.dateTo || event.dateFrom), sqlLiteral(event.referee),
+  sqlLiteral(required(event, 'id', 'competitions')), sqlLiteral(season.id), sqlLiteral(required(event, 'name', 'competitions')),
+  sqlLiteral(event.venue), sqlLiteral(event.country), sqlLiteral(event.round),
+  sqlLiteral(required(event, 'dateFrom', 'competitions')), sqlLiteral(event.dateTo || event.dateFrom), sqlLiteral(event.referee),
 ];
 const cardRow = (card) => [
-  sqlLiteral(card.id), sqlLiteral(card.type), sqlLiteral(card.edition), sqlLiteral(card.name),
-  sqlLiteral(card.subject), textArray(card.rarities), jsonLiteral(card.effects),
+  sqlLiteral(required(card, 'id', 'cards')), sqlLiteral(required(card, 'type', 'cards')),
+  sqlLiteral(required(card, 'edition', 'cards')), sqlLiteral(required(card, 'name', 'cards')),
+  sqlLiteral(card.subject), textArray(required(card, 'rarities', 'cards')), jsonLiteral(required(card, 'effects', 'cards')),
 ];
 
 function buildSeedSql({ seasons, riders, cards, balance }) {
@@ -40,4 +52,4 @@ function buildSeedSql({ seasons, riders, cards, balance }) {
   ].join('\n');
 }
 
-module.exports = { buildSeedSql, sqlLiteral };
+module.exports = { buildSeedSql, sqlLiteral, BALANCE_VERSION };
