@@ -32,9 +32,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await mustSucceed(service.from('teams').delete().eq('user_id', bob.userId));
-  await mustSucceed(service.from('pack_openings').delete().eq('user_id', bob.userId));
-  await mustSucceed(service.from('owned_cards').delete().eq('user_id', bob.userId));
+  if (bob) {
+    await mustSucceed(service.from('teams').delete().eq('user_id', bob.userId));
+    await mustSucceed(service.from('pack_openings').delete().eq('user_id', bob.userId));
+    await mustSucceed(service.from('owned_cards').delete().eq('user_id', bob.userId));
+  }
   await mustSucceed(service.from('competitions').delete().eq('id', COMPETITION.id));
   await mustSucceed(service.from('seasons').delete().eq('id', SEASON.id));
   await mustSucceed(service.from('cards').delete().eq('id', CARD.id));
@@ -42,8 +44,10 @@ afterAll(async () => {
 
 test('a new account gets a profile and an empty wallet', async () => {
   const { client, userId } = await newPlayer();
-  const { data: profile } = await client.from('profiles').select('display_name').eq('user_id', userId).single();
-  const { data: wallet } = await client.from('wallets').select('*').eq('user_id', userId).single();
+  const { data: profile, error: profileError } = await client.from('profiles').select('display_name').eq('user_id', userId).single();
+  const { data: wallet, error: walletError } = await client.from('wallets').select('*').eq('user_id', userId).single();
+  expect(profileError).toBeNull();
+  expect(walletError).toBeNull();
   expect(profile.display_name).toBe('Joueur');
   expect(wallet).toMatchObject({ fragments: 0, pity_e: 0, pity_l: 0, packs_opened: 0, starter_given: false, version: 0 });
 });
