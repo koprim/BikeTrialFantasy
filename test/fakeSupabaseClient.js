@@ -28,6 +28,14 @@ function httpError(code, details) {
   });
 }
 
+// FunctionsHttpError for a response without the functions' {error} body (gateway 401, boot crash, HTML 502...).
+function rawHttpError(status, readBody) {
+  return Object.assign(new Error('Edge Function returned a non-2xx status code'), {
+    name: 'FunctionsHttpError',
+    context: { status, json: readBody },
+  });
+}
+
 // Mimics supabase-js FunctionsFetchError: the request never reached the server (context is the fetch TypeError).
 function fetchError() {
   return Object.assign(new Error('Failed to send a request to the Edge Function'), {
@@ -138,4 +146,4 @@ function createFakeSupabaseClient({ session = null, tables = {}, functions = {},
   };
 }
 
-module.exports = { createFakeSupabaseClient, httpError, GUEST_ID };
+module.exports = { createFakeSupabaseClient, httpError, rawHttpError, GUEST_ID };

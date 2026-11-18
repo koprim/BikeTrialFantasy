@@ -4,10 +4,18 @@ const { createPlayerCache } = require('./playerCache');
 
 const PG_INSUFFICIENT_PRIVILEGE = '42501';
 const PG_CHECK_VIOLATION = '23514';
+const HTTP_UNAUTHORIZED = 401;
 
 function unwrap({ data, error }) {
   if (error) throw error;
   return data;
+}
+
+// Without the functions' own {error} body, the HTTP status tells a reachable server (gateway 401, boot crash,
+// HTML 502/504) from a true network failure (no response at all).
+function codeFromStatus(status) {
+  if (!status) return 'NETWORK';
+  return status === HTTP_UNAUTHORIZED ? 'UNAUTHENTICATED' : 'INTERNAL';
 }
 
 async function invokeFunction(client, name, body) {
@@ -15,7 +23,8 @@ async function invokeFunction(client, name, body) {
   if (!error) return { ok: true, data };
   const hasJson = error.context && typeof error.context.json === 'function';
   const payload = hasJson ? await error.context.json().catch(() => null) : null;
-  return { ok: false, error: (payload && payload.error) || 'NETWORK', details: payload ? payload.details : undefined };
+  const code = (payload && payload.error) || codeFromStatus(error.context && error.context.status);
+  return { ok: false, error: code, details: payload ? payload.details : undefined };
 }
 
 // Reads go straight to Postgres (RLS); the guest session is created on first use.

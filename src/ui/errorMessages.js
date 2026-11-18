@@ -1,4 +1,5 @@
-// French message for every ApiErrorCode of the GameApi contract (src/data/api/demoApi.js).
+// French message for every ApiErrorCode of the GameApi contract (src/data/api/demoApi.js), except METHOD_NOT_ALLOWED,
+// intentionally left to the generic fallback message (the app always POSTs).
 const MESSAGES = {
   ALREADY_OPENED: 'Pack du jour déjà ouvert. Reviens demain !',
   STARTER_ALREADY_OPENED: 'Pack de départ déjà ouvert.',

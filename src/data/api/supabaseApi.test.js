@@ -1,5 +1,5 @@
 const { createSupabaseApi } = require('./supabaseApi');
-const { createFakeSupabaseClient, httpError, GUEST_ID } = require('../../../test/fakeSupabaseClient');
+const { createFakeSupabaseClient, httpError, rawHttpError, GUEST_ID } = require('../../../test/fakeSupabaseClient');
 
 const CACHE_KEY = 'sfbt:supabase-cache:v1';
 
@@ -177,6 +177,20 @@ describe('collection actions', () => {
   test('a network error without a JSON body maps to NETWORK', async () => {
     const { api } = build({ offline: true, functions: { 'open-starter': okFunction({ collection }) } });
     expect(await api.openStarter()).toMatchObject({ ok: false, error: 'NETWORK' });
+  });
+
+  test('a gateway 401 without an {error} body maps to UNAUTHENTICATED', async () => {
+    const error = rawHttpError(401, async () => ({ msg: 'Invalid JWT' }));
+    const { api } = build({ functions: { 'open-starter': async () => ({ data: null, error }) } });
+    expect(await api.openStarter()).toMatchObject({ ok: false, error: 'UNAUTHENTICATED' });
+  });
+
+  test('a 502 with an HTML body maps to INTERNAL', async () => {
+    const error = rawHttpError(502, async () => {
+      throw new SyntaxError('Unexpected token < in JSON');
+    });
+    const { api } = build({ functions: { 'open-starter': async () => ({ data: null, error }) } });
+    expect(await api.openStarter()).toMatchObject({ ok: false, error: 'INTERNAL' });
   });
 });
 
