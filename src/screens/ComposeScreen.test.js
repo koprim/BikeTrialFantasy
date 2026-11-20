@@ -39,6 +39,19 @@ test('an accepted save returns to the season home', async () => {
   expect(await screen.findByText('Coupe du Monde 2026')).toBeTruthy();
 });
 
+test('the pilot picker leaves out a rider already placed in another slot', async () => {
+  render(
+    <GameProvider api={inMemoryDemoApi(savedGame)}>
+      <ComposeScreen navigation={{ popToTop: jest.fn() }} route={{ params: { eventId: '2026-r3' } }} />
+    </GameProvider>,
+  );
+  // Round 3 holds Pilote 8 in Elite Femme (1) and Pilote 7 in Elite Femme (2).
+  fireEvent.press(await screen.findByText('Elite Femme 20" (2)'));
+  expect(await screen.findByRole('button', { name: 'Choisir ELITE WOMEN Pilote 5 Commune' })).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Choisir ELITE WOMEN Pilote 7 Commune' })).toBeTruthy();
+  expect(screen.queryByRole('button', { name: 'Choisir ELITE WOMEN Pilote 8 Commune' })).toBeNull();
+});
+
 test('a double press on save sends the team once and leaves once', async () => {
   const { call: saveTeam, settle } = deferredCall();
   const navigation = { popToTop: jest.fn() };

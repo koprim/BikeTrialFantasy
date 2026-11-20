@@ -31,10 +31,15 @@ export default function ComposeScreen({ navigation, route }) {
   });
   const techLimit = (entry) => BALANCE.slots.techniquesByPilotRarity[entry.rarity];
 
+  // A rider may only appear once in the team (the two Elite Women slots share one category).
+  const ridersInOtherSlots = (slotId) =>
+    SLOTS.filter((s) => s.id !== slotId && team.slots[s.id]).map((s) => CARDS_BY_ID[team.slots[s.id].cardId]?.subject);
+
   function options() {
     if (!picker) return [];
     const types = { pilot: 'PILOT', technique: 'TECHNIQUE', equipment: 'EQUIPMENT', referee: 'REFEREE' };
     const used = [...Object.values(team.slots).flatMap((e) => (e ? e.techniques : [])), ...team.equipment];
+    const placedRiders = picker.kind === 'pilot' ? ridersInOtherSlots(picker.slot.id) : [];
     return ownedRefs(
       state.collection,
       CARDS,
@@ -44,7 +49,7 @@ export default function ComposeScreen({ navigation, route }) {
     ).filter((o) => {
       if (picker.kind === 'technique' || picker.kind === 'equipment') return !used.some((u) => sameRef(u, o));
       if (picker.kind === 'referee') return !(team.referee && sameRef(team.referee, o));
-      return true;
+      return !placedRiders.includes(o.card.subject);
     });
   }
 
