@@ -17,6 +17,7 @@ const EXPORTS_THAT_WARN_WHEN_LOADED = new Set([
   'PointPropType',
   'ViewPropTypes',
   'SafeAreaView', // RN 0.81+: deprecated
+  'InteractionManager', // RN 0.83+: deprecated
 ]);
 
 const reactNative = require('react-native');
