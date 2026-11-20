@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 /**
  * Wraps an async call for a button: a press while the call is in flight is ignored (resolves undefined),
@@ -11,7 +11,9 @@ export function useAsyncAction(action) {
   const [busy, setBusy] = useState(false);
   const inFlight = useRef(false);
   const latestAction = useRef(action);
-  latestAction.current = action;
+  useLayoutEffect(() => {
+    latestAction.current = action;
+  });
 
   const run = useCallback(async (...args) => {
     if (inFlight.current) return undefined;

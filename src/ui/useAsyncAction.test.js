@@ -11,6 +11,21 @@ test('returns the result of the call, with its arguments', async () => {
   expect(sum).toBe(5);
 });
 
+test('runs the action from the latest render', async () => {
+  const firstAction = jest.fn(async () => 'first');
+  const latestAction = jest.fn(async () => 'latest');
+  const { result, rerender } = renderHook(({ action }) => useAsyncAction(action), {
+    initialProps: { action: firstAction },
+  });
+  rerender({ action: latestAction });
+  let outcome;
+  await act(async () => {
+    outcome = await result.current.run();
+  });
+  expect(outcome).toBe('latest');
+  expect(firstAction).not.toHaveBeenCalled();
+});
+
 test('is busy while the call is in flight', async () => {
   const { call, settle } = deferredCall();
   const { result } = renderHook(() => useAsyncAction(call));
