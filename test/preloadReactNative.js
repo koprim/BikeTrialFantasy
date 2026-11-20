@@ -18,6 +18,10 @@ const EXPORTS_THAT_WARN_WHEN_LOADED = new Set([
   'ViewPropTypes',
   'SafeAreaView', // RN 0.81+: deprecated
   'InteractionManager', // RN 0.83+: deprecated
+  'DrawerLayoutAndroid', // RN 0.88+: deprecated
+  'ImageBackground', // RN 0.88+: deprecated
+  'InputAccessoryView', // RN 0.88+: deprecated
+  'UTFSequence', // RN 0.88+: deprecated
 ]);
 
 const reactNative = require('react-native');
