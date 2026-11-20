@@ -34,7 +34,7 @@ Le lien du rapport s'affiche à la fin : http://localhost:9000/dashboard?id=bike
 
 ## Ce qui est analysé
 
-Défini dans `sonar-project.properties` : `src`, `scripts`, les migrations SQL et les Edge Functions. Les tests (`*.test.js`, `test/`) sont reconnus comme tests ; le bundle généré `backend.mjs` est exclu. La couverture vient des tests unitaires (les tests d'intégration ne sont pas comptés).
+Défini dans `sonar-project.properties` : `src`, `scripts`, les migrations SQL et les Edge Functions. Les tests (`*.test.js`, `test/`) sont reconnus comme tests ; le bundle généré `backend.mjs` est exclu. La couverture vient des tests unitaires (les tests d'intégration ne sont pas comptés). Les outils de développement de `scripts/` sont analysés mais exclus de la couverture : ils ne partent jamais chez les joueurs.
 
 ## Dépendances : vulnérabilités acceptées
 
