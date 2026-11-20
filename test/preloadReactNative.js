@@ -14,6 +14,7 @@ const EXPORTS_THAT_WARN_WHEN_LOADED = new Set([
   'EdgeInsetsPropType',
   'PointPropType',
   'ViewPropTypes',
+  'DevMenu', // RN 0.79+: TurboModule absent under Jest, throws on access
 ]);
 
 const reactNative = require('react-native');
