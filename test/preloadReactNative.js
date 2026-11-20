@@ -3,7 +3,9 @@
 // That one-time cost then lands inside the first test of each file and, on a fresh CI runner, takes
 // longer than the 5 s test timeout. Loading every export here, before any test starts, keeps that
 // cost out of each test's time budget; it also covers the modules our navigation libraries use.
-// Skipped: deprecated exports and those without a native module under Jest, which warn when loaded.
+// An export that throws when loaded (its native module is absent under Jest) is irrelevant to the
+// cache and is skipped. Exports that only warn when loaded (deprecated, or no native module) are
+// listed below and not loaded at all, to keep test output free of their console noise.
 const EXPORTS_THAT_WARN_WHEN_LOADED = new Set([
   'ProgressBarAndroid',
   'Clipboard',
@@ -14,13 +16,15 @@ const EXPORTS_THAT_WARN_WHEN_LOADED = new Set([
   'EdgeInsetsPropType',
   'PointPropType',
   'ViewPropTypes',
-  'DevMenu', // RN 0.79+: TurboModule absent under Jest, throws on access
 ]);
 
 const reactNative = require('react-native');
 
 for (const exportName of Object.keys(reactNative)) {
-  if (!EXPORTS_THAT_WARN_WHEN_LOADED.has(exportName)) {
+  if (EXPORTS_THAT_WARN_WHEN_LOADED.has(exportName)) continue;
+  try {
     void reactNative[exportName];
+  } catch {
+    // Throws under Jest only; nothing to warm up.
   }
 }
