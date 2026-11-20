@@ -10,7 +10,8 @@ function fail(message) {
 
 function readLocalSupabaseStatus() {
   try {
-    return JSON.parse(execSync('npx --no-install supabase status -o json', { encoding: 'utf8' }));
+    // Dev/CI-only helper: it must inherit the developer's PATH to find npx (accepted risk).
+    return JSON.parse(execSync('npx --no-install supabase status -o json', { encoding: 'utf8' })); // NOSONAR
   } catch (error) {
     return fail(`Local Supabase is not running: run \`npx supabase start\`\n${error.message}`);
   }

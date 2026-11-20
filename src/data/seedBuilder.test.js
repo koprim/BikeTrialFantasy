@@ -1,4 +1,4 @@
-const { parseCsv, buildRiders, buildSeason } = require('./seedBuilder');
+const { slug, parseCsv, buildRiders, buildSeason } = require('./seedBuilder');
 
 const rankingsCsv = `category,uci_rank,name,country,points
 SENIOR_26,1,Jack CARTHY,GBR,1250
@@ -46,4 +46,11 @@ test('buildSeason attaches ordered results to events', () => {
   expect(season[0].id).toBe('tri-2026-wc-dole');
   expect(season[0].results.SENIOR_26).toEqual(['outsider-guy', 'jack-carthy']);
   expect(season[0].results.ELITE_WOMEN).toEqual(['top-woman']);
+});
+
+test('slug lower-cases, joins words with one dash and trims edge dashes', () => {
+  expect(slug('  Jack CARTHY ')).toBe('jack-carthy');
+  expect(slug('--Toni   Bou!--')).toBe('toni-bou');
+  expect(slug('SENIOR_26-3')).toBe('senior-26-3');
+  expect(slug('***')).toBe('');
 });

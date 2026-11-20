@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useGame } from '../state/GameContext';
 import { errorMessage } from '../ui/errorMessages';
+import { isEmailAddress } from '../ui/emailAddress';
 import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const STALE_STATUS_NOTE = "Le statut du compte n'a pas pu être actualisé.";
 
@@ -72,7 +71,7 @@ export default function AccountScreen() {
   }
 
   const address = email.trim();
-  const disabled = busy || !EMAIL_PATTERN.test(address);
+  const disabled = busy || !isEmailAddress(address);
   const save = () =>
     submit(actions.saveAccount, address, `Un lien de confirmation a été envoyé à ${address}. Ouvre-le pour terminer.`);
   const signIn = () =>

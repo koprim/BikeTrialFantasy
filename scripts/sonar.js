@@ -18,22 +18,27 @@ function readToken() {
   process.exit(1);
 }
 
-function run(command, args) {
-  const result = spawnSync(command, args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
+function exitOnFailure(result) {
   if (result.status !== 0) process.exit(result.status || 1);
 }
 
+// Both commands are found through the developer's PATH on purpose: this is a local dev tool (accepted risk, NOSONAR).
+
+// npx is a .cmd shim on Windows and needs a shell; a single fixed command string avoids DEP0190.
+function runTestsWithCoverage() {
+  const options = { cwd: ROOT, stdio: 'inherit', shell: true };
+  exitOnFailure(spawnSync('npx jest --coverage --coverageReporters=lcov --silent', options)); // NOSONAR
+}
+
+// No shell; the token travels in the environment (`-e SONAR_TOKEN` copies it), never on the command line.
+function runScanner(token) {
+  const args = ['run', '--rm', '-e', `SONAR_HOST_URL=${SONAR_HOST_URL}`, '-e', 'SONAR_TOKEN'];
+  args.push('-v', `${ROOT}:/usr/src`, SCANNER_IMAGE);
+  const options = { cwd: ROOT, stdio: 'inherit', env: { ...process.env, SONAR_TOKEN: token } };
+  exitOnFailure(spawnSync('docker', args, options)); // NOSONAR
+}
+
 const token = readToken();
-run('npx', ['jest', '--coverage', '--coverageReporters=lcov', '--silent']);
-run('docker', [
-  'run',
-  '--rm',
-  '-e',
-  `SONAR_HOST_URL=${SONAR_HOST_URL}`,
-  '-e',
-  `SONAR_TOKEN=${token}`,
-  '-v',
-  `${ROOT}:/usr/src`,
-  SCANNER_IMAGE,
-]);
+runTestsWithCoverage();
+runScanner(token);
 console.log('Report: http://localhost:9000/dashboard?id=biketrial-fantasy');

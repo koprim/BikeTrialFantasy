@@ -14,7 +14,7 @@ module.exports = {
   ],
   overrides: [
     { files: ['scripts/**/*.js', '*.config.js', '.eslintrc.js'], env: { node: true } }, // Node scripts and configs use __dirname/require
-    { files: ['**/*.test.js', 'jest.setup.js', 'test/**/*.js'], env: { jest: true } },
+    { files: ['**/*.test.js', 'jest.setup.js', 'test/**/*.js', 'src/testing/**/*.js'], env: { jest: true } },
     { files: ['supabase/functions/**/*.ts'], globals: { Deno: 'readonly' }, rules: { 'import/no-unresolved': 'off' } },
   ],
 };
