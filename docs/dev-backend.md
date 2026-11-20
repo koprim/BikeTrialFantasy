@@ -125,6 +125,14 @@ Date simulee : `ALLOW_SIMULATED_DATE` (serveur, `supabase/functions/.env`) et
 ignoree d'un cote. De plus, `today()` cote app utilise le fuseau de l'appareil alors que le serveur
 utilise `PACK_TIMEZONE` : vers minuit, un pack peut etre refuse avec `ALREADY_OPENED`.
 
+## Depannage de l'app
+
+Versions : Expo SDK 58 (React 19.3, React Native 0.88). Node `^22.13.0 || ^24.3.0 || ^26 || >=27`
+(la CI utilise Node 22).
+
+- Apres un `git pull` de la montee Expo SDK 50 -> 58 : lancer `npm ci` puis
+  `npx expo start --web --port 8081 --clear` (le cache Metro du SDK 50 est incompatible).
+
 ## Production
 
 - Ne jamais positionner `ALLOW_SIMULATED_DATE` ni `EXPO_PUBLIC_ALLOW_SIMULATED_DATE`.
