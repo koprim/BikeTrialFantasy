@@ -139,6 +139,11 @@ Versions : Expo SDK 58 (React 19.3, React Native 0.88). Node `^22.13.0 || ^24.3.
 - Renseigner `site_url` et `additional_redirect_urls` d'auth pour le vrai domaine (`config.toml` ne
   contient que localhost).
 - Revoir la limite de debit des connexions anonymes.
+- Laisser « Confirm email » active (equivalent de `enable_confirmations = true`) : sinon
+  « Sauvegarder mon compte » lie l'adresse sans envoyer de mail.
+- Hebergement web : renvoyer `index.html` pour toute adresse inconnue (reecriture SPA). Chaque ecran a
+  sa propre adresse (`src/navigation/linking.js`) ; sans cette reecriture, F5 sur `/collection` donne
+  une 404.
 - Optionnel : ne pas deployer `set-simulated-date`.
 
 ## CI

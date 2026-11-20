@@ -18,6 +18,7 @@ import CollectionScreen from './src/screens/CollectionScreen';
 import PackRevealScreen from './src/screens/PackRevealScreen';
 import CardDetailScreen from './src/screens/CardDetailScreen';
 import AccountScreen from './src/screens/AccountScreen';
+import { linking } from './src/navigation/linking';
 import { colors } from './src/ui/theme';
 
 const Tab = createBottomTabNavigator();
@@ -96,7 +97,7 @@ export default function App({ api }) {
   return (
     <SafeAreaProvider>
       <GameProvider api={api}>
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <StatusBar style="dark" />
           <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.primary }}>
             <Tab.Screen name="PlayTab" component={PlayNav} options={tab('Jouer', '🎮')} />
