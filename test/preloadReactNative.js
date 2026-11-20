@@ -16,6 +16,7 @@ const EXPORTS_THAT_WARN_WHEN_LOADED = new Set([
   'EdgeInsetsPropType',
   'PointPropType',
   'ViewPropTypes',
+  'SafeAreaView', // RN 0.81+: deprecated
 ]);
 
 const reactNative = require('react-native');
