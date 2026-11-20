@@ -52,6 +52,18 @@ test('the pilot picker leaves out a rider already placed in another slot', async
   expect(screen.queryByRole('button', { name: 'Choisir ELITE WOMEN Pilote 8 Commune' })).toBeNull();
 });
 
+test('choosing a pilot fills the slot and closes the picker', async () => {
+  render(
+    <GameProvider api={inMemoryDemoApi(savedGame)}>
+      <ComposeScreen navigation={{ popToTop: jest.fn() }} route={{ params: { eventId: '2026-r3' } }} />
+    </GameProvider>,
+  );
+  fireEvent.press(await screen.findByText('Elite Femme 20" (2)'));
+  fireEvent.press(await screen.findByRole('button', { name: 'Choisir ELITE WOMEN Pilote 5 Commune' }));
+  expect(await screen.findByText(/^ELITE WOMEN Pilote 5 · Commune/)).toBeTruthy();
+  expect(screen.queryByRole('button', { name: /^Choisir ELITE WOMEN/ })).toBeNull();
+});
+
 test('a double press on save sends the team once and leaves once', async () => {
   const { call: saveTeam, settle } = deferredCall();
   const navigation = { popToTop: jest.fn() };

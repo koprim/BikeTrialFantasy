@@ -54,18 +54,21 @@ export default function ComposeScreen({ navigation, route }) {
   }
 
   function choose(option) {
+    if (!picker) return; // options are only listed while a picker is open
+    // Read the picker now: the team updater runs later, after setPicker(null) below.
+    const { kind, slot } = picker;
     const ref = { cardId: option.cardId, rarity: option.rarity };
     setTeam((t) => {
-      if (picker.kind === 'pilot') {
-        const prev = t.slots[picker.slot.id];
+      if (kind === 'pilot') {
+        const prev = t.slots[slot.id];
         const techniques = (prev ? prev.techniques : []).slice(0, techLimit(ref));
-        return { ...t, slots: { ...t.slots, [picker.slot.id]: { ...ref, techniques } } };
+        return { ...t, slots: { ...t.slots, [slot.id]: { ...ref, techniques } } };
       }
-      if (picker.kind === 'technique') {
-        const entry = t.slots[picker.slot.id];
-        return { ...t, slots: { ...t.slots, [picker.slot.id]: { ...entry, techniques: [...entry.techniques, ref] } } };
+      if (kind === 'technique') {
+        const entry = t.slots[slot.id];
+        return { ...t, slots: { ...t.slots, [slot.id]: { ...entry, techniques: [...entry.techniques, ref] } } };
       }
-      if (picker.kind === 'equipment') return { ...t, equipment: [...t.equipment, ref] };
+      if (kind === 'equipment') return { ...t, equipment: [...t.equipment, ref] };
       return { ...t, referee: ref };
     });
     setPicker(null);
