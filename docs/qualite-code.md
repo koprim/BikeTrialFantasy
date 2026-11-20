@@ -64,4 +64,4 @@ Leçons de la montée SDK 50 → 58 :
 6. Erreur `ERESOLVE` : désinstaller ensemble `react-test-renderer`, `@testing-library/react-native` et `@types/react`, puis les réinstaller.
 7. Nouvelles dépréciations React Native (avertissements au chargement dans Jest) : ajouter le nom de l'export à `EXPORTS_THAT_WARN_WHEN_LOADED` dans `test/preloadReactNative.js`.
 8. Vérifier : `npx expo-doctor`, puis `npm run verify:all` (fonctions servies : `npm run functions:serve`).
-9. Après la montée, chaque poste : `npm ci` puis `npx expo start --web --clear`.
+9. Après la montée, chaque poste : `npm ci` puis `npx expo start --web --port 8081 --clear`.
