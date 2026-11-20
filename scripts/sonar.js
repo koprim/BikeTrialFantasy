@@ -22,15 +22,15 @@ function exitOnFailure(result) {
   if (result.status !== 0) process.exit(result.status || 1);
 }
 
-// Both commands are found through the developer's PATH on purpose: this is a local dev tool (accepted risk, NOSONAR).
-
 // npx is a .cmd shim on Windows and needs a shell; a single fixed command string avoids DEP0190.
+// Found through the developer's PATH on purpose: local dev tool (accepted risk, NOSONAR).
 function runTestsWithCoverage() {
   const options = { cwd: ROOT, stdio: 'inherit', shell: true };
   exitOnFailure(spawnSync('npx jest --coverage --coverageReporters=lcov --silent', options)); // NOSONAR
 }
 
 // No shell; the token travels in the environment (`-e SONAR_TOKEN` copies it), never on the command line.
+// docker is found through the developer's PATH on purpose (accepted risk, NOSONAR).
 function runScanner(token) {
   const args = ['run', '--rm', '-e', `SONAR_HOST_URL=${SONAR_HOST_URL}`, '-e', 'SONAR_TOKEN'];
   args.push('-v', `${ROOT}:/usr/src`, SCANNER_IMAGE);

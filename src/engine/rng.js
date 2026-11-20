@@ -1,7 +1,7 @@
 function makeRng(seed) {
   let a = seed >>> 0;
   return function next() {
-    // `| 0` wraps to a signed 32-bit integer (mulberry32); Math.trunc does not wrap, so it would change every draw.
+    // `| 0` keeps `a` a wrapped int32 (mulberry32); Math.trunc would let it grow past 2^53 and lose precision.
     a |= 0; // NOSONAR
     a = (a + 0x6d2b79f5) | 0; // NOSONAR
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
