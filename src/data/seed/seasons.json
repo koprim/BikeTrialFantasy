@@ -1,11 +1,9 @@
 [
   {
     "id": "2025",
-    "name": "Coupe du Monde 2025",
     "events": [
       {
         "id": "2025-r1",
-        "name": "Coupe du Monde 2025 — Manche 1",
         "venue": "Vic",
         "country": "ESP",
         "round": 1,
@@ -395,7 +393,6 @@
       },
       {
         "id": "2025-r2",
-        "name": "Coupe du Monde 2025 — Manche 2",
         "venue": "Andorre",
         "country": "AND",
         "round": 2,
@@ -787,7 +784,6 @@
       },
       {
         "id": "2025-r3",
-        "name": "Coupe du Monde 2025 — Manche 3",
         "venue": "Val di Sole",
         "country": "ITA",
         "round": 3,
@@ -1167,7 +1163,6 @@
       },
       {
         "id": "2025-r4",
-        "name": "Coupe du Monde 2025 — Manche 4",
         "venue": "Leogang",
         "country": "AUT",
         "round": 4,
@@ -1548,11 +1543,9 @@
   },
   {
     "id": "2026",
-    "name": "Coupe du Monde 2026",
     "events": [
       {
         "id": "2026-r1",
-        "name": "Coupe du Monde 2026 — Manche 1",
         "venue": "Les Gets",
         "country": "FRA",
         "round": 1,
@@ -1947,7 +1940,6 @@
       },
       {
         "id": "2026-r2",
-        "name": "Coupe du Monde 2026 — Manche 2",
         "venue": "Châtel",
         "country": "FRA",
         "round": 2,
@@ -2341,7 +2333,6 @@
       },
       {
         "id": "2026-r3",
-        "name": "Coupe du Monde 2026 — Manche 3",
         "venue": "Lenzerheide",
         "country": "SUI",
         "round": 3,
@@ -2748,7 +2739,6 @@
       },
       {
         "id": "2026-r4",
-        "name": "Coupe du Monde 2026 — Manche 4",
         "venue": "Pal Arinsal",
         "country": "AND",
         "round": 4,

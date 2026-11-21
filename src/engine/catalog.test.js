@@ -1,12 +1,11 @@
 const { CARD_TYPES, validateCatalog } = require('./catalog');
 
 const ridersById = { r1: { id: 'r1' } };
-const effect = { description: '+{value} pts', trigger: { type: 'ALWAYS' }, reward: { type: 'FLAT_POINTS', value: 10 } };
+const effect = { trigger: { type: 'ALWAYS' }, reward: { type: 'FLAT_POINTS', value: 10 } };
 const pilot = {
   id: 'p1',
   type: 'PILOT',
   edition: '2026',
-  name: 'P1',
   subject: 'r1',
   rarities: ['C', 'R'],
   effects: [effect],
@@ -24,7 +23,6 @@ test.each([
   ['unordered rarities', [{ ...pilot, rarities: ['R', 'C'] }], /raretés/],
   ['empty rarities', [{ ...pilot, rarities: [] }], /raretés/],
   ['unknown rider', [{ ...pilot, subject: 'zz' }], /pilote inconnu/],
-  ['missing description', [{ ...pilot, effects: [{ ...effect, description: '' }] }], /description/],
   ['unknown trigger', [{ ...pilot, effects: [{ ...effect, trigger: { type: 'NOPE' } }] }], /déclencheur inconnu/],
   [
     'unknown reward',

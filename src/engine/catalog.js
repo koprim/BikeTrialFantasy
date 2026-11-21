@@ -12,7 +12,7 @@ function validateCatalog(cards, ridersById) {
     if (!c.id || seen.has(c.id)) errors.push(`${at} : id manquant ou en double`);
     seen.add(c.id);
     if (!CARD_TYPES.includes(c.type)) errors.push(`${at} : type inconnu ${c.type}`);
-    if (!c.name) errors.push(`${at} : nom manquant`);
+    // Mechanics only: display texts are checked by src/i18n/gameTexts.coverage.test.js.
     const ranks = (c.rarities || []).map((r) => RARITIES.indexOf(r));
     if (!ranks.length || ranks.some((r, k) => r < 0 || (k > 0 && r <= ranks[k - 1]))) {
       errors.push(`${at} : raretés invalides (non vides, dans l'ordre C, R, E, L)`);
@@ -21,7 +21,6 @@ function validateCatalog(cards, ridersById) {
     const teamCard = c.type === 'EQUIPMENT' || c.type === 'REFEREE';
     (c.effects || []).forEach((e, k) => {
       const where = `${at} effet ${k + 1}`;
-      if (!e.description || typeof e.description !== 'string') errors.push(`${where} : description manquante`);
       if (!e.trigger || !TRIGGERS.includes(e.trigger.type)) errors.push(`${where} : déclencheur inconnu`);
       if (!e.reward || !REWARDS.includes(e.reward.type)) errors.push(`${where} : récompense inconnue`);
       if (teamCard && e.trigger && RIDER_TRIGGERS.includes(e.trigger.type))

@@ -39,11 +39,10 @@ describe('teamEventScore', () => {
     r6: { id: 'r6', name: 'R6', category: 'ELITE_WOMEN', cote: 1.0 },
     leg: { id: 'leg', name: 'Legend', category: 'SENIOR_26', cote: 2.5, active: false },
   };
-  const always = (reward, description = 'x') => ({ description, trigger: { type: 'ALWAYS' }, reward });
+  const always = (reward) => ({ trigger: { type: 'ALWAYS' }, reward });
   const pilot = (id, effects = []) => ({
     id: `p-${id}`,
     type: 'PILOT',
-    name: id,
     subject: id,
     rarities: ['C'],
     effects,
@@ -51,23 +50,19 @@ describe('teamEventScore', () => {
   const cardsById = Object.fromEntries(
     [
       pilot('r1', [always({ type: 'RIDER_MULTIPLIER', value: 0.1 })]),
-      pilot('r2', [
-        { description: 'top 1', trigger: { type: 'RIDER_TOP_N', n: 1 }, reward: { type: 'FLAT_POINTS', value: 99 } },
-      ]),
+      pilot('r2', [{ trigger: { type: 'RIDER_TOP_N', n: 1 }, reward: { type: 'FLAT_POINTS', value: 99 } }]),
       pilot('r3'),
       pilot('r4'),
       pilot('r5'),
       pilot('r6'),
-      pilot('leg', [always({ type: 'FLAT_POINTS', value: 30 }, '+{value} pts')]),
+      pilot('leg', [always({ type: 'FLAT_POINTS', value: 30 })]),
       {
         id: 'tech-gap',
         type: 'TECHNIQUE',
-        name: 'Gap',
         subject: 'gap',
         rarities: ['C', 'R'],
         effects: [
           {
-            description: '+{value} pts',
             trigger: { type: 'RIDER_DID_TECHNIQUE', technique: 'gap' },
             reward: { type: 'FLAT_POINTS', value: 20 },
           },
@@ -76,7 +71,6 @@ describe('teamEventScore', () => {
       {
         id: 'eq-s26',
         type: 'EQUIPMENT',
-        name: 'Pneus',
         subject: 'SENIOR_26',
         rarities: ['C'],
         effects: [always({ type: 'CATEGORY_MULTIPLIER', category: 'SENIOR_26', value: 0.1 })],
@@ -84,7 +78,6 @@ describe('teamEventScore', () => {
       {
         id: 'ref',
         type: 'REFEREE',
-        name: 'Arbitre',
         subject: 'Arbitre',
         rarities: ['C'],
         effects: [always({ type: 'TEAM_MULTIPLIER', value: 0.1 })],

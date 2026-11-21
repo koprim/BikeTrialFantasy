@@ -63,7 +63,8 @@ test('a finished event lists the triggered effects', async () => {
 
 test('flow: open the daily pack, then its cards are offered when composing a team', async () => {
   const { CARDS } = require('./src/data/index');
-  const byName = Object.fromEntries(CARDS.map((c) => [c.name, c]));
+  const { gameText } = require('./src/i18n/game');
+  const byName = Object.fromEntries(CARDS.map((c) => [gameText('fr').cardName(c.id), c]));
   renderApp();
   fireEvent.press(await screen.findByLabelText('Onglet Collection'));
   fireEvent.press(await screen.findByText('Ouvrir le pack du jour'));

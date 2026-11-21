@@ -285,10 +285,11 @@ const demoPlayer = buildDemoPlayer(seasons, riders);
 const dir = path.join(__dirname, '..', 'src', 'data', 'seed');
 fs.mkdirSync(dir, { recursive: true });
 fs.writeFileSync(path.join(dir, 'riders.json'), JSON.stringify(riders, null, 2));
-fs.writeFileSync(path.join(dir, 'seasons.json'), JSON.stringify(seasons, null, 2));
-fs.writeFileSync(path.join(dir, 'cards.json'), JSON.stringify(cards, null, 2));
+const split = splitGameTexts({ seasons, cards });
+fs.writeFileSync(path.join(dir, 'seasons.json'), JSON.stringify(split.seasons, null, 2));
+fs.writeFileSync(path.join(dir, 'cards.json'), JSON.stringify(split.cards, null, 2));
 fs.writeFileSync(path.join(dir, 'demoPlayer.json'), JSON.stringify(demoPlayer, null, 2));
-writeFrenchGameTexts(splitGameTexts({ seasons, cards }).texts);
+writeFrenchGameTexts(split.texts);
 console.log(
   `Wrote ${riders.length} riders, ${seasons.length} seasons, ${cards.length} cards, ${Object.keys(demoPlayer.picks).length} demo picks to src/data/seed/`,
 );

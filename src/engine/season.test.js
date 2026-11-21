@@ -41,7 +41,7 @@ const playerTeam = {
 const cardsById = Object.fromEntries(
   RIDERS.map((r) => [
     `pilot-2026-${r.id}`,
-    { id: `pilot-2026-${r.id}`, type: 'PILOT', name: r.name, subject: r.id, rarities: ['C'], effects: [] },
+    { id: `pilot-2026-${r.id}`, type: 'PILOT', subject: r.id, rarities: ['C'], effects: [] },
   ]),
 );
 const balance = { rarityMultiplier: { C: 1, R: 1.5, E: 2, L: 3 } };

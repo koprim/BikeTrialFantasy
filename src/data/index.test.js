@@ -9,11 +9,12 @@ const {
   ridersByCategory,
 } = require('./index');
 const { validateCatalog } = require('../engine/catalog');
+const { gameText } = require('../i18n/game');
 const { TRIGGERS, REWARDS } = require('../engine/effects');
 
 test('two yearly seasons: 2025 archived, 2026 current', () => {
   expect(SEASONS.map((s) => s.id)).toEqual(['2025', '2026']);
-  expect(SEASONS[1].name).toBe('Coupe du Monde 2026');
+  expect(gameText('fr').seasonName(SEASONS[1].id)).toBe('Coupe du Monde 2026');
   SEASONS.forEach((s) => expect(s.events).toHaveLength(4));
   expect(SEASONS[1].events.map((e) => e.dateFrom)).toEqual(['2026-10-18', '2026-11-08', '2026-11-29', '2026-12-20']);
   expect(SEASONS[1].events[0].dateTo).toBe('2026-10-19');
@@ -48,7 +49,7 @@ test('results reference active riders, each with race stats', () => {
 });
 
 test('every event has a referee from the catalog', () => {
-  const refereeNames = CARDS.filter((c) => c.type === 'REFEREE').map((c) => c.name);
+  const refereeNames = CARDS.filter((c) => c.type === 'REFEREE').map((c) => gameText('fr').cardName(c.id));
   Object.values(EVENTS_BY_ID).forEach((ev) => expect(refereeNames).toContain(ev.referee));
 });
 

@@ -18,8 +18,9 @@ const seasons = [{ id: String(competitions.season), name: `Coupe du Monde ${comp
 const dir = path.join(__dirname, '..', 'src', 'data', 'seed');
 fs.mkdirSync(dir, { recursive: true });
 fs.writeFileSync(path.join(dir, 'riders.json'), JSON.stringify(riders, null, 2));
-fs.writeFileSync(path.join(dir, 'seasons.json'), JSON.stringify(seasons, null, 2));
-writeFrenchGameTexts(splitGameTexts({ seasons }).texts);
+const split = splitGameTexts({ seasons });
+fs.writeFileSync(path.join(dir, 'seasons.json'), JSON.stringify(split.seasons, null, 2));
+writeFrenchGameTexts(split.texts);
 const demoPath = path.join(dir, 'demoPlayer.json');
 if (!fs.existsSync(demoPath)) fs.writeFileSync(demoPath, JSON.stringify({ name: 'Démo', picks: {} }, null, 2));
 console.log(`Built ${riders.length} riders and ${season.length} events from CSV.`);

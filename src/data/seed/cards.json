@@ -3,7 +3,6 @@
     "id": "pilot-2026-senior-26-1",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 1",
     "subject": "senior-26-1",
     "rarities": [
       "C",
@@ -13,7 +12,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -29,7 +27,6 @@
     "id": "pilot-2026-senior-26-2",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 2",
     "subject": "senior-26-2",
     "rarities": [
       "C",
@@ -39,7 +36,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -55,7 +51,6 @@
     "id": "pilot-2026-senior-26-3",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 3",
     "subject": "senior-26-3",
     "rarities": [
       "C",
@@ -65,7 +60,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Pivot",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "pivot"
@@ -81,7 +75,6 @@
     "id": "pilot-2026-senior-26-4",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 4",
     "subject": "senior-26-4",
     "rarities": [
       "C",
@@ -90,7 +83,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -105,7 +97,6 @@
     "id": "pilot-2026-senior-26-5",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 5",
     "subject": "senior-26-5",
     "rarities": [
       "C",
@@ -114,7 +105,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -130,7 +120,6 @@
     "id": "pilot-2026-senior-26-6",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 6",
     "subject": "senior-26-6",
     "rarities": [
       "C",
@@ -139,7 +128,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -155,7 +143,6 @@
     "id": "pilot-2026-senior-26-7",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 7",
     "subject": "senior-26-7",
     "rarities": [
       "C",
@@ -164,7 +151,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Nose turn",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "nose-turn"
@@ -180,7 +166,6 @@
     "id": "pilot-2026-senior-26-8",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 26 Pilote 8",
     "subject": "senior-26-8",
     "rarities": [
       "C",
@@ -189,7 +174,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -204,7 +188,6 @@
     "id": "pilot-2026-junior-26-1",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 1",
     "subject": "junior-26-1",
     "rarities": [
       "C",
@@ -214,7 +197,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -230,7 +212,6 @@
     "id": "pilot-2026-junior-26-2",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 2",
     "subject": "junior-26-2",
     "rarities": [
       "C",
@@ -240,7 +221,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -256,7 +236,6 @@
     "id": "pilot-2026-junior-26-3",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 3",
     "subject": "junior-26-3",
     "rarities": [
       "C",
@@ -266,7 +245,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Pivot",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "pivot"
@@ -282,7 +260,6 @@
     "id": "pilot-2026-junior-26-4",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 4",
     "subject": "junior-26-4",
     "rarities": [
       "C",
@@ -291,7 +268,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -306,7 +282,6 @@
     "id": "pilot-2026-junior-26-5",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 5",
     "subject": "junior-26-5",
     "rarities": [
       "C",
@@ -315,7 +290,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -331,7 +305,6 @@
     "id": "pilot-2026-junior-26-6",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 6",
     "subject": "junior-26-6",
     "rarities": [
       "C",
@@ -340,7 +313,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -356,7 +328,6 @@
     "id": "pilot-2026-junior-26-7",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 7",
     "subject": "junior-26-7",
     "rarities": [
       "C",
@@ -365,7 +336,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Nose turn",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "nose-turn"
@@ -381,7 +351,6 @@
     "id": "pilot-2026-junior-26-8",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 26 Pilote 8",
     "subject": "junior-26-8",
     "rarities": [
       "C",
@@ -390,7 +359,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -405,7 +373,6 @@
     "id": "pilot-2026-senior-20-1",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 1",
     "subject": "senior-20-1",
     "rarities": [
       "C",
@@ -415,7 +382,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -431,7 +397,6 @@
     "id": "pilot-2026-senior-20-2",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 2",
     "subject": "senior-20-2",
     "rarities": [
       "C",
@@ -441,7 +406,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -457,7 +421,6 @@
     "id": "pilot-2026-senior-20-3",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 3",
     "subject": "senior-20-3",
     "rarities": [
       "C",
@@ -467,7 +430,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Pivot",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "pivot"
@@ -483,7 +445,6 @@
     "id": "pilot-2026-senior-20-4",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 4",
     "subject": "senior-20-4",
     "rarities": [
       "C",
@@ -492,7 +453,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -507,7 +467,6 @@
     "id": "pilot-2026-senior-20-5",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 5",
     "subject": "senior-20-5",
     "rarities": [
       "C",
@@ -516,7 +475,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -532,7 +490,6 @@
     "id": "pilot-2026-senior-20-6",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 6",
     "subject": "senior-20-6",
     "rarities": [
       "C",
@@ -541,7 +498,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -557,7 +513,6 @@
     "id": "pilot-2026-senior-20-7",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 7",
     "subject": "senior-20-7",
     "rarities": [
       "C",
@@ -566,7 +521,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Nose turn",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "nose-turn"
@@ -582,7 +536,6 @@
     "id": "pilot-2026-senior-20-8",
     "type": "PILOT",
     "edition": "2026",
-    "name": "SENIOR 20 Pilote 8",
     "subject": "senior-20-8",
     "rarities": [
       "C",
@@ -591,7 +544,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -606,7 +558,6 @@
     "id": "pilot-2026-junior-20-1",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 1",
     "subject": "junior-20-1",
     "rarities": [
       "C",
@@ -616,7 +567,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -632,7 +582,6 @@
     "id": "pilot-2026-junior-20-2",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 2",
     "subject": "junior-20-2",
     "rarities": [
       "C",
@@ -642,7 +591,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -658,7 +606,6 @@
     "id": "pilot-2026-junior-20-3",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 3",
     "subject": "junior-20-3",
     "rarities": [
       "C",
@@ -668,7 +615,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Pivot",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "pivot"
@@ -684,7 +630,6 @@
     "id": "pilot-2026-junior-20-4",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 4",
     "subject": "junior-20-4",
     "rarities": [
       "C",
@@ -693,7 +638,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -708,7 +652,6 @@
     "id": "pilot-2026-junior-20-5",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 5",
     "subject": "junior-20-5",
     "rarities": [
       "C",
@@ -717,7 +660,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -733,7 +675,6 @@
     "id": "pilot-2026-junior-20-6",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 6",
     "subject": "junior-20-6",
     "rarities": [
       "C",
@@ -742,7 +683,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -758,7 +698,6 @@
     "id": "pilot-2026-junior-20-7",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 7",
     "subject": "junior-20-7",
     "rarities": [
       "C",
@@ -767,7 +706,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Nose turn",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "nose-turn"
@@ -783,7 +721,6 @@
     "id": "pilot-2026-junior-20-8",
     "type": "PILOT",
     "edition": "2026",
-    "name": "JUNIOR 20 Pilote 8",
     "subject": "junior-20-8",
     "rarities": [
       "C",
@@ -792,7 +729,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -807,7 +743,6 @@
     "id": "pilot-2026-elite-women-1",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 1",
     "subject": "elite-women-1",
     "rarities": [
       "C",
@@ -817,7 +752,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -833,7 +767,6 @@
     "id": "pilot-2026-elite-women-2",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 2",
     "subject": "elite-women-2",
     "rarities": [
       "C",
@@ -843,7 +776,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -859,7 +791,6 @@
     "id": "pilot-2026-elite-women-3",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 3",
     "subject": "elite-women-3",
     "rarities": [
       "C",
@@ -869,7 +800,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Pivot",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "pivot"
@@ -885,7 +815,6 @@
     "id": "pilot-2026-elite-women-4",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 4",
     "subject": "elite-women-4",
     "rarities": [
       "C",
@@ -894,7 +823,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -909,7 +837,6 @@
     "id": "pilot-2026-elite-women-5",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 5",
     "subject": "elite-women-5",
     "rarities": [
       "C",
@@ -918,7 +845,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points s'il finit dans le top 3",
         "trigger": {
           "type": "RIDER_TOP_N",
           "n": 3
@@ -934,7 +860,6 @@
     "id": "pilot-2026-elite-women-6",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 6",
     "subject": "elite-women-6",
     "rarities": [
       "C",
@@ -943,7 +868,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il passe au moins 8 zones sans pénalité",
         "trigger": {
           "type": "RIDER_CLEAN_MIN",
           "min": 8
@@ -959,7 +883,6 @@
     "id": "pilot-2026-elite-women-7",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 7",
     "subject": "elite-women-7",
     "rarities": [
       "C",
@@ -968,7 +891,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts s'il réussit un Nose turn",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "nose-turn"
@@ -984,7 +906,6 @@
     "id": "pilot-2026-elite-women-8",
     "type": "PILOT",
     "edition": "2026",
-    "name": "ELITE WOMEN Pilote 8",
     "subject": "elite-women-8",
     "rarities": [
       "C",
@@ -993,7 +914,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur ses points",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1008,7 +928,6 @@
     "id": "pilot-2026-legend-senior-20",
     "type": "PILOT",
     "edition": "2026",
-    "name": "Légende Senior 20\"",
     "subject": "legend-senior-20",
     "rarities": [
       "R",
@@ -1017,7 +936,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts à chaque manche",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1032,7 +950,6 @@
     "id": "pilot-2026-legend-senior-26",
     "type": "PILOT",
     "edition": "2026",
-    "name": "Légende Senior 26\"",
     "subject": "legend-senior-26",
     "rarities": [
       "R",
@@ -1041,7 +958,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts à chaque manche",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1056,7 +972,6 @@
     "id": "pilot-2026-legend-elite-women",
     "type": "PILOT",
     "edition": "2026",
-    "name": "Légende Elite Femmes",
     "subject": "legend-elite-women",
     "rarities": [
       "R",
@@ -1065,7 +980,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts à chaque manche",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1080,7 +994,6 @@
     "id": "technique-2026-gap",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Gap",
     "subject": "gap",
     "rarities": [
       "C",
@@ -1090,7 +1003,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Gap",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "gap"
@@ -1106,7 +1018,6 @@
     "id": "technique-2026-bunny-up",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Bunny up",
     "subject": "bunny-up",
     "rarities": [
       "C",
@@ -1116,7 +1027,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Bunny up",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "bunny-up"
@@ -1132,7 +1042,6 @@
     "id": "technique-2026-side-hop",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Side hop",
     "subject": "side-hop",
     "rarities": [
       "C",
@@ -1141,7 +1050,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Side hop",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "side-hop"
@@ -1157,7 +1065,6 @@
     "id": "technique-2026-pivot",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Pivot",
     "subject": "pivot",
     "rarities": [
       "C",
@@ -1166,7 +1073,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Pivot",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "pivot"
@@ -1182,7 +1088,6 @@
     "id": "technique-2026-sur-place",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Sur-place",
     "subject": "sur-place",
     "rarities": [
       "C",
@@ -1191,7 +1096,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Sur-place",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "sur-place"
@@ -1207,7 +1111,6 @@
     "id": "technique-2026-drop",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Drop",
     "subject": "drop",
     "rarities": [
       "C",
@@ -1216,7 +1119,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Drop",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "drop"
@@ -1232,7 +1134,6 @@
     "id": "technique-2026-wheeling",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Wheeling",
     "subject": "wheeling",
     "rarities": [
       "C",
@@ -1241,7 +1142,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Wheeling",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "wheeling"
@@ -1257,7 +1157,6 @@
     "id": "technique-2026-nose-turn",
     "type": "TECHNIQUE",
     "edition": "2026",
-    "name": "Nose turn",
     "subject": "nose-turn",
     "rarities": [
       "C",
@@ -1266,7 +1165,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si le pilote réussit un Nose turn",
         "trigger": {
           "type": "RIDER_DID_TECHNIQUE",
           "technique": "nose-turn"
@@ -1282,7 +1180,6 @@
     "id": "equipment-2026-alpha",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Kit Alpha",
     "subject": "Alpha",
     "rarities": [
       "C",
@@ -1291,7 +1188,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur l'équipe si au moins 2 pilotes roulent pour Alpha",
         "trigger": {
           "type": "TEAM_BRAND_COUNT",
           "brand": "Alpha",
@@ -1308,7 +1204,6 @@
     "id": "equipment-2026-torq",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Kit Torq",
     "subject": "Torq",
     "rarities": [
       "C",
@@ -1317,7 +1212,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur l'équipe si au moins 2 pilotes roulent pour Torq",
         "trigger": {
           "type": "TEAM_BRAND_COUNT",
           "brand": "Torq",
@@ -1334,7 +1228,6 @@
     "id": "equipment-2026-grip",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Kit Grip",
     "subject": "Grip",
     "rarities": [
       "C",
@@ -1343,7 +1236,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur l'équipe si au moins 2 pilotes roulent pour Grip",
         "trigger": {
           "type": "TEAM_BRAND_COUNT",
           "brand": "Grip",
@@ -1360,7 +1252,6 @@
     "id": "equipment-2026-volt",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Kit Volt",
     "subject": "Volt",
     "rarities": [
       "C",
@@ -1369,7 +1260,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur l'équipe si au moins 2 pilotes roulent pour Volt",
         "trigger": {
           "type": "TEAM_BRAND_COUNT",
           "brand": "Volt",
@@ -1386,7 +1276,6 @@
     "id": "equipment-2026-senior-26",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Pneus Senior 26\"",
     "subject": "SENIOR_26",
     "rarities": [
       "C",
@@ -1395,7 +1284,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur les points Senior 26\"",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1411,7 +1299,6 @@
     "id": "equipment-2026-junior-26",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Pneus Junior 26\"",
     "subject": "JUNIOR_26",
     "rarities": [
       "C",
@@ -1420,7 +1307,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur les points Junior 26\"",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1436,7 +1322,6 @@
     "id": "equipment-2026-senior-20",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Pneus Senior 20\"",
     "subject": "SENIOR_20",
     "rarities": [
       "C",
@@ -1445,7 +1330,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur les points Senior 20\"",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1461,7 +1345,6 @@
     "id": "equipment-2026-junior-20",
     "type": "EQUIPMENT",
     "edition": "2026",
-    "name": "Pneus Junior 20\"",
     "subject": "JUNIOR_20",
     "rarities": [
       "C",
@@ -1470,7 +1353,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur les points Junior 20\"",
         "trigger": {
           "type": "ALWAYS"
         },
@@ -1486,7 +1368,6 @@
     "id": "referee-2026-m-durand",
     "type": "REFEREE",
     "edition": "2026",
-    "name": "M. Durand",
     "subject": "M. Durand",
     "rarities": [
       "C",
@@ -1496,7 +1377,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si un Français finit dans le top 5 Senior 20\"",
         "trigger": {
           "type": "NATION_COUNT_IN_TOP",
           "nation": "FRA",
@@ -1515,7 +1395,6 @@
     "id": "referee-2026-mme-keller",
     "type": "REFEREE",
     "edition": "2026",
-    "name": "Mme Keller",
     "subject": "Mme Keller",
     "rarities": [
       "C",
@@ -1525,7 +1404,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si un Espagnol gagne en Senior 26\"",
         "trigger": {
           "type": "CATEGORY_WINNER_NATION",
           "category": "SENIOR_26",
@@ -1542,7 +1420,6 @@
     "id": "referee-2026-m-rossi",
     "type": "REFEREE",
     "edition": "2026",
-    "name": "M. Rossi",
     "subject": "M. Rossi",
     "rarities": [
       "C",
@@ -1552,7 +1429,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} pts si une outsider (cote 2,0 ou plus) gagne en Elite Femmes",
         "trigger": {
           "type": "CATEGORY_WINNER_OUTSIDER",
           "category": "ELITE_WOMEN",
@@ -1569,7 +1445,6 @@
     "id": "referee-2026-mme-novak",
     "type": "REFEREE",
     "edition": "2026",
-    "name": "Mme Novak",
     "subject": "Mme Novak",
     "rarities": [
       "C",
@@ -1579,7 +1454,6 @@
     ],
     "effects": [
       {
-        "description": "+{value} sur toute l'équipe",
         "trigger": {
           "type": "ALWAYS"
         },
