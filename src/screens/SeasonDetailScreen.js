@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import { useScoring } from '../state/GameContext';
 import { SEASONS } from '../data/index';
@@ -8,6 +9,7 @@ import { colors, space, radius } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
 export default function SeasonDetailScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const text = useGameText();
   const ctx = useScoring();
   const season = SEASONS.find((s) => s.id === route.params.seasonId);
@@ -26,9 +28,7 @@ export default function SeasonDetailScreen({ navigation, route }) {
               style={styles.row}
               accessibilityRole="button"
             >
-              <Text style={styles.round}>
-                Manche {item.round} · {item.venue}
-              </Text>
+              <Text style={styles.round}>{t('season.roundVenue', { round: item.round, venue: item.venue })}</Text>
               <Text style={styles.status}>{eventLabel(item, ctx)}</Text>
             </Pressable>
           );

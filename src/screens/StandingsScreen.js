@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
 import { useScoring } from '../state/GameContext';
 import { SEASONS } from '../data/index';
@@ -9,6 +10,7 @@ import { colors, space } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
 export default function StandingsScreen() {
+  const { t } = useTranslation();
   const text = useGameText();
   const ctx = useScoring();
   const season = currentSeason(SEASONS, ctx.now);
@@ -16,13 +18,11 @@ export default function StandingsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{text.seasonName(season.id)}</Text>
-      <Text style={styles.sub}>
-        Après {summary.played} / {season.events.length} manches
-      </Text>
+      <Text style={styles.sub}>{t('standings.after', { played: summary.played, total: season.events.length })}</Text>
       {summary.played ? (
         <StandingsList standings={summary.standings} />
       ) : (
-        <Text style={styles.sub}>Aucune manche terminée pour l'instant</Text>
+        <Text style={styles.sub}>{t('standings.none')}</Text>
       )}
     </View>
   );

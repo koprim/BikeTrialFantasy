@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import { useScoring } from '../state/GameContext';
 import { SEASONS } from '../data/index';
@@ -8,6 +9,7 @@ import { colors, space, radius } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
 export default function SeasonListScreen({ navigation }) {
+  const { t } = useTranslation();
   const text = useGameText();
   const ctx = useScoring();
   // SEASONS is chronological; show the newest first and hide seasons not started yet.
@@ -21,7 +23,7 @@ export default function SeasonListScreen({ navigation }) {
         keyExtractor={(s) => s.id}
         renderItem={({ item }) => {
           const summary = seasonSummary({ season: item, ...ctx });
-          const status = seasonStatus(item, ctx.now) === 'current' ? 'En cours' : 'Archivée';
+          const status = seasonStatus(item, ctx.now) === 'current' ? t('history.current') : t('history.archived');
           return (
             <Pressable
               onPress={() => navigation.navigate('SeasonDetail', { seasonId: item.id })}
@@ -30,7 +32,11 @@ export default function SeasonListScreen({ navigation }) {
             >
               <Text style={styles.name}>{text.seasonName(item.id)}</Text>
               <Text style={styles.meta}>
-                {status} · {summary.rank ? `#${summary.rank}` : '—'} · {summary.score.toFixed(0)} pts
+                {t('history.seasonMeta', {
+                  status,
+                  rank: summary.rank ? `#${summary.rank}` : '—',
+                  points: summary.score.toFixed(0),
+                })}
               </Text>
             </Pressable>
           );

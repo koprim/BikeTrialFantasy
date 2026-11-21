@@ -11,7 +11,19 @@
       "eliteWomen1": "Elite Femme 20\" (1)",
       "eliteWomen2": "Elite Femme 20\" (2)"
     },
-    "pickers": { "technique": "Technique", "equipment": "Équipement", "referee": "Arbitre" }
+    "pickers": { "technique": "Technique", "equipment": "Équipement", "referee": "Arbitre" },
+    "closed": "Composition fermée",
+    "remove": "Retirer {{card}}",
+    "pickPilot": "Choisir un pilote…",
+    "addTechnique": "+ Technique ({{count}}/{{max}})",
+    "teamSection": "Équipe",
+    "equipmentCount": "Équipements ({{count}}/{{max}})",
+    "addEquipment": "+ Équipement",
+    "pickReferee": "Choisir un arbitre…",
+    "save": "Enregistrer l'équipe",
+    "noCards": "Aucune carte de ce type. Ouvre des packs !",
+    "close": "Fermer",
+    "choose": "Choisir {{name}} {{rarity}}"
   },
   "team": {
     "CARD_INVALID": "{{where}} : carte invalide.",
@@ -115,5 +127,46 @@
     "signInSent": "Un lien de connexion a été envoyé à {{address}}. La partie invitée de ce navigateur sera remplacée.",
     "staleStatus": "Le statut du compte n'a pas pu être actualisé.",
     "withStaleStatus": "{{message}} {{note}}"
+  },
+  "season": {
+    "summary": "{{name}} · {{points}} pts",
+    "summaryRanked": "{{name}} · {{points}} pts · #{{rank}}",
+    "roundVenue": "Manche {{round}} · {{venue}}",
+    "dateCountry": "{{date}} · {{country}}"
+  },
+  "briefing": {
+    "categories": {
+      "SENIOR_26": "Senior 26\"",
+      "JUNIOR_26": "Junior 26\"",
+      "SENIOR_20": "Senior 20\"",
+      "JUNIOR_20": "Junior 20\"",
+      "ELITE_WOMEN": "Elite Femme 20\""
+    },
+    "roundHeader": "Manche {{round}} · {{venue}} ({{country}}) · {{date}}",
+    "lockedOn": "Équipe verrouillée le {{date}}",
+    "compose": "Composer mon équipe"
+  },
+  "results": {
+    "afterDate": "Résultats après le {{date}}",
+    "noTeam": "Aucune équipe enregistrée",
+    "equipment": "Équipement : {{card}}",
+    "referee": "Arbitre : {{card}}",
+    "yourScore": "Ton score",
+    "triggeredEffects": "Effets déclenchés",
+    "roundStandings": "Classement de la manche",
+    "eventRound": "{{event}} · Manche {{round}}",
+    "notPlayed": "Non jouée — aucune équipe enregistrée",
+    "you": "(toi)",
+    "dnf": "DNF",
+    "position": "P{{position}}"
+  },
+  "standings": {
+    "after": "Après {{played}} / {{total}} manches",
+    "none": "Aucune manche terminée pour l'instant"
+  },
+  "history": {
+    "current": "En cours",
+    "archived": "Archivée",
+    "seasonMeta": "{{status}} · {{rank}} · {{points}} pts"
   }
 }

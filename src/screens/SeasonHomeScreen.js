@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import { useGame, useScoring } from '../state/GameContext';
 import { SEASONS } from '../data/index';
@@ -9,6 +10,7 @@ import { colors, space, radius } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
 export default function SeasonHomeScreen({ navigation }) {
+  const { t } = useTranslation();
   const text = useGameText();
   const { state } = useGame();
   const ctx = useScoring();
@@ -24,7 +26,11 @@ export default function SeasonHomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.h1}>{text.seasonName(season.id)}</Text>
       <Text style={styles.sub}>
-        {state.player.name} · {summary.score.toFixed(0)} pts{summary.rank ? ` · #${summary.rank}` : ''}
+        {t(summary.rank ? 'season.summaryRanked' : 'season.summary', {
+          name: state.player.name,
+          points: summary.score.toFixed(0),
+          rank: summary.rank,
+        })}
       </Text>
       <FlatList
         data={season.events}
@@ -32,12 +38,8 @@ export default function SeasonHomeScreen({ navigation }) {
         renderItem={({ item }) => (
           <Pressable onPress={() => open(item)} style={styles.row} accessibilityRole="button">
             <View style={{ flex: 1 }}>
-              <Text style={styles.round}>
-                Manche {item.round} · {item.venue}
-              </Text>
-              <Text style={styles.date}>
-                {item.dateFrom} · {item.country}
-              </Text>
+              <Text style={styles.round}>{t('season.roundVenue', { round: item.round, venue: item.venue })}</Text>
+              <Text style={styles.date}>{t('season.dateCountry', { date: item.dateFrom, country: item.country })}</Text>
             </View>
             <Text style={styles.status}>{eventLabel(item, ctx)}</Text>
           </Pressable>

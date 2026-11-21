@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { colors, space, radius } from './theme';
 
 export default function StandingsList({ standings }) {
+  const { t } = useTranslation();
   return (
     <FlatList
       data={standings}
@@ -12,7 +14,7 @@ export default function StandingsList({ standings }) {
           <Text style={styles.rank}>{index + 1}</Text>
           <Text style={styles.name}>
             {item.name}
-            {item.isPlayer ? ' (toi)' : ''}
+            {item.isPlayer ? ` ${t('results.you')}` : ''}
           </Text>
           <Text style={styles.score}>{item.score.toFixed(0)}</Text>
         </View>

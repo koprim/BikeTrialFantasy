@@ -106,7 +106,7 @@ export default function ComposeScreen({ navigation, route }) {
   if (eventStatus(event, now) !== 'open') {
     return (
       <View style={styles.closed}>
-        <Text style={styles.closedText}>Composition fermée</Text>
+        <Text style={styles.closedText}>{t('compose.closed')}</Text>
       </View>
     );
   }
@@ -117,7 +117,7 @@ export default function ComposeScreen({ navigation, route }) {
       onPress={onPress}
       style={styles.chip}
       accessibilityRole="button"
-      accessibilityLabel={`Retirer ${refLabel(ref)}`}
+      accessibilityLabel={t('compose.remove', { card: refLabel(ref) })}
     >
       <Text style={styles.chipText}>{refLabel(ref)} ✕</Text>
     </Pressable>
@@ -139,7 +139,7 @@ export default function ComposeScreen({ navigation, route }) {
                     {rider ? ` · ×${rider.cote.toFixed(1)}` : ''}
                   </Text>
                 ) : (
-                  <Text style={styles.slotEmpty}>Choisir un pilote…</Text>
+                  <Text style={styles.slotEmpty}>{t('compose.pickPilot')}</Text>
                 )}
               </Pressable>
               {entry && (
@@ -152,7 +152,7 @@ export default function ComposeScreen({ navigation, route }) {
                       accessibilityRole="button"
                     >
                       <Text style={styles.addText}>
-                        + Technique ({entry.techniques.length}/{techLimit(entry)})
+                        {t('compose.addTechnique', { count: entry.techniques.length, max: techLimit(entry) })}
                       </Text>
                     </Pressable>
                   )}
@@ -162,29 +162,29 @@ export default function ComposeScreen({ navigation, route }) {
           );
         })}
 
-        <Text style={styles.section}>Équipe</Text>
+        <Text style={styles.section}>{t('compose.teamSection')}</Text>
         <View style={styles.slot}>
           <Text style={styles.slotLabel}>
-            Équipements ({team.equipment.length}/{BALANCE.slots.equipment})
+            {t('compose.equipmentCount', { count: team.equipment.length, max: BALANCE.slots.equipment })}
           </Text>
           <View style={styles.chips}>
             {team.equipment.map((e) => chip(e, () => removeEquipment(e)))}
             {team.equipment.length < BALANCE.slots.equipment && (
               <Pressable onPress={() => setPicker({ kind: 'equipment' })} style={styles.add} accessibilityRole="button">
-                <Text style={styles.addText}>+ Équipement</Text>
+                <Text style={styles.addText}>{t('compose.addEquipment')}</Text>
               </Pressable>
             )}
           </View>
         </View>
         <View style={styles.slot}>
-          <Text style={styles.slotLabel}>Arbitre</Text>
+          <Text style={styles.slotLabel}>{t('compose.pickers.referee')}</Text>
           {team.referee ? (
             <View style={styles.chips}>
               {chip(team.referee, () => setTeam((current) => ({ ...current, referee: null })))}
             </View>
           ) : (
             <Pressable onPress={() => setPicker({ kind: 'referee' })} accessibilityRole="button">
-              <Text style={styles.slotEmpty}>Choisir un arbitre…</Text>
+              <Text style={styles.slotEmpty}>{t('compose.pickReferee')}</Text>
             </Pressable>
           )}
         </View>
@@ -204,7 +204,7 @@ export default function ComposeScreen({ navigation, route }) {
           accessibilityRole="button"
           accessibilityState={{ busy: saving, disabled: saveDisabled }}
         >
-          <Text style={styles.ctaText}>Enregistrer l'équipe</Text>
+          <Text style={styles.ctaText}>{t('compose.save')}</Text>
         </Pressable>
       </View>
 
@@ -218,7 +218,7 @@ export default function ComposeScreen({ navigation, route }) {
             <FlatList
               data={options()}
               keyExtractor={(o) => `${o.cardId}:${o.rarity}`}
-              ListEmptyComponent={<Text style={styles.empty}>Aucune carte de ce type. Ouvre des packs !</Text>}
+              ListEmptyComponent={<Text style={styles.empty}>{t('compose.noCards')}</Text>}
               renderItem={({ item }) => {
                 const rider = item.card.type === 'PILOT' ? RIDERS_BY_ID[item.card.subject] : null;
                 return (
@@ -226,7 +226,10 @@ export default function ComposeScreen({ navigation, route }) {
                     onPress={() => choose(item)}
                     style={styles.option}
                     accessibilityRole="button"
-                    accessibilityLabel={`Choisir ${text.cardName(item.card.id)} ${t(`rarity.${item.rarity}`)}`}
+                    accessibilityLabel={t('compose.choose', {
+                      name: text.cardName(item.card.id),
+                      rarity: t(`rarity.${item.rarity}`),
+                    })}
                   >
                     <Text style={styles.optionName}>
                       {text.cardName(item.card.id)} · {t(`rarity.${item.rarity}`)}
@@ -242,7 +245,7 @@ export default function ComposeScreen({ navigation, route }) {
               }}
             />
             <Pressable onPress={() => setPicker(null)} style={styles.close}>
-              <Text style={styles.closeText}>Fermer</Text>
+              <Text style={styles.closeText}>{t('compose.close')}</Text>
             </Pressable>
           </View>
         </View>

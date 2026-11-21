@@ -1,25 +1,19 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, SectionList, Pressable, StyleSheet } from 'react-native';
 import { ridersByCategory, EVENTS_BY_ID } from '../data/index';
 import { SLOTS } from '../engine/team';
 import { colors, space, radius } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
-const CATEGORY_LABEL = {
-  SENIOR_26: 'Senior 26"',
-  JUNIOR_26: 'Junior 26"',
-  SENIOR_20: 'Senior 20"',
-  JUNIOR_20: 'Junior 20"',
-  ELITE_WOMEN: 'Elite Femme 20"',
-};
-
 export default function BriefingScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const text = useGameText();
   const event = EVENTS_BY_ID[route.params.eventId];
   const byCat = ridersByCategory();
   const categories = [...new Set(SLOTS.map((s) => s.category))];
   const sections = categories.map((c) => ({
-    title: CATEGORY_LABEL[c],
+    title: t(`briefing.categories.${c}`),
     data: [...byCat[c]].sort((a, b) => a.uciRank - b.uciRank),
   }));
 
@@ -28,9 +22,14 @@ export default function BriefingScreen({ navigation, route }) {
       <View style={styles.header}>
         <Text style={styles.title}>{text.eventName(event.id)}</Text>
         <Text style={styles.sub}>
-          Manche {event.round} · {event.venue} ({event.country}) · {event.dateFrom}
+          {t('briefing.roundHeader', {
+            round: event.round,
+            venue: event.venue,
+            country: event.country,
+            date: event.dateFrom,
+          })}
         </Text>
-        <Text style={styles.sub}>Équipe verrouillée le {event.dateFrom}</Text>
+        <Text style={styles.sub}>{t('briefing.lockedOn', { date: event.dateFrom })}</Text>
       </View>
       <SectionList
         sections={sections}
@@ -51,7 +50,7 @@ export default function BriefingScreen({ navigation, route }) {
         onPress={() => navigation.navigate('Compose', { eventId: event.id })}
         style={styles.cta}
       >
-        <Text style={styles.ctaText}>Composer mon équipe</Text>
+        <Text style={styles.ctaText}>{t('briefing.compose')}</Text>
       </Pressable>
     </View>
   );

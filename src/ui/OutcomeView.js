@@ -9,13 +9,16 @@ export default function OutcomeView({ event, outcome }) {
   const text = useGameText();
   const played = outcome.player.breakdown.some((b) => b.riderId);
   const sections = [
-    { title: 'Ton score', data: played ? outcome.player.breakdown.map((b) => ({ kind: 'breakdown', ...b })) : [] },
     {
-      title: 'Effets déclenchés',
+      title: t('results.yourScore'),
+      data: played ? outcome.player.breakdown.map((b) => ({ kind: 'breakdown', ...b })) : [],
+    },
+    {
+      title: t('results.triggeredEffects'),
       data: played ? outcome.player.effects.map((e, i) => ({ kind: 'effect', key: `${e.cardId}:${i}`, ...e })) : [],
     },
     {
-      title: 'Classement de la manche',
+      title: t('results.roundStandings'),
       data: outcome.leaderboard.map((s, i) => ({ kind: 'standing', rank: i + 1, ...s })),
     },
   ];
@@ -23,10 +26,8 @@ export default function OutcomeView({ event, outcome }) {
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.total}>{outcome.player.total.toFixed(0)} pts</Text>
-      <Text style={styles.sub}>
-        {text.eventName(event.id)} · Manche {event.round}
-      </Text>
-      {!played && <Text style={styles.sub}>Non jouée — aucune équipe enregistrée</Text>}
+      <Text style={styles.sub}>{t('results.eventRound', { event: text.eventName(event.id), round: event.round })}</Text>
+      {!played && <Text style={styles.sub}>{t('results.notPlayed')}</Text>}
       <SectionList
         sections={sections}
         keyExtractor={(item, i) =>
@@ -41,7 +42,9 @@ export default function OutcomeView({ event, outcome }) {
                   {item.name || '—'}
                   {item.rarity ? ` · ${t(`rarity.${item.rarity}`)}` : ''}
                 </Text>
-                <Text style={styles.cell2}>{item.position ? `P${item.position}` : 'DNF'}</Text>
+                <Text style={styles.cell2}>
+                  {item.position ? t('results.position', { position: item.position }) : t('results.dnf')}
+                </Text>
                 <Text style={styles.cell3}>×{item.cote?.toFixed(1) ?? '—'}</Text>
                 <Text style={styles.cell4}>{item.points.toFixed(0)}</Text>
               </View>
@@ -62,7 +65,7 @@ export default function OutcomeView({ event, outcome }) {
             <View style={[styles.row, item.isPlayer && styles.playerRow]}>
               <Text style={styles.cell1}>
                 {item.rank}. {item.name}
-                {item.isPlayer ? ' (toi)' : ''}
+                {item.isPlayer ? ` ${t('results.you')}` : ''}
               </Text>
               <Text style={styles.cell4}>{item.score.toFixed(0)}</Text>
             </View>

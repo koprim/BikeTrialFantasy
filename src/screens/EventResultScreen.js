@@ -31,7 +31,7 @@ export default function EventResultScreen({ route }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{text.eventName(event.id)}</Text>
-      <Text style={styles.sub}>Résultats après le {event.dateTo || event.dateFrom}</Text>
+      <Text style={styles.sub}>{t('results.afterDate', { date: event.dateTo || event.dateFrom })}</Text>
       {team ? (
         SLOTS.map((slot) => {
           const entry = team.slots[slot.id];
@@ -49,15 +49,15 @@ export default function EventResultScreen({ route }) {
           );
         })
       ) : (
-        <Text style={styles.sub}>Aucune équipe enregistrée</Text>
+        <Text style={styles.sub}>{t('results.noTeam')}</Text>
       )}
       {team &&
         team.equipment.map((e) => (
           <Text key={`${e.cardId}:${e.rarity}`} style={styles.sub}>
-            Équipement : {label(e)}
+            {t('results.equipment', { card: label(e) })}
           </Text>
         ))}
-      {team && team.referee && <Text style={styles.sub}>Arbitre : {label(team.referee)}</Text>}
+      {team && team.referee && <Text style={styles.sub}>{t('results.referee', { card: label(team.referee) })}</Text>}
     </View>
   );
 }
