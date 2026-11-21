@@ -101,7 +101,14 @@
     "seasonList": "Historique",
     "seasonDetail": "Saison",
     "rules": "Règles & profil",
-    "account": "Sauvegarder mon compte"
+    "account": "Sauvegarder mon compte",
+    "infos": "Infos"
+  },
+  "infos": {
+    "title": "Infos",
+    "inDevelopment": "Le jeu est en développement et mis à jour régulièrement.",
+    "translations": "Traductions",
+    "progressA11y": "{{name}} : {{percent}} % traduit"
   },
   "app": {
     "loadFailed": "Connexion impossible. Vérifie ta connexion puis relance l'application.",
@@ -120,6 +127,7 @@
   },
   "rules": {
     "language": { "title": "Langue" },
+    "infosLink": "Infos sur le jeu",
     "defaultName": "Joueur",
     "confirmReset": "Réinitialiser la partie ? Tes équipes seront remplacées par les données de démo.",
     "title": "Règles",

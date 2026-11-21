@@ -25,6 +25,7 @@ test('a deep address keeps the tab home under it, so the header back arrow works
   expect(routeNames(stateFor('/manche/2026-r3/equipe'))).toEqual(['PlayTab', 'SeasonHome', 'Compose']);
   expect(routeNames(stateFor('/historique/saison/2025'))).toEqual(['HistoryTab', 'SeasonList', 'SeasonDetail']);
   expect(routeNames(stateFor('/regles/compte'))).toEqual(['RulesTab', 'Rules', 'Account']);
+  expect(routeNames(stateFor('/regles/infos'))).toEqual(['RulesTab', 'Rules', 'Infos']);
 });
 
 test('an unknown card, round or season falls back to the home screen', () => {

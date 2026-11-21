@@ -105,6 +105,13 @@ export default function RulesScreen({ navigation }) {
           );
         })}
       </View>
+      <Pressable
+        onPress={() => navigation.navigate('Infos')}
+        style={[styles.btn, styles.secondary]}
+        accessibilityRole="button"
+      >
+        <Text style={styles.secondaryText}>{t('rules.infosLink')}</Text>
+      </Pressable>
 
       {features.simulatedDate && (
         <SimulatedDate

@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "gen:seed": "node scripts/gen-dev-seed.js",
+    "i18n:report": "node scripts/i18n-report.js",
     "build:seed": "node scripts/build-seed.js",
     "build:sql-seed": "node scripts/build-sql-seed.js",
     "build:edge": "node scripts/build-edge.js",

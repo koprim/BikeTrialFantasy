@@ -19,6 +19,7 @@ import CollectionScreen from './src/screens/CollectionScreen';
 import PackRevealScreen from './src/screens/PackRevealScreen';
 import CardDetailScreen from './src/screens/CardDetailScreen';
 import AccountScreen from './src/screens/AccountScreen';
+import InfosScreen from './src/screens/InfosScreen';
 import { LanguageGate } from './src/i18n/LanguageGate';
 import { linking } from './src/navigation/linking';
 import { colors } from './src/ui/theme';
@@ -93,6 +94,7 @@ function RulesNav() {
     <RulesStack.Navigator screenOptions={stackOptions}>
       <RulesStack.Screen name="Rules" component={RulesScreen} options={{ title: t('nav.rules') }} />
       <RulesStack.Screen name="Account" component={AccountScreen} options={{ title: t('nav.account') }} />
+      <RulesStack.Screen name="Infos" component={InfosScreen} options={{ title: t('nav.infos') }} />
     </RulesStack.Navigator>
   );
 }

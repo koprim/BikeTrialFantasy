@@ -25,7 +25,7 @@ const config = {
       initialRouteName: 'SeasonList',
       screens: { SeasonList: '', SeasonDetail: 'saison/:seasonId', EventResult: 'manche/:eventId' },
     },
-    RulesTab: { path: 'regles', initialRouteName: 'Rules', screens: { Rules: '', Account: 'compte' } },
+    RulesTab: { path: 'regles', initialRouteName: 'Rules', screens: { Rules: '', Account: 'compte', Infos: 'infos' } },
   },
 };
 
