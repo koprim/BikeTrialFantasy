@@ -1,3 +1,4 @@
+import i18n from '../i18n';
 import { eventStatus } from '../engine/calendar';
 import { eventOutcome } from '../state/selectors';
 
@@ -5,8 +6,8 @@ import { eventOutcome } from '../state/selectors';
 export function eventLabel(event, ctx) {
   const status = eventStatus(event, ctx.now);
   const hasTeam = !!ctx.picks[event.id];
-  if (status === 'open') return hasTeam ? 'Ouverte · équipe prête' : 'Ouverte · à composer';
-  if (status === 'live') return hasTeam ? 'En cours' : 'En cours · non jouée';
-  if (!hasTeam) return 'Non jouée';
-  return `Terminée · ${eventOutcome({ event, ...ctx }).player.total.toFixed(0)} pts`;
+  if (status === 'open') return i18n.t(hasTeam ? 'eventStatus.openReady' : 'eventStatus.openToCompose');
+  if (status === 'live') return i18n.t(hasTeam ? 'eventStatus.live' : 'eventStatus.liveNotPlayed');
+  if (!hasTeam) return i18n.t('eventStatus.notPlayed');
+  return i18n.t('eventStatus.finished', { points: eventOutcome({ event, ...ctx }).player.total.toFixed(0) });
 }

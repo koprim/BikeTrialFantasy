@@ -41,5 +41,41 @@
     "NETWORK": "Connexion impossible. Vérifie ta connexion.",
     "ACCOUNT_SAVE_FAILED": "Impossible de sauvegarder le compte.",
     "SIGN_IN_FAILED": "Aucun compte sauvegardé avec cette adresse."
+  },
+  "tabs": {
+    "play": "Jouer",
+    "collection": "Collection",
+    "standings": "Classement",
+    "history": "Historique",
+    "rules": "Règles",
+    "a11y": "Onglet {{title}}"
+  },
+  "nav": {
+    "collection": "Ma collection",
+    "packReveal": "Ouverture",
+    "cardDetail": "Carte",
+    "briefing": "Briefing",
+    "compose": "Mon équipe",
+    "eventResult": "Résultats",
+    "standings": "Classement saison",
+    "seasonList": "Historique",
+    "seasonDetail": "Saison",
+    "rules": "Règles & profil",
+    "account": "Sauvegarder mon compte"
+  },
+  "app": {
+    "loadFailed": "Connexion impossible. Vérifie ta connexion puis relance l'application.",
+    "offline": "Hors ligne : dernières données connues. Les actions peuvent échouer tant que la connexion n'est pas revenue.",
+    "confirmTitle": "Confirmation",
+    "cancel": "Annuler",
+    "confirm": "Confirmer"
+  },
+  "eventStatus": {
+    "openReady": "Ouverte · équipe prête",
+    "openToCompose": "Ouverte · à composer",
+    "live": "En cours",
+    "liveNotPlayed": "En cours · non jouée",
+    "notPlayed": "Non jouée",
+    "finished": "Terminée · {{points}} pts"
   }
 }

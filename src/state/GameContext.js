@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { createApi } from '../data/api';
 import { RIDERS_BY_ID, RIDERS_BY_CATEGORY, CARDS_BY_ID, BALANCE, EDITION } from '../data/index';
 import { today } from '../engine/calendar';
@@ -65,6 +66,7 @@ const GameContext = createContext(null);
 
 /** @param {{ api?: import('../data/api/demoApi').GameApi, children: React.ReactNode }} props */
 export function GameProvider({ api: injectedApi, children }) {
+  const { t } = useTranslation();
   const api = useMemo(() => injectedApi || getDefaultApi(), [injectedApi]);
   const [state, dispatch] = useReducer(clientReducer, null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -86,7 +88,7 @@ export function GameProvider({ api: injectedApi, children }) {
   if (loadFailed) {
     return (
       <Text accessibilityRole="alert" style={styles.loadError}>
-        Connexion impossible. Vérifie ta connexion puis relance l'application.
+        {t('app.loadFailed')}
       </Text>
     );
   }
@@ -95,7 +97,7 @@ export function GameProvider({ api: injectedApi, children }) {
     <GameContext.Provider value={value}>
       {state.offline && (
         <Text accessibilityRole="alert" style={styles.offline}>
-          Hors ligne : dernières données connues. Les actions peuvent échouer tant que la connexion n'est pas revenue.
+          {t('app.offline')}
         </Text>
       )}
       {children}

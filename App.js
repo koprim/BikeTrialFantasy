@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -35,16 +36,18 @@ const stackOptions = {
 };
 
 function CollectionNav() {
+  const { t } = useTranslation();
   return (
     <CollectionStack.Navigator screenOptions={stackOptions}>
-      <CollectionStack.Screen name="Collection" component={CollectionScreen} options={{ title: 'Ma collection' }} />
-      <CollectionStack.Screen name="PackReveal" component={PackRevealScreen} options={{ title: 'Ouverture' }} />
-      <CollectionStack.Screen name="CardDetail" component={CardDetailScreen} options={{ title: 'Carte' }} />
+      <CollectionStack.Screen name="Collection" component={CollectionScreen} options={{ title: t('nav.collection') }} />
+      <CollectionStack.Screen name="PackReveal" component={PackRevealScreen} options={{ title: t('nav.packReveal') }} />
+      <CollectionStack.Screen name="CardDetail" component={CardDetailScreen} options={{ title: t('nav.cardDetail') }} />
     </CollectionStack.Navigator>
   );
 }
 
 function PlayNav() {
+  const { t } = useTranslation();
   return (
     <PlayStack.Navigator screenOptions={stackOptions}>
       <PlayStack.Screen
@@ -52,36 +55,43 @@ function PlayNav() {
         component={SeasonHomeScreen}
         options={{ title: 'Super Fantasy Bike Trial' }}
       />
-      <PlayStack.Screen name="Briefing" component={BriefingScreen} options={{ title: 'Briefing' }} />
-      <PlayStack.Screen name="Compose" component={ComposeScreen} options={{ title: 'Mon équipe' }} />
-      <PlayStack.Screen name="EventResult" component={EventResultScreen} options={{ title: 'Résultats' }} />
+      <PlayStack.Screen name="Briefing" component={BriefingScreen} options={{ title: t('nav.briefing') }} />
+      <PlayStack.Screen name="Compose" component={ComposeScreen} options={{ title: t('nav.compose') }} />
+      <PlayStack.Screen name="EventResult" component={EventResultScreen} options={{ title: t('nav.eventResult') }} />
     </PlayStack.Navigator>
   );
 }
 
 function StandingsNav() {
+  const { t } = useTranslation();
   return (
     <StandingsStack.Navigator screenOptions={stackOptions}>
-      <StandingsStack.Screen name="Standings" component={StandingsScreen} options={{ title: 'Classement saison' }} />
+      <StandingsStack.Screen name="Standings" component={StandingsScreen} options={{ title: t('nav.standings') }} />
     </StandingsStack.Navigator>
   );
 }
 
 function HistoryNav() {
+  const { t } = useTranslation();
   return (
     <HistoryStack.Navigator screenOptions={stackOptions}>
-      <HistoryStack.Screen name="SeasonList" component={SeasonListScreen} options={{ title: 'Historique' }} />
-      <HistoryStack.Screen name="SeasonDetail" component={SeasonDetailScreen} options={{ title: 'Saison' }} />
-      <HistoryStack.Screen name="EventResult" component={EventResultScreen} options={{ title: 'Résultats' }} />
+      <HistoryStack.Screen name="SeasonList" component={SeasonListScreen} options={{ title: t('nav.seasonList') }} />
+      <HistoryStack.Screen
+        name="SeasonDetail"
+        component={SeasonDetailScreen}
+        options={{ title: t('nav.seasonDetail') }}
+      />
+      <HistoryStack.Screen name="EventResult" component={EventResultScreen} options={{ title: t('nav.eventResult') }} />
     </HistoryStack.Navigator>
   );
 }
 
 function RulesNav() {
+  const { t } = useTranslation();
   return (
     <RulesStack.Navigator screenOptions={stackOptions}>
-      <RulesStack.Screen name="Rules" component={RulesScreen} options={{ title: 'Règles & profil' }} />
-      <RulesStack.Screen name="Account" component={AccountScreen} options={{ title: 'Sauvegarder mon compte' }} />
+      <RulesStack.Screen name="Rules" component={RulesScreen} options={{ title: t('nav.rules') }} />
+      <RulesStack.Screen name="Account" component={AccountScreen} options={{ title: t('nav.account') }} />
     </RulesStack.Navigator>
   );
 }
@@ -90,7 +100,24 @@ const icon = (glyph) => {
   const TabIcon = () => <Text style={{ fontSize: 18 }}>{glyph}</Text>;
   return TabIcon;
 };
-const tab = (title, glyph) => ({ title, tabBarIcon: icon(glyph), tabBarAccessibilityLabel: `Onglet ${title}` });
+
+// Own component so tab titles re-render when the language changes.
+function AppTabs() {
+  const { t } = useTranslation();
+  const tab = (key, glyph) => {
+    const title = t(`tabs.${key}`);
+    return { title, tabBarIcon: icon(glyph), tabBarAccessibilityLabel: t('tabs.a11y', { title }) };
+  };
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.primary }}>
+      <Tab.Screen name="PlayTab" component={PlayNav} options={tab('play', '🎮')} />
+      <Tab.Screen name="CollectionTab" component={CollectionNav} options={tab('collection', '🃏')} />
+      <Tab.Screen name="StandingsTab" component={StandingsNav} options={tab('standings', '🏆')} />
+      <Tab.Screen name="HistoryTab" component={HistoryNav} options={tab('history', '📜')} />
+      <Tab.Screen name="RulesTab" component={RulesNav} options={tab('rules', '📖')} />
+    </Tab.Navigator>
+  );
+}
 
 /** @param {{ api?: import('./src/data/api/demoApi').GameApi }} props injected in tests; defaults to createApi() */
 export default function App({ api }) {
@@ -99,13 +126,7 @@ export default function App({ api }) {
       <GameProvider api={api}>
         <NavigationContainer linking={linking}>
           <StatusBar style="dark" />
-          <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.primary }}>
-            <Tab.Screen name="PlayTab" component={PlayNav} options={tab('Jouer', '🎮')} />
-            <Tab.Screen name="CollectionTab" component={CollectionNav} options={tab('Collection', '🃏')} />
-            <Tab.Screen name="StandingsTab" component={StandingsNav} options={tab('Classement', '🏆')} />
-            <Tab.Screen name="HistoryTab" component={HistoryNav} options={tab('Historique', '📜')} />
-            <Tab.Screen name="RulesTab" component={RulesNav} options={tab('Règles', '📖')} />
-          </Tab.Navigator>
+          <AppTabs />
         </NavigationContainer>
       </GameProvider>
     </SafeAreaProvider>
