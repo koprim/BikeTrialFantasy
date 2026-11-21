@@ -170,6 +170,21 @@ describe('teamEventScore', () => {
     expect(out.total).toBeCloseTo(subtotal * 1.2);
   });
 
+  test('a card with two effects reports each with its own effectIndex', () => {
+    const twoFlats = {
+      ...cardsById.ref,
+      id: 'ref-two',
+      effects: [always({ type: 'FLAT_POINTS', value: 5 }), always({ type: 'FLAT_POINTS', value: 7 })],
+    };
+    const team = { ...plain, referee: { cardId: 'ref-two', rarity: 'C' } };
+    const out = teamEventScore(team, event, { ...deps, cardsById: { ...cardsById, 'ref-two': twoFlats } });
+    const mine = out.effects.filter((e) => e.cardId === 'ref-two');
+    expect(mine.map((e) => [e.effectIndex, e.value, e.points])).toEqual([
+      [0, '5', 5],
+      [1, '7', 7],
+    ]);
+  });
+
   test('an empty team scores 0', () => {
     expect(teamEventScore({ slots: {}, equipment: [], referee: null }, event, deps)).toMatchObject({
       total: 0,

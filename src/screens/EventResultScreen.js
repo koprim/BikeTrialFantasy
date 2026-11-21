@@ -27,18 +27,18 @@ export default function EventResultScreen({ route }) {
 
   // Live event: team is locked, results not revealed yet.
   const team = normalizeTeam(state.picks[event.id], EDITION);
-  const label = (ref) => `${text.cardName(ref.cardId)} Â· ${t(`rarity.${ref.rarity}`)}`;
+  const label = (ref) => `${text.cardName(ref.cardId)} ·${t(`rarity.${ref.rarity}`)}`;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{text.eventName(event.id)}</Text>
-      <Text style={styles.sub}>RÃ©sultats aprÃ¨s le {event.dateTo || event.dateFrom}</Text>
+      <Text style={styles.sub}>Résultats après le {event.dateTo || event.dateFrom}</Text>
       {team ? (
         SLOTS.map((slot) => {
           const entry = team.slots[slot.id];
           return (
             <View key={slot.id} style={styles.row}>
               <Text style={styles.label}>{t(`compose.slots.${slot.id}`)}</Text>
-              <Text style={styles.rider}>{entry ? label(entry) : 'â€”'}</Text>
+              <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
               {entry &&
                 entry.techniques.map((technique) => (
                   <Text key={`${technique.cardId}:${technique.rarity}`} style={styles.label}>
@@ -49,12 +49,12 @@ export default function EventResultScreen({ route }) {
           );
         })
       ) : (
-        <Text style={styles.sub}>Aucune Ã©quipe enregistrÃ©e</Text>
+        <Text style={styles.sub}>Aucune équipe enregistrée</Text>
       )}
       {team &&
         team.equipment.map((e) => (
           <Text key={`${e.cardId}:${e.rarity}`} style={styles.sub}>
-            Ã‰quipement : {label(e)}
+            Équipement : {label(e)}
           </Text>
         ))}
       {team && team.referee && <Text style={styles.sub}>Arbitre : {label(team.referee)}</Text>}
