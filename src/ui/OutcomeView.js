@@ -25,7 +25,7 @@ export default function OutcomeView({ event, outcome }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={styles.total}>{outcome.player.total.toFixed(0)} pts</Text>
+      <Text style={styles.total}>{t('results.total', { points: outcome.player.total.toFixed(0) })}</Text>
       <Text style={styles.sub}>{t('results.eventRound', { event: text.eventName(event.id), round: event.round })}</Text>
       {!played && <Text style={styles.sub}>{t('results.notPlayed')}</Text>}
       <SectionList

@@ -151,6 +151,7 @@
     "noTeam": "Aucune équipe enregistrée",
     "equipment": "Équipement : {{card}}",
     "referee": "Arbitre : {{card}}",
+    "total": "{{points}} pts",
     "yourScore": "Ton score",
     "triggeredEffects": "Effets déclenchés",
     "roundStandings": "Classement de la manche",
