@@ -1,5 +1,13 @@
 {
   "common": {
     "unexpectedError": "Something went wrong."
+  },
+  "tabs": {
+    "play": "Play",
+    "collection": "Collection",
+    "standings": "Standings",
+    "history": "History",
+    "rules": "Rules",
+    "a11y": "Tab {{title}}"
   }
 }

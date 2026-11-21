@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { LANGUAGES } from '../i18n/languages';
+import { setLanguage } from '../i18n';
 import { useGame, useNow } from '../state/GameContext';
 import { BALANCE } from '../data/index';
 import { confirm } from '../ui/confirm';
@@ -11,7 +13,7 @@ import { colors, space, radius } from '../ui/theme';
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function RulesScreen({ navigation }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { state, actions, features } = useGame();
   const now = useNow();
   const [name, setName] = useState(state.player.name);
@@ -85,6 +87,24 @@ export default function RulesScreen({ navigation }) {
           <Text style={styles.secondaryText}>{t('rules.saveAccount')}</Text>
         </Pressable>
       )}
+
+      <Text style={styles.h2}>{t('rules.language.title')}</Text>
+      <View style={styles.rowBtns}>
+        {LANGUAGES.map((language) => {
+          const selected = i18n.language === language.code;
+          return (
+            <Pressable
+              key={language.code}
+              onPress={() => setLanguage(language.code)}
+              style={[styles.btn, styles.flex, !selected && styles.secondary]}
+              accessibilityRole="button"
+              accessibilityState={{ selected }}
+            >
+              <Text style={selected ? styles.btnText : styles.secondaryText}>{language.name}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
 
       {features.simulatedDate && (
         <SimulatedDate

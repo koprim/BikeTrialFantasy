@@ -119,6 +119,7 @@
     "finished": "Terminée · {{points}} pts"
   },
   "rules": {
+    "language": { "title": "Langue" },
     "defaultName": "Joueur",
     "confirmReset": "Réinitialiser la partie ? Tes équipes seront remplacées par les données de démo.",
     "title": "Règles",

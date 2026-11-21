@@ -19,6 +19,7 @@ import CollectionScreen from './src/screens/CollectionScreen';
 import PackRevealScreen from './src/screens/PackRevealScreen';
 import CardDetailScreen from './src/screens/CardDetailScreen';
 import AccountScreen from './src/screens/AccountScreen';
+import { LanguageGate } from './src/i18n/LanguageGate';
 import { linking } from './src/navigation/linking';
 import { colors } from './src/ui/theme';
 
@@ -123,12 +124,14 @@ function AppTabs() {
 export default function App({ api }) {
   return (
     <SafeAreaProvider>
-      <GameProvider api={api}>
-        <NavigationContainer linking={linking}>
-          <StatusBar style="dark" />
-          <AppTabs />
-        </NavigationContainer>
-      </GameProvider>
+      <LanguageGate>
+        <GameProvider api={api}>
+          <NavigationContainer linking={linking}>
+            <StatusBar style="dark" />
+            <AppTabs />
+          </NavigationContainer>
+        </GameProvider>
+      </LanguageGate>
     </SafeAreaProvider>
   );
 }
