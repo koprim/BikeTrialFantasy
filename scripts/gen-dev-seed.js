@@ -7,7 +7,7 @@ const { CATEGORIES, groupByCategory, cardTeamFromRiders } = require('../src/engi
 const { emptyCollection, addCard } = require('../src/engine/collection');
 const { generateBotTeam } = require('../src/engine/bots');
 const { makeRng } = require('../src/engine/rng');
-const { splitGameTexts, writeFrenchGameTexts } = require('./lib/gameTexts');
+const { splitGameTexts, writeReferenceGameTexts } = require('./lib/gameTexts');
 
 const EDITION = '2026';
 const COUNTRIES = ['FRA', 'GBR', 'ESP', 'GER', 'SUI', 'POL', 'CZE', 'BEL'];
@@ -289,7 +289,7 @@ const split = splitGameTexts({ seasons, cards });
 fs.writeFileSync(path.join(dir, 'seasons.json'), JSON.stringify(split.seasons, null, 2));
 fs.writeFileSync(path.join(dir, 'cards.json'), JSON.stringify(split.cards, null, 2));
 fs.writeFileSync(path.join(dir, 'demoPlayer.json'), JSON.stringify(demoPlayer, null, 2));
-writeFrenchGameTexts(split.texts);
+writeReferenceGameTexts(split.texts);
 console.log(
   `Wrote ${riders.length} riders, ${seasons.length} seasons, ${cards.length} cards, ${Object.keys(demoPlayer.picks).length} demo picks to src/data/seed/`,
 );

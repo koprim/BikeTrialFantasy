@@ -1,7 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
-const FRENCH_GAME_TEXTS = path.join(__dirname, '..', '..', 'src', 'i18n', 'locales', 'fr', 'game.json');
+const { REFERENCE_LANGUAGE } = require('../../src/i18n/languages');
+
+const REFERENCE_GAME_TEXTS = path.join(
+  __dirname,
+  '..',
+  '..',
+  'src',
+  'i18n',
+  'locales',
+  REFERENCE_LANGUAGE,
+  'game.json',
+);
 
 // Seed effects use {value}; locale files use the i18next form {{value}}.
 const toTemplate = (description) => description.split('{value}').join('{{value}}');
@@ -38,9 +49,9 @@ function mergeGameTexts(current, texts) {
   return { cards: hasCards ? texts.cards : current.cards || {}, seasons: texts.seasons, events: texts.events };
 }
 
-function writeFrenchGameTexts(texts, file = FRENCH_GAME_TEXTS) {
+function writeReferenceGameTexts(texts, file = REFERENCE_GAME_TEXTS) {
   const current = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {};
   fs.writeFileSync(file, `${JSON.stringify(mergeGameTexts(current, texts), null, 2)}\n`);
 }
 
-module.exports = { splitGameTexts, mergeGameTexts, writeFrenchGameTexts, FRENCH_GAME_TEXTS };
+module.exports = { splitGameTexts, mergeGameTexts, writeReferenceGameTexts, REFERENCE_GAME_TEXTS };

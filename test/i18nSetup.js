@@ -1,5 +1,8 @@
 // Screen tests are written in French: every test starts in the reference language, device included.
-jest.mock('expo-localization', () => ({ getLocales: () => [{ languageCode: 'fr', languageTag: 'fr-FR' }] }));
+jest.mock('expo-localization', () => {
+  const { REFERENCE_LANGUAGE } = require('../src/i18n/languages');
+  return { getLocales: () => [{ languageCode: REFERENCE_LANGUAGE, languageTag: REFERENCE_LANGUAGE }] };
+});
 
 const asyncStorageModule = require('@react-native-async-storage/async-storage');
 const AsyncStorage = asyncStorageModule.default || asyncStorageModule; // the Jest mock has no `default`

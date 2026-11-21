@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseCsv, buildRiders, buildSeason } = require('../src/data/seedBuilder');
 const competitions = require('../data/competitions-2026.json');
-const { splitGameTexts, writeFrenchGameTexts } = require('./lib/gameTexts');
+const { splitGameTexts, writeReferenceGameTexts } = require('./lib/gameTexts');
 
 const rankingsPath = process.argv[2] || path.join(__dirname, '..', 'data', 'dev', 'rankings.csv');
 const resultsPath = process.argv[3] || path.join(__dirname, '..', 'data', 'dev', 'results.csv');
@@ -20,7 +20,7 @@ fs.mkdirSync(dir, { recursive: true });
 fs.writeFileSync(path.join(dir, 'riders.json'), JSON.stringify(riders, null, 2));
 const split = splitGameTexts({ seasons });
 fs.writeFileSync(path.join(dir, 'seasons.json'), JSON.stringify(split.seasons, null, 2));
-writeFrenchGameTexts(split.texts);
+writeReferenceGameTexts(split.texts);
 const demoPath = path.join(dir, 'demoPlayer.json');
 if (!fs.existsSync(demoPath)) fs.writeFileSync(demoPath, JSON.stringify({ name: 'Démo', picks: {} }, null, 2));
 console.log(`Built ${riders.length} riders and ${season.length} events from CSV.`);
