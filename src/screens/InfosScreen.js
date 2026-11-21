@@ -16,6 +16,7 @@ export default function InfosScreen() {
         <View
           key={row.code}
           style={styles.row}
+          accessible
           accessibilityLabel={t('infos.progressA11y', { name: row.name, percent: row.percent })}
         >
           <View style={styles.line}>
