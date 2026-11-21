@@ -1,5 +1,236 @@
 {
+  "rarity": {
+    "C": "Común",
+    "R": "Rara",
+    "E": "Épica",
+    "L": "Legendaria"
+  },
+  "collection": {
+    "allRarities": "Todas",
+    "types": {
+      "ALL": "Todas",
+      "PILOT": "Pilotos",
+      "TECHNIQUE": "Técnicas",
+      "EQUIPMENT": "Equipamiento",
+      "REFEREE": "Árbitros"
+    },
+    "owned": "{{owned}} / {{total}} cartas",
+    "fragments": "Fragmentos: {{count}}",
+    "starterTitle": "Sobre inicial",
+    "openStarter": "Abrir el sobre inicial",
+    "dailyTitle": "Sobre del día",
+    "openDaily": "Abrir el sobre del día",
+    "nextDaily": "Próximo sobre mañana",
+    "missing": "Falta"
+  },
   "common": {
     "unexpectedError": "Se ha producido un error."
+  },
+  "compose": {
+    "slots": {
+      "senior26": "Senior 26\"",
+      "junior26": "Junior 26\"",
+      "senior20": "Senior 20\"",
+      "junior20": "Junior 20\"",
+      "eliteWomen1": "Elite Femenina 20\" (1)",
+      "eliteWomen2": "Elite Femenina 20\" (2)"
+    },
+    "pickers": {
+      "technique": "Técnica",
+      "equipment": "Equipamiento",
+      "referee": "Árbitro"
+    },
+    "closed": "Alineación cerrada",
+    "remove": "Quitar {{card}}",
+    "pickPilot": "Elige un piloto…",
+    "addTechnique": "+ Técnica ({{count}}/{{max}})",
+    "teamSection": "Equipo",
+    "equipmentCount": "Equipamiento ({{count}}/{{max}})",
+    "addEquipment": "+ Equipamiento",
+    "pickReferee": "Elige un árbitro…",
+    "save": "Guardar el equipo",
+    "noCards": "No tienes cartas de este tipo. ¡Abre sobres!",
+    "close": "Cerrar",
+    "choose": "Elegir {{name}} {{rarity}}"
+  },
+  "team": {
+    "CARD_INVALID": "{{where}}: carta no válida.",
+    "RARITY_UNAVAILABLE": "{{where}}: rareza no disponible.",
+    "CARD_NOT_OWNED": "{{where}}: no tienes esta carta.",
+    "CARD_ALREADY_USED": "{{where}}: carta ya usada.",
+    "SLOT_EMPTY": "{{where}}: hueco vacío.",
+    "WRONG_CATEGORY": "{{where}}: categoría incorrecta.",
+    "RIDER_ALREADY_IN_TEAM": "{{where}}: el piloto ya está en el equipo.",
+    "TOO_MANY_TECHNIQUES": "{{where}}: demasiadas técnicas.",
+    "TOO_MANY_EQUIPMENT": "Demasiado equipamiento."
+  },
+  "errors": {
+    "ALREADY_OPENED": "Ya abriste el sobre del día. ¡Vuelve mañana!",
+    "STARTER_ALREADY_OPENED": "Ya abriste el sobre inicial.",
+    "NOT_ALLOWED": "Acción imposible.",
+    "NOT_AVAILABLE": "No disponible en este modo.",
+    "STORAGE_FAILED": "No se pudo guardar en este dispositivo.",
+    "INVALID_INPUT": "Solicitud no válida.",
+    "INVALID_TEAM": "Equipo no válido.",
+    "TEAM_LOCKED": "La manga ha empezado: equipo bloqueado.",
+    "NOT_FOUND": "No encontrado.",
+    "FORBIDDEN": "Acción no autorizada.",
+    "BUSY": "Servidor ocupado, vuelve a intentarlo en un momento.",
+    "UNAUTHENTICATED": "La sesión ha caducado, reinicia la aplicación.",
+    "INTERNAL": "Error del servidor, vuelve a intentarlo más tarde.",
+    "NETWORK": "No se pudo conectar. Revisa tu conexión.",
+    "ACCOUNT_SAVE_FAILED": "No se pudo guardar la cuenta.",
+    "SIGN_IN_FAILED": "No hay ninguna cuenta guardada con esta dirección."
+  },
+  "tabs": {
+    "play": "Jugar",
+    "collection": "Colección",
+    "standings": "Clasificación",
+    "history": "Historial",
+    "rules": "Reglas",
+    "a11y": "Pestaña {{title}}"
+  },
+  "nav": {
+    "collection": "Mi colección",
+    "packReveal": "Apertura",
+    "cardDetail": "Carta",
+    "briefing": "Previa",
+    "compose": "Mi equipo",
+    "eventResult": "Resultados",
+    "standings": "Clasificación de la temporada",
+    "seasonList": "Historial",
+    "seasonDetail": "Temporada",
+    "rules": "Reglas y perfil",
+    "account": "Guardar mi cuenta",
+    "infos": "Información"
+  },
+  "infos": {
+    "title": "Información",
+    "inDevelopment": "El juego está en desarrollo y se actualiza con regularidad.",
+    "translations": "Traducciones",
+    "progressA11y": "{{name}}: {{percent}} % traducido"
+  },
+  "app": {
+    "loadFailed": "No se pudo conectar. Revisa tu conexión y reinicia la aplicación.",
+    "offline": "Sin conexión: últimos datos conocidos. Las acciones pueden fallar hasta que vuelva la conexión.",
+    "confirmTitle": "Confirmación",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  },
+  "eventStatus": {
+    "openReady": "Abierta · equipo listo",
+    "openToCompose": "Abierta · arma tu equipo",
+    "live": "En curso",
+    "liveNotPlayed": "En curso · no jugada",
+    "notPlayed": "No jugada",
+    "finished": "Terminada · {{points}} pts"
+  },
+  "rules": {
+    "language": { "title": "Idioma" },
+    "infosLink": "Información del juego",
+    "defaultName": "Jugador",
+    "confirmReset": "¿Reiniciar la partida? Tus equipos se sustituirán por los datos de demostración.",
+    "title": "Reglas",
+    "teamComposition": "• Arma un equipo de 6 pilotos: Senior 26\", Junior 26\", Senior 20\", Junior 20\" y 2 Elite Femenina 20\" distintas.",
+    "riderPoints": "• Puntos de un piloto = puntos de clasificación (100 para el 1.º, 80, 65…) × su cuota.",
+    "outsider": "• Una cuota alta indica un outsider: si termina bien, da muchos puntos.",
+    "lockRule": "• Puedes cambiar el equipo hasta el día de la manga; después queda bloqueado. Los resultados se revelan al final de la manga.",
+    "cardsTitle": "Cartas y colección",
+    "ownedCards": "• Solo juegas con las cartas que tienes. Se reutilizan de una manga a otra.",
+    "cardTypes": "• 4 tipos: piloto, técnica (asociada a un piloto), equipamiento ({{equipment}} por equipo), árbitro (1 por equipo).",
+    "rarities": "• 4 rarezas: Común, Rara, Épica, Legendaria. Cuanto más rara es la carta, más puntos da su efecto y más técnicas puede llevar su piloto.",
+    "packs": "• Un sobre gratis al día: {{size}} cartas, al menos una Rara. Tienes una Épica garantizada como mínimo cada {{pityE}} sobres y una Legendaria cada {{pityL}}.",
+    "duplicates": "• Las cartas repetidas se reciclan en fragmentos, que sirven para fabricar la carta que quieras.",
+    "profileTitle": "Perfil",
+    "currentName": "Apodo actual: {{name}}",
+    "saveName": "Guardar el apodo",
+    "saveAccount": "Guardar mi cuenta",
+    "simulatedDateTitle": "Fecha simulada",
+    "gameDate": "Fecha del juego: {{date}}",
+    "gameDateSimulated": "Fecha del juego: {{date}} (simulada)",
+    "datePlaceholder": "AAAA-MM-DD",
+    "apply": "Aplicar",
+    "backToToday": "Volver a hoy",
+    "reset": "Reiniciar la partida"
+  },
+  "account": {
+    "saved": "Cuenta guardada: {{email}}",
+    "guestIntro": "Juegas con una cuenta de invitado, vinculada a este navegador o dispositivo. Guárdala para recuperar tu colección en cualquier lugar.",
+    "pending": "Confirmación pendiente para {{email}}.",
+    "emailLabel": "Correo electrónico",
+    "save": "Guardar mi cuenta",
+    "signIn": "Ya tengo una cuenta",
+    "saveSent": "Se ha enviado un enlace de confirmación a {{address}}. Ábrelo para terminar.",
+    "signInSent": "Se ha enviado un enlace de inicio de sesión a {{address}}. La partida de invitado de este navegador se sustituirá.",
+    "staleStatus": "No se pudo actualizar el estado de la cuenta.",
+    "withStaleStatus": "{{message}} {{note}}"
+  },
+  "season": {
+    "summary": "{{name}} · {{points}} pts",
+    "summaryRanked": "{{name}} · {{points}} pts · #{{rank}}",
+    "roundVenue": "Manga {{round}} · {{venue}}",
+    "dateCountry": "{{date}} · {{country}}"
+  },
+  "briefing": {
+    "categories": {
+      "SENIOR_26": "Senior 26\"",
+      "JUNIOR_26": "Junior 26\"",
+      "SENIOR_20": "Senior 20\"",
+      "JUNIOR_20": "Junior 20\"",
+      "ELITE_WOMEN": "Elite Femenina 20\""
+    },
+    "roundHeader": "Manga {{round}} · {{venue}} ({{country}}) · {{date}}",
+    "lockedOn": "Equipo bloqueado el {{date}}",
+    "compose": "Armar mi equipo"
+  },
+  "results": {
+    "afterDate": "Resultados después del {{date}}",
+    "noTeam": "Ningún equipo guardado",
+    "equipment": "Equipamiento: {{card}}",
+    "referee": "Árbitro: {{card}}",
+    "total": "{{points}} pts",
+    "yourScore": "Tu puntuación",
+    "triggeredEffects": "Efectos activados",
+    "roundStandings": "Clasificación de la manga",
+    "eventRound": "{{event}} · Manga {{round}}",
+    "notPlayed": "No jugada — ningún equipo guardado",
+    "you": "(tú)",
+    "dnf": "DNF",
+    "position": "P{{position}}"
+  },
+  "standings": {
+    "after": "Tras {{played}} / {{total}} mangas",
+    "none": "Todavía no ha terminado ninguna manga"
+  },
+  "history": {
+    "current": "En curso",
+    "archived": "Archivada",
+    "seasonMeta": "{{status}} · {{rank}} · {{points}} pts"
+  },
+  "cardDetail": {
+    "types": {
+      "PILOT": "Piloto",
+      "TECHNIQUE": "Técnica",
+      "EQUIPMENT": "Equipamiento",
+      "REFEREE": "Árbitro"
+    },
+    "edition": "edición {{edition}}",
+    "legend": "leyenda",
+    "cote": "cuota ×{{value}}",
+    "fragments": "Fragmentos: {{count}}",
+    "craftA11y": "Fabricar {{name}} {{rarity}}",
+    "craftUnavailableA11y": "Fabricar {{name}} {{rarity}} no disponible",
+    "craftConfirm": "¿Fabricar {{label}} por {{cost}} fragmentos?",
+    "craft": "Fabricar · {{cost}} fragmentos",
+    "recycleA11y": "Reciclar {{name}} {{rarity}}",
+    "recycleConfirm": "¿Reciclar una copia de {{label}} por {{gain}} fragmentos?",
+    "recycle": "Reciclar · +{{gain}}"
+  },
+  "pack": {
+    "title": "Sobre",
+    "new": "¡Nueva!",
+    "duplicate": "Repetida",
+    "revealed": "Carta revelada {{name}} {{rarity}}",
+    "viewCollection": "Ver mi colección"
   }
 }

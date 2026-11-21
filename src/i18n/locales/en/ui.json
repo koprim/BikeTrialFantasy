@@ -1,6 +1,86 @@
 {
+  "rarity": {
+    "C": "Common",
+    "R": "Rare",
+    "E": "Epic",
+    "L": "Legendary"
+  },
+  "collection": {
+    "allRarities": "All",
+    "types": {
+      "ALL": "All",
+      "PILOT": "Riders",
+      "TECHNIQUE": "Techniques",
+      "EQUIPMENT": "Equipment",
+      "REFEREE": "Referees"
+    },
+    "owned": "{{owned}} / {{total}} cards",
+    "fragments": "Fragments: {{count}}",
+    "starterTitle": "Starter pack",
+    "openStarter": "Open the starter pack",
+    "dailyTitle": "Daily pack",
+    "openDaily": "Open the daily pack",
+    "nextDaily": "Next pack tomorrow",
+    "missing": "Missing"
+  },
   "common": {
     "unexpectedError": "Something went wrong."
+  },
+  "compose": {
+    "slots": {
+      "senior26": "Senior 26\"",
+      "junior26": "Junior 26\"",
+      "senior20": "Senior 20\"",
+      "junior20": "Junior 20\"",
+      "eliteWomen1": "Elite Women 20\" (1)",
+      "eliteWomen2": "Elite Women 20\" (2)"
+    },
+    "pickers": {
+      "technique": "Technique",
+      "equipment": "Equipment",
+      "referee": "Referee"
+    },
+    "closed": "Team selection closed",
+    "remove": "Remove {{card}}",
+    "pickPilot": "Pick a rider…",
+    "addTechnique": "+ Technique ({{count}}/{{max}})",
+    "teamSection": "Team",
+    "equipmentCount": "Equipment ({{count}}/{{max}})",
+    "addEquipment": "+ Equipment",
+    "pickReferee": "Pick a referee…",
+    "save": "Save team",
+    "noCards": "No cards of this type yet. Open some packs!",
+    "close": "Close",
+    "choose": "Choose {{name}} {{rarity}}"
+  },
+  "team": {
+    "CARD_INVALID": "{{where}}: invalid card.",
+    "RARITY_UNAVAILABLE": "{{where}}: rarity not available.",
+    "CARD_NOT_OWNED": "{{where}}: you don't own this card.",
+    "CARD_ALREADY_USED": "{{where}}: card already used.",
+    "SLOT_EMPTY": "{{where}}: empty slot.",
+    "WRONG_CATEGORY": "{{where}}: wrong category.",
+    "RIDER_ALREADY_IN_TEAM": "{{where}}: rider already in the team.",
+    "TOO_MANY_TECHNIQUES": "{{where}}: too many techniques.",
+    "TOO_MANY_EQUIPMENT": "Too much equipment."
+  },
+  "errors": {
+    "ALREADY_OPENED": "Daily pack already opened. Come back tomorrow!",
+    "STARTER_ALREADY_OPENED": "Starter pack already opened.",
+    "NOT_ALLOWED": "You can't do that.",
+    "NOT_AVAILABLE": "Not available in this mode.",
+    "STORAGE_FAILED": "Couldn't save on this device.",
+    "INVALID_INPUT": "Invalid request.",
+    "INVALID_TEAM": "Invalid team.",
+    "TEAM_LOCKED": "The round has started: team locked.",
+    "NOT_FOUND": "Not found.",
+    "FORBIDDEN": "Action not allowed.",
+    "BUSY": "Server busy, try again in a moment.",
+    "UNAUTHENTICATED": "Session expired, restart the app.",
+    "INTERNAL": "Server error, try again later.",
+    "NETWORK": "Can't connect. Check your connection.",
+    "ACCOUNT_SAVE_FAILED": "Couldn't save the account.",
+    "SIGN_IN_FAILED": "No saved account with this address."
   },
   "tabs": {
     "play": "Play",
@@ -9,5 +89,148 @@
     "history": "History",
     "rules": "Rules",
     "a11y": "Tab {{title}}"
+  },
+  "nav": {
+    "collection": "My collection",
+    "packReveal": "Pack opening",
+    "cardDetail": "Card",
+    "briefing": "Briefing",
+    "compose": "My team",
+    "eventResult": "Results",
+    "standings": "Season standings",
+    "seasonList": "History",
+    "seasonDetail": "Season",
+    "rules": "Rules & profile",
+    "account": "Save my account",
+    "infos": "About"
+  },
+  "infos": {
+    "title": "About",
+    "inDevelopment": "The game is in development and updated regularly.",
+    "translations": "Translations",
+    "progressA11y": "{{name}}: {{percent}}% translated"
+  },
+  "app": {
+    "loadFailed": "Can't connect. Check your connection, then restart the app.",
+    "offline": "Offline: showing the last known data. Actions may fail until you're back online.",
+    "confirmTitle": "Confirm",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "eventStatus": {
+    "openReady": "Open · team ready",
+    "openToCompose": "Open · pick your team",
+    "live": "Live",
+    "liveNotPlayed": "Live · not played",
+    "notPlayed": "Not played",
+    "finished": "Finished · {{points}} pts"
+  },
+  "rules": {
+    "language": { "title": "Language" },
+    "infosLink": "About the game",
+    "defaultName": "Player",
+    "confirmReset": "Reset the game? Your teams will be replaced by the demo data.",
+    "title": "Rules",
+    "teamComposition": "• Build a team of 6 riders: Senior 26\", Junior 26\", Senior 20\", Junior 20\" and 2 different Elite Women 20\".",
+    "riderPoints": "• A rider's points = ranking points (100 for 1st, 80, 65…) × their odds.",
+    "outsider": "• High odds mean an outsider: if they finish well, they pay off big.",
+    "lockRule": "• You can change your team until the day of the round, then it's locked. Results are revealed when the round ends.",
+    "cardsTitle": "Cards and collection",
+    "ownedCards": "• You only play the cards you own. They can be reused from one round to the next.",
+    "cardTypes": "• 4 types: rider, technique (attached to a rider), equipment ({{equipment}} per team), referee (1 per team).",
+    "rarities": "• 4 rarities: Common, Rare, Epic, Legendary. The rarer the card, the more its effect pays and the more techniques its rider can carry.",
+    "packs": "• One free pack a day: {{size}} cards, at least one of them Rare. You're guaranteed an Epic at least every {{pityE}} packs and a Legendary every {{pityL}}.",
+    "duplicates": "• Duplicates are recycled into fragments, which you use to craft the card of your choice.",
+    "profileTitle": "Profile",
+    "currentName": "Current nickname: {{name}}",
+    "saveName": "Save nickname",
+    "saveAccount": "Save my account",
+    "simulatedDateTitle": "Simulated date",
+    "gameDate": "Game date: {{date}}",
+    "gameDateSimulated": "Game date: {{date}} (simulated)",
+    "datePlaceholder": "YYYY-MM-DD",
+    "apply": "Apply",
+    "backToToday": "Back to today",
+    "reset": "Reset the game"
+  },
+  "account": {
+    "saved": "Account saved: {{email}}",
+    "guestIntro": "You're playing with a guest account tied to this browser or device. Save it to get your collection back anywhere.",
+    "pending": "Waiting for confirmation for {{email}}.",
+    "emailLabel": "Email address",
+    "save": "Save my account",
+    "signIn": "I already have an account",
+    "saveSent": "A confirmation link was sent to {{address}}. Open it to finish.",
+    "signInSent": "A sign-in link was sent to {{address}}. The guest game in this browser will be replaced.",
+    "staleStatus": "The account status couldn't be refreshed.",
+    "withStaleStatus": "{{message}} {{note}}"
+  },
+  "season": {
+    "summary": "{{name}} · {{points}} pts",
+    "summaryRanked": "{{name}} · {{points}} pts · #{{rank}}",
+    "roundVenue": "Round {{round}} · {{venue}}",
+    "dateCountry": "{{date}} · {{country}}"
+  },
+  "briefing": {
+    "categories": {
+      "SENIOR_26": "Senior 26\"",
+      "JUNIOR_26": "Junior 26\"",
+      "SENIOR_20": "Senior 20\"",
+      "JUNIOR_20": "Junior 20\"",
+      "ELITE_WOMEN": "Elite Women 20\""
+    },
+    "roundHeader": "Round {{round}} · {{venue}} ({{country}}) · {{date}}",
+    "lockedOn": "Team locked on {{date}}",
+    "compose": "Pick my team"
+  },
+  "results": {
+    "afterDate": "Results after {{date}}",
+    "noTeam": "No team saved",
+    "equipment": "Equipment: {{card}}",
+    "referee": "Referee: {{card}}",
+    "total": "{{points}} pts",
+    "yourScore": "Your score",
+    "triggeredEffects": "Triggered effects",
+    "roundStandings": "Round standings",
+    "eventRound": "{{event}} · Round {{round}}",
+    "notPlayed": "Not played — no team saved",
+    "you": "(you)",
+    "dnf": "DNF",
+    "position": "P{{position}}"
+  },
+  "standings": {
+    "after": "After {{played}} / {{total}} rounds",
+    "none": "No round finished yet"
+  },
+  "history": {
+    "current": "In progress",
+    "archived": "Archived",
+    "seasonMeta": "{{status}} · {{rank}} · {{points}} pts"
+  },
+  "cardDetail": {
+    "types": {
+      "PILOT": "Rider",
+      "TECHNIQUE": "Technique",
+      "EQUIPMENT": "Equipment",
+      "REFEREE": "Referee"
+    },
+    "edition": "{{edition}} edition",
+    "legend": "legend",
+    "cote": "odds ×{{value}}",
+    "fragments": "Fragments: {{count}}",
+    "craftA11y": "Craft {{name}} {{rarity}}",
+    "craftUnavailableA11y": "Craft {{name}} {{rarity}} unavailable",
+    "craftConfirm": "Craft {{label}} for {{cost}} fragments?",
+    "craft": "Craft · {{cost}} fragments",
+    "recycleA11y": "Recycle {{name}} {{rarity}}",
+    "recycleConfirm": "Recycle one copy of {{label}} for {{gain}} fragments?",
+    "recycle": "Recycle · +{{gain}}"
+  },
+  "pack": {
+    "title": "Pack",
+    "new": "New!",
+    "duplicate": "Duplicate",
+    "revealed": "Card revealed {{name}} {{rarity}}",
+    "viewCollection": "View my collection"
   }
 }
