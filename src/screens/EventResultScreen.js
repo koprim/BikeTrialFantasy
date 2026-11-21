@@ -27,7 +27,7 @@ export default function EventResultScreen({ route }) {
 
   // Live event: team is locked, results not revealed yet.
   const team = normalizeTeam(state.picks[event.id], EDITION);
-  const label = (ref) => `${text.cardName(ref.cardId)} ·${t(`rarity.${ref.rarity}`)}`;
+  const label = (ref) => `${text.cardName(ref.cardId)} · ${t(`rarity.${ref.rarity}`)}`;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{text.eventName(event.id)}</Text>
