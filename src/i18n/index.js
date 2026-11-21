@@ -5,6 +5,7 @@ import { LANGUAGES, REFERENCE_LANGUAGE, FALLBACK_LANGUAGE, languageByCode } from
 import { detectLanguage, LANGUAGE_KEY } from './detect';
 
 i18n.use(initReactI18next).init({
+  // Game texts (language.game) are read by src/i18n/game.js, not by i18next.
   resources: Object.fromEntries(LANGUAGES.map((language) => [language.code, { ui: language.ui }])),
   lng: REFERENCE_LANGUAGE, // replaced by startLanguage() before the first screen renders
   fallbackLng: [FALLBACK_LANGUAGE, REFERENCE_LANGUAGE],
