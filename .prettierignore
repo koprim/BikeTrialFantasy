@@ -7,3 +7,4 @@ docs/
 .claude/settings.json
 coverage/
 .scannerwork/
+src/i18n/locales/*/game.json
