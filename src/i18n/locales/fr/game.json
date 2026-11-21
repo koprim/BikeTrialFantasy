@@ -1,1 +1,416 @@
-{ "cards": {}, "seasons": {}, "events": {} }
+{
+  "cards": {
+    "pilot-2026-senior-26-1": {
+      "name": "SENIOR 26 Pilote 1",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-senior-26-2": {
+      "name": "SENIOR 26 Pilote 2",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-senior-26-3": {
+      "name": "SENIOR 26 Pilote 3",
+      "effects": [
+        "+{{value}} pts s'il réussit un Pivot"
+      ]
+    },
+    "pilot-2026-senior-26-4": {
+      "name": "SENIOR 26 Pilote 4",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-senior-26-5": {
+      "name": "SENIOR 26 Pilote 5",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-senior-26-6": {
+      "name": "SENIOR 26 Pilote 6",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-senior-26-7": {
+      "name": "SENIOR 26 Pilote 7",
+      "effects": [
+        "+{{value}} pts s'il réussit un Nose turn"
+      ]
+    },
+    "pilot-2026-senior-26-8": {
+      "name": "SENIOR 26 Pilote 8",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-junior-26-1": {
+      "name": "JUNIOR 26 Pilote 1",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-junior-26-2": {
+      "name": "JUNIOR 26 Pilote 2",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-junior-26-3": {
+      "name": "JUNIOR 26 Pilote 3",
+      "effects": [
+        "+{{value}} pts s'il réussit un Pivot"
+      ]
+    },
+    "pilot-2026-junior-26-4": {
+      "name": "JUNIOR 26 Pilote 4",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-junior-26-5": {
+      "name": "JUNIOR 26 Pilote 5",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-junior-26-6": {
+      "name": "JUNIOR 26 Pilote 6",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-junior-26-7": {
+      "name": "JUNIOR 26 Pilote 7",
+      "effects": [
+        "+{{value}} pts s'il réussit un Nose turn"
+      ]
+    },
+    "pilot-2026-junior-26-8": {
+      "name": "JUNIOR 26 Pilote 8",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-senior-20-1": {
+      "name": "SENIOR 20 Pilote 1",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-senior-20-2": {
+      "name": "SENIOR 20 Pilote 2",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-senior-20-3": {
+      "name": "SENIOR 20 Pilote 3",
+      "effects": [
+        "+{{value}} pts s'il réussit un Pivot"
+      ]
+    },
+    "pilot-2026-senior-20-4": {
+      "name": "SENIOR 20 Pilote 4",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-senior-20-5": {
+      "name": "SENIOR 20 Pilote 5",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-senior-20-6": {
+      "name": "SENIOR 20 Pilote 6",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-senior-20-7": {
+      "name": "SENIOR 20 Pilote 7",
+      "effects": [
+        "+{{value}} pts s'il réussit un Nose turn"
+      ]
+    },
+    "pilot-2026-senior-20-8": {
+      "name": "SENIOR 20 Pilote 8",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-junior-20-1": {
+      "name": "JUNIOR 20 Pilote 1",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-junior-20-2": {
+      "name": "JUNIOR 20 Pilote 2",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-junior-20-3": {
+      "name": "JUNIOR 20 Pilote 3",
+      "effects": [
+        "+{{value}} pts s'il réussit un Pivot"
+      ]
+    },
+    "pilot-2026-junior-20-4": {
+      "name": "JUNIOR 20 Pilote 4",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-junior-20-5": {
+      "name": "JUNIOR 20 Pilote 5",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-junior-20-6": {
+      "name": "JUNIOR 20 Pilote 6",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-junior-20-7": {
+      "name": "JUNIOR 20 Pilote 7",
+      "effects": [
+        "+{{value}} pts s'il réussit un Nose turn"
+      ]
+    },
+    "pilot-2026-junior-20-8": {
+      "name": "JUNIOR 20 Pilote 8",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-elite-women-1": {
+      "name": "ELITE WOMEN Pilote 1",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-elite-women-2": {
+      "name": "ELITE WOMEN Pilote 2",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-elite-women-3": {
+      "name": "ELITE WOMEN Pilote 3",
+      "effects": [
+        "+{{value}} pts s'il réussit un Pivot"
+      ]
+    },
+    "pilot-2026-elite-women-4": {
+      "name": "ELITE WOMEN Pilote 4",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-elite-women-5": {
+      "name": "ELITE WOMEN Pilote 5",
+      "effects": [
+        "+{{value}} sur ses points s'il finit dans le top 3"
+      ]
+    },
+    "pilot-2026-elite-women-6": {
+      "name": "ELITE WOMEN Pilote 6",
+      "effects": [
+        "+{{value}} pts s'il passe au moins 8 zones sans pénalité"
+      ]
+    },
+    "pilot-2026-elite-women-7": {
+      "name": "ELITE WOMEN Pilote 7",
+      "effects": [
+        "+{{value}} pts s'il réussit un Nose turn"
+      ]
+    },
+    "pilot-2026-elite-women-8": {
+      "name": "ELITE WOMEN Pilote 8",
+      "effects": [
+        "+{{value}} sur ses points"
+      ]
+    },
+    "pilot-2026-legend-senior-20": {
+      "name": "Légende Senior 20\"",
+      "effects": [
+        "+{{value}} pts à chaque manche"
+      ]
+    },
+    "pilot-2026-legend-senior-26": {
+      "name": "Légende Senior 26\"",
+      "effects": [
+        "+{{value}} pts à chaque manche"
+      ]
+    },
+    "pilot-2026-legend-elite-women": {
+      "name": "Légende Elite Femmes",
+      "effects": [
+        "+{{value}} pts à chaque manche"
+      ]
+    },
+    "technique-2026-gap": {
+      "name": "Gap",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Gap"
+      ]
+    },
+    "technique-2026-bunny-up": {
+      "name": "Bunny up",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Bunny up"
+      ]
+    },
+    "technique-2026-side-hop": {
+      "name": "Side hop",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Side hop"
+      ]
+    },
+    "technique-2026-pivot": {
+      "name": "Pivot",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Pivot"
+      ]
+    },
+    "technique-2026-sur-place": {
+      "name": "Sur-place",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Sur-place"
+      ]
+    },
+    "technique-2026-drop": {
+      "name": "Drop",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Drop"
+      ]
+    },
+    "technique-2026-wheeling": {
+      "name": "Wheeling",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Wheeling"
+      ]
+    },
+    "technique-2026-nose-turn": {
+      "name": "Nose turn",
+      "effects": [
+        "+{{value}} pts si le pilote réussit un Nose turn"
+      ]
+    },
+    "equipment-2026-alpha": {
+      "name": "Kit Alpha",
+      "effects": [
+        "+{{value}} sur l'équipe si au moins 2 pilotes roulent pour Alpha"
+      ]
+    },
+    "equipment-2026-torq": {
+      "name": "Kit Torq",
+      "effects": [
+        "+{{value}} sur l'équipe si au moins 2 pilotes roulent pour Torq"
+      ]
+    },
+    "equipment-2026-grip": {
+      "name": "Kit Grip",
+      "effects": [
+        "+{{value}} sur l'équipe si au moins 2 pilotes roulent pour Grip"
+      ]
+    },
+    "equipment-2026-volt": {
+      "name": "Kit Volt",
+      "effects": [
+        "+{{value}} sur l'équipe si au moins 2 pilotes roulent pour Volt"
+      ]
+    },
+    "equipment-2026-senior-26": {
+      "name": "Pneus Senior 26\"",
+      "effects": [
+        "+{{value}} sur les points Senior 26\""
+      ]
+    },
+    "equipment-2026-junior-26": {
+      "name": "Pneus Junior 26\"",
+      "effects": [
+        "+{{value}} sur les points Junior 26\""
+      ]
+    },
+    "equipment-2026-senior-20": {
+      "name": "Pneus Senior 20\"",
+      "effects": [
+        "+{{value}} sur les points Senior 20\""
+      ]
+    },
+    "equipment-2026-junior-20": {
+      "name": "Pneus Junior 20\"",
+      "effects": [
+        "+{{value}} sur les points Junior 20\""
+      ]
+    },
+    "referee-2026-m-durand": {
+      "name": "M. Durand",
+      "effects": [
+        "+{{value}} pts si un Français finit dans le top 5 Senior 20\""
+      ]
+    },
+    "referee-2026-mme-keller": {
+      "name": "Mme Keller",
+      "effects": [
+        "+{{value}} pts si un Espagnol gagne en Senior 26\""
+      ]
+    },
+    "referee-2026-m-rossi": {
+      "name": "M. Rossi",
+      "effects": [
+        "+{{value}} pts si une outsider (cote 2,0 ou plus) gagne en Elite Femmes"
+      ]
+    },
+    "referee-2026-mme-novak": {
+      "name": "Mme Novak",
+      "effects": [
+        "+{{value}} sur toute l'équipe"
+      ]
+    }
+  },
+  "seasons": {
+    "2025": {
+      "name": "Coupe du Monde 2025"
+    },
+    "2026": {
+      "name": "Coupe du Monde 2026"
+    }
+  },
+  "events": {
+    "2025-r1": {
+      "name": "Coupe du Monde 2025 — Manche 1"
+    },
+    "2025-r2": {
+      "name": "Coupe du Monde 2025 — Manche 2"
+    },
+    "2025-r3": {
+      "name": "Coupe du Monde 2025 — Manche 3"
+    },
+    "2025-r4": {
+      "name": "Coupe du Monde 2025 — Manche 4"
+    },
+    "2026-r1": {
+      "name": "Coupe du Monde 2026 — Manche 1"
+    },
+    "2026-r2": {
+      "name": "Coupe du Monde 2026 — Manche 2"
+    },
+    "2026-r3": {
+      "name": "Coupe du Monde 2026 — Manche 3"
+    },
+    "2026-r4": {
+      "name": "Coupe du Monde 2026 — Manche 4"
+    }
+  }
+}
