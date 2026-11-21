@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
 import { useGame, useScoring } from '../state/GameContext';
 import { EVENTS_BY_ID, CARDS_BY_ID, EDITION } from '../data/index';
@@ -9,6 +10,7 @@ import OutcomeView from '../ui/OutcomeView';
 import { colors, space, radius } from '../ui/theme';
 
 export default function EventResultScreen({ route }) {
+  const { t } = useTranslation();
   const { state } = useGame();
   const ctx = useScoring();
   const event = EVENTS_BY_ID[route.params.eventId];
@@ -34,7 +36,7 @@ export default function EventResultScreen({ route }) {
           const entry = team.slots[slot.id];
           return (
             <View key={slot.id} style={styles.row}>
-              <Text style={styles.label}>{slot.label}</Text>
+              <Text style={styles.label}>{t(`compose.slots.${slot.id}`)}</Text>
               <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
               {entry &&
                 entry.techniques.map((t) => (

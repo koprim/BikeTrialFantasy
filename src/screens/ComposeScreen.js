@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Pressable, ScrollView, Modal, FlatList, StyleSheet } from 'react-native';
 import { useGame, useNow } from '../state/GameContext';
 import { CARDS, CARDS_BY_ID, RIDERS_BY_ID, EVENTS_BY_ID, BALANCE, EDITION } from '../data/index';
@@ -8,14 +9,15 @@ import { describeEffect } from '../engine/effects';
 import { RARITY_LABELS } from '../engine/rarity';
 import { eventStatus } from '../engine/calendar';
 import { errorMessage } from '../ui/errorMessages';
+import { teamErrorText } from '../ui/teamErrors';
 import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
 const refLabel = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '?'} · ${RARITY_LABELS[ref.rarity]}`;
 const sameRef = (a, b) => a.cardId === b.cardId && a.rarity === b.rarity;
-const PICKER_TITLES = { technique: 'Technique', equipment: 'Équipement', referee: 'Arbitre' };
 
 export default function ComposeScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const { state, actions } = useGame();
   const now = useNow();
   const event = EVENTS_BY_ID[route.params.eventId];
@@ -122,7 +124,7 @@ export default function ComposeScreen({ navigation, route }) {
           return (
             <View key={slot.id} style={styles.slot}>
               <Pressable onPress={() => setPicker({ kind: 'pilot', slot })} accessibilityRole="button">
-                <Text style={styles.slotLabel}>{slot.label}</Text>
+                <Text style={styles.slotLabel}>{t(`compose.slots.${slot.id}`)}</Text>
                 {entry ? (
                   <Text style={styles.slotRider}>
                     {refLabel(entry)}
@@ -179,7 +181,7 @@ export default function ComposeScreen({ navigation, route }) {
       </ScrollView>
 
       <View style={styles.footer}>
-        {!result.valid && <Text style={styles.error}>{result.errors[0]}</Text>}
+        {!result.valid && <Text style={styles.error}>{teamErrorText(result.errors[0])}</Text>}
         {saveError && (
           <Text accessibilityRole="alert" style={styles.error}>
             {saveError}
@@ -200,7 +202,8 @@ export default function ComposeScreen({ navigation, route }) {
         <View style={styles.modalWrap}>
           <View style={styles.modal}>
             <Text style={styles.modalTitle}>
-              {picker && (picker.kind === 'pilot' ? picker.slot.label : PICKER_TITLES[picker.kind])}
+              {picker &&
+                (picker.kind === 'pilot' ? t(`compose.slots.${picker.slot.id}`) : t(`compose.pickers.${picker.kind}`))}
             </Text>
             <FlatList
               data={options()}

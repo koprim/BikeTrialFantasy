@@ -1,5 +1,43 @@
 {
-  "common": {
-    "unexpectedError": "Une erreur est survenue."
+  "common": { "unexpectedError": "Une erreur est survenue." },
+  "compose": {
+    "slots": {
+      "senior26": "Senior 26\"",
+      "junior26": "Junior 26\"",
+      "senior20": "Senior 20\"",
+      "junior20": "Junior 20\"",
+      "eliteWomen1": "Elite Femme 20\" (1)",
+      "eliteWomen2": "Elite Femme 20\" (2)"
+    },
+    "pickers": { "technique": "Technique", "equipment": "Équipement", "referee": "Arbitre" }
+  },
+  "team": {
+    "CARD_INVALID": "{{where}} : carte invalide.",
+    "RARITY_UNAVAILABLE": "{{where}} : rareté indisponible.",
+    "CARD_NOT_OWNED": "{{where}} : carte non possédée.",
+    "CARD_ALREADY_USED": "{{where}} : carte déjà utilisée.",
+    "SLOT_EMPTY": "{{where}} : emplacement vide.",
+    "WRONG_CATEGORY": "{{where}} : mauvaise catégorie.",
+    "RIDER_ALREADY_IN_TEAM": "{{where}} : pilote déjà dans l'équipe.",
+    "TOO_MANY_TECHNIQUES": "{{where}} : trop de techniques.",
+    "TOO_MANY_EQUIPMENT": "Trop d'équipements."
+  },
+  "errors": {
+    "ALREADY_OPENED": "Pack du jour déjà ouvert. Reviens demain !",
+    "STARTER_ALREADY_OPENED": "Pack de départ déjà ouvert.",
+    "NOT_ALLOWED": "Action impossible.",
+    "NOT_AVAILABLE": "Indisponible dans ce mode.",
+    "STORAGE_FAILED": "Sauvegarde locale impossible.",
+    "INVALID_INPUT": "Demande invalide.",
+    "INVALID_TEAM": "Équipe invalide.",
+    "TEAM_LOCKED": "La manche a commencé : équipe verrouillée.",
+    "NOT_FOUND": "Introuvable.",
+    "FORBIDDEN": "Action non autorisée.",
+    "BUSY": "Serveur occupé, réessaie dans un instant.",
+    "UNAUTHENTICATED": "Session expirée, relance l'application.",
+    "INTERNAL": "Erreur du serveur, réessaie plus tard.",
+    "NETWORK": "Connexion impossible. Vérifie ta connexion.",
+    "ACCOUNT_SAVE_FAILED": "Impossible de sauvegarder le compte.",
+    "SIGN_IN_FAILED": "Aucun compte sauvegardé avec cette adresse."
   }
 }

@@ -5,10 +5,13 @@ test('maps an error code to its French message', () => {
   expect(errorMessage('STORAGE_FAILED')).toBe('Sauvegarde locale impossible.');
 });
 
-test('appends the details of a refused request', () => {
-  expect(errorMessage('INVALID_TEAM', ['Carte non possédée.', 'Arbitre manquant.'])).toBe(
-    'Équipe invalide. Carte non possédée. Arbitre manquant.',
-  );
+test('team details are translated and appended', () => {
+  expect(
+    errorMessage('INVALID_TEAM', [
+      { code: 'CARD_NOT_OWNED', slot: 'senior26' },
+      { code: 'TOO_MANY_EQUIPMENT', slot: null },
+    ]),
+  ).toBe('Équipe invalide. Senior 26" : carte non possédée. Trop d\'équipements.');
   expect(errorMessage('INVALID_TEAM', [])).toBe('Équipe invalide.');
   expect(errorMessage('INVALID_TEAM', { field: 'team' })).toBe('Équipe invalide.');
 });

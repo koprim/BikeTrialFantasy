@@ -1,32 +1,18 @@
-// French message for every ApiErrorCode of the GameApi contract (src/data/api/demoApi.js), except METHOD_NOT_ALLOWED,
-// intentionally left to the generic fallback message (the app always POSTs).
-const MESSAGES = {
-  ALREADY_OPENED: 'Pack du jour déjà ouvert. Reviens demain !',
-  STARTER_ALREADY_OPENED: 'Pack de départ déjà ouvert.',
-  NOT_ALLOWED: 'Action impossible.',
-  NOT_AVAILABLE: 'Indisponible dans ce mode.',
-  STORAGE_FAILED: 'Sauvegarde locale impossible.',
-  INVALID_INPUT: 'Demande invalide.',
-  INVALID_TEAM: 'Équipe invalide.',
-  TEAM_LOCKED: 'La manche a commencé : équipe verrouillée.',
-  NOT_FOUND: 'Introuvable.',
-  FORBIDDEN: 'Action non autorisée.',
-  BUSY: 'Serveur occupé, réessaie dans un instant.',
-  UNAUTHENTICATED: "Session expirée, relance l'application.",
-  INTERNAL: 'Erreur du serveur, réessaie plus tard.',
-  NETWORK: 'Connexion impossible. Vérifie ta connexion.',
-  ACCOUNT_SAVE_FAILED: 'Impossible de sauvegarder le compte.',
-  SIGN_IN_FAILED: 'Aucun compte sauvegardé avec cette adresse.',
-};
+import i18n from '../i18n';
+import { teamErrorText } from './teamErrors';
 
-const FALLBACK_MESSAGE = 'Une erreur est survenue.';
+// Every ApiErrorCode of the GameApi contract (src/data/api/demoApi.js) has a text under errors.<code>, except
+// METHOD_NOT_ALLOWED, intentionally left to the generic message (the app always POSTs).
+const isTeamError = (detail) => !!detail && typeof detail.code === 'string';
 
 /**
  * @param {string} code an ApiErrorCode
- * @param {*} [details] string details (e.g. team validation errors) are appended
+ * @param {*} [details] team validation errors ({ code, slot }) are translated and appended
  * @returns {string}
  */
 export function errorMessage(code, details) {
-  const base = MESSAGES[code] || FALLBACK_MESSAGE;
-  return Array.isArray(details) && details.length ? `${base} ${details.join(' ')}` : base;
+  const key = `errors.${code}`;
+  const base = code && i18n.exists(key) ? i18n.t(key) : i18n.t('common.unexpectedError');
+  const lines = Array.isArray(details) ? details.filter(isTeamError).map(teamErrorText) : [];
+  return lines.length ? `${base} ${lines.join(' ')}` : base;
 }

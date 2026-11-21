@@ -49,7 +49,15 @@ describe('validateRiderTeam', () => {
   });
 });
 
-const { pilotCardId, emptyTeam, cardTeamFromRiders, normalizeTeam, teamRiderIds, validateCardTeam } = require('./team');
+const {
+  pilotCardId,
+  emptyTeam,
+  cardTeamFromRiders,
+  normalizeTeam,
+  teamRiderIds,
+  validateCardTeam,
+  TEAM_ERROR_CODES,
+} = require('./team');
 const { CARDS_BY_ID, RIDERS_BY_ID, BALANCE, EDITION, ridersByCategory } = require('../data/index');
 
 describe('card teams', () => {
@@ -76,6 +84,7 @@ describe('card teams', () => {
     if (team.referee) add(team.referee);
     return owned;
   };
+  const codes = (result) => result.errors.map((error) => error.code);
   const check = (team, owned = ownAll(team)) =>
     validateCardTeam(team, { cardsById: CARDS_BY_ID, ridersById: RIDERS_BY_ID, owned, balance: BALANCE });
   const withSlot = (team, slotId, patch) => ({
@@ -110,23 +119,38 @@ describe('card teams', () => {
     expect(check(team)).toEqual({ valid: true, errors: [] });
   });
 
+  test('every team error is a { code, slot } pair with a known code', () => {
+    const result = check({ slots: {}, equipment: [{ cardId: 'nope', rarity: 'C' }], referee: null });
+    expect(result.errors.length).toBeGreaterThan(0);
+    result.errors.forEach((error) => {
+      expect(TEAM_ERROR_CODES).toContain(error.code);
+      expect(Object.keys(error).sort()).toEqual(['code', 'slot']);
+    });
+    expect(result.errors).toContainEqual({ code: 'SLOT_EMPTY', slot: 'senior26' });
+    expect(result.errors).toContainEqual({ code: 'CARD_INVALID', slot: 'equipment' });
+  });
+
+  test('SLOTS carry no display text', () => {
+    SLOTS.forEach((slot) => expect(slot).not.toHaveProperty('label'));
+  });
+
   test('an empty slot is rejected', () => {
     const { senior26, ...rest } = base.slots;
     expect(check({ ...base, slots: rest }).valid).toBe(false);
   });
 
   test('a card that is not owned is rejected', () => {
-    expect(check(base, {}).errors.join()).toMatch(/non possédée/);
+    expect(codes(check(base, {}))).toContain('CARD_NOT_OWNED');
   });
 
   test('a pilot of the wrong category is rejected', () => {
     const team = withSlot(base, 'junior26', { cardId: base.slots.senior26.cardId });
-    expect(check(team).errors.join()).toMatch(/mauvaise catégorie/);
+    expect(codes(check(team))).toContain('WRONG_CATEGORY');
   });
 
   test('the same rider twice is rejected, even at two rarities', () => {
     const team = withSlot(base, 'eliteWomen2', { cardId: base.slots.eliteWomen1.cardId, rarity: 'R' });
-    expect(check(team).errors.join()).toMatch(/déjà dans l'équipe/);
+    expect(check(team).errors).toContainEqual({ code: 'RIDER_ALREADY_IN_TEAM', slot: 'eliteWomen2' });
   });
 
   test('technique count is limited by the pilot rarity', () => {
@@ -134,7 +158,7 @@ describe('card teams', () => {
       { cardId: 'technique-2026-gap', rarity: 'C' },
       { cardId: 'technique-2026-drop', rarity: 'C' },
     ];
-    expect(check(withSlot(base, 'senior26', { techniques: two })).errors.join()).toMatch(/trop de techniques/);
+    expect(codes(check(withSlot(base, 'senior26', { techniques: two })))).toContain('TOO_MANY_TECHNIQUES');
     // senior-26-1 has an Épique version: 2 techniques allowed
     expect(check(withSlot(base, 'senior26', { rarity: 'E', techniques: two })).valid).toBe(true);
   });
@@ -142,17 +166,17 @@ describe('card teams', () => {
   test('the same card cannot be used twice in a team', () => {
     const gap = { cardId: 'technique-2026-gap', rarity: 'C' };
     const team = withSlot(withSlot(base, 'senior26', { techniques: [gap] }), 'junior26', { techniques: [gap] });
-    expect(check(team).errors.join()).toMatch(/déjà utilisée/);
+    expect(codes(check(team))).toContain('CARD_ALREADY_USED');
   });
 
   test('at most 2 equipment cards', () => {
     const equipment = ['alpha', 'torq', 'grip'].map((b) => ({ cardId: `equipment-2026-${b}`, rarity: 'C' }));
-    expect(check({ ...base, equipment }).errors.join()).toMatch(/équipements/);
+    expect(codes(check({ ...base, equipment }))).toContain('TOO_MANY_EQUIPMENT');
   });
 
   test('a rarity the card does not have is rejected', () => {
     const team = withSlot(base, 'senior26', { cardId: pilotCardId(EDITION, byCat.SENIOR_26[7].id), rarity: 'L' });
-    expect(check(team).errors.join()).toMatch(/rareté indisponible/);
+    expect(codes(check(team))).toContain('RARITY_UNAVAILABLE');
   });
 });
 

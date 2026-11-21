@@ -1,12 +1,12 @@
 const CATEGORIES = ['SENIOR_26', 'JUNIOR_26', 'SENIOR_20', 'JUNIOR_20', 'ELITE_WOMEN'];
 
 const SLOTS = [
-  { id: 'senior26', category: 'SENIOR_26', label: 'Senior 26"' },
-  { id: 'junior26', category: 'JUNIOR_26', label: 'Junior 26"' },
-  { id: 'senior20', category: 'SENIOR_20', label: 'Senior 20"' },
-  { id: 'junior20', category: 'JUNIOR_20', label: 'Junior 20"' },
-  { id: 'eliteWomen1', category: 'ELITE_WOMEN', label: 'Elite Femme 20" (1)' },
-  { id: 'eliteWomen2', category: 'ELITE_WOMEN', label: 'Elite Femme 20" (2)' },
+  { id: 'senior26', category: 'SENIOR_26' },
+  { id: 'junior26', category: 'JUNIOR_26' },
+  { id: 'senior20', category: 'SENIOR_20' },
+  { id: 'junior20', category: 'JUNIOR_20' },
+  { id: 'eliteWomen1', category: 'ELITE_WOMEN' },
+  { id: 'eliteWomen2', category: 'ELITE_WOMEN' },
 ];
 
 function groupByCategory(riders) {
@@ -124,49 +124,62 @@ function ownsCard(owned, ref) {
   return !!owned[ref.cardId] && (owned[ref.cardId][ref.rarity] || 0) > 0;
 }
 
+// Screens translate them (ui.json team.<code>); `slot` is a slot id, 'equipment', 'referee' or null.
+const TEAM_ERROR_CODES = [
+  'CARD_INVALID',
+  'RARITY_UNAVAILABLE',
+  'CARD_NOT_OWNED',
+  'CARD_ALREADY_USED',
+  'SLOT_EMPTY',
+  'WRONG_CATEGORY',
+  'RIDER_ALREADY_IN_TEAM',
+  'TOO_MANY_TECHNIQUES',
+  'TOO_MANY_EQUIPMENT',
+];
+
 // deps = { cardsById, ridersById, owned, balance }
 function validateCardTeam(team, { cardsById, ridersById, owned, balance }) {
   const slots = team.slots || {};
   const errors = [];
+  const fail = (code, slot = null) => errors.push({ code, slot });
   const used = new Set();
   const riderIds = [];
   const checkCard = (ref, type, where) => {
     const card = cardsById[ref.cardId];
     if (!card || card.type !== type) {
-      errors.push(`${where} : carte invalide.`);
+      fail('CARD_INVALID', where);
       return null;
     }
     if (!card.rarities.includes(ref.rarity)) {
-      errors.push(`${where} : rareté indisponible.`);
+      fail('RARITY_UNAVAILABLE', where);
       return null;
     }
-    if (!ownsCard(owned, ref)) errors.push(`${where} : carte non possédée.`);
+    if (!ownsCard(owned, ref)) fail('CARD_NOT_OWNED', where);
     const key = `${ref.cardId}:${ref.rarity}`;
-    if (used.has(key)) errors.push(`${where} : carte déjà utilisée.`);
+    if (used.has(key)) fail('CARD_ALREADY_USED', where);
     used.add(key);
     return card;
   };
   SLOTS.forEach((slot) => {
     const entry = slots[slot.id];
     if (!entry) {
-      errors.push(`${slot.label} : emplacement vide.`);
+      fail('SLOT_EMPTY', slot.id);
       return;
     }
-    const card = checkCard(entry, 'PILOT', slot.label);
+    const card = checkCard(entry, 'PILOT', slot.id);
     if (!card) return;
     const rider = ridersById[card.subject];
-    if (!rider || rider.category !== slot.category) errors.push(`${slot.label} : mauvaise catégorie.`);
-    else if (riderIds.includes(rider.id)) errors.push(`${slot.label} : pilote déjà dans l'équipe.`);
+    if (!rider || rider.category !== slot.category) fail('WRONG_CATEGORY', slot.id);
+    else if (riderIds.includes(rider.id)) fail('RIDER_ALREADY_IN_TEAM', slot.id);
     else riderIds.push(rider.id);
     const techniques = entry.techniques || [];
-    if (techniques.length > balance.slots.techniquesByPilotRarity[entry.rarity])
-      errors.push(`${slot.label} : trop de techniques.`);
-    techniques.forEach((t) => checkCard(t, 'TECHNIQUE', slot.label));
+    if (techniques.length > balance.slots.techniquesByPilotRarity[entry.rarity]) fail('TOO_MANY_TECHNIQUES', slot.id);
+    techniques.forEach((t) => checkCard(t, 'TECHNIQUE', slot.id));
   });
   const equipment = team.equipment || [];
-  if (equipment.length > balance.slots.equipment) errors.push("Trop d'équipements.");
-  equipment.forEach((e) => checkCard(e, 'EQUIPMENT', 'Équipement'));
-  if (team.referee) checkCard(team.referee, 'REFEREE', 'Arbitre');
+  if (equipment.length > balance.slots.equipment) fail('TOO_MANY_EQUIPMENT');
+  equipment.forEach((e) => checkCard(e, 'EQUIPMENT', 'equipment'));
+  if (team.referee) checkCard(team.referee, 'REFEREE', 'referee');
   return { valid: errors.length === 0, errors };
 }
 
@@ -182,5 +195,6 @@ module.exports = {
   normalizeTeam,
   teamRiderIds,
   validateCardTeam,
+  TEAM_ERROR_CODES,
   sanitizeCardTeam,
 };

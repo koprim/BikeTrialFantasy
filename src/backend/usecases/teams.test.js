@@ -51,7 +51,7 @@ test('refuses cards the player does not own, with the reasons', async () => {
   const { saveTeam } = setup({ collection: emptyCollection() });
   const error = await saveTeam('u1', { competitionId: 'c1', team }).catch((e) => e);
   expect(error.code).toBe('INVALID_TEAM');
-  expect(error.details.join(' ')).toContain('non possédée');
+  expect(error.details.map((d) => d.code)).toContain('CARD_NOT_OWNED');
 });
 
 test('unknown competition and missing team are rejected', async () => {
