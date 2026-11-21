@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useGame, useNow } from '../state/GameContext';
 import { BALANCE } from '../data/index';
 import { confirm } from '../ui/confirm';
@@ -10,6 +11,7 @@ import { colors, space, radius } from '../ui/theme';
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function RulesScreen({ navigation }) {
+  const { t } = useTranslation();
   const { state, actions, features } = useGame();
   const now = useNow();
   const [name, setName] = useState(state.player.name);
@@ -24,7 +26,7 @@ export default function RulesScreen({ navigation }) {
     return result;
   });
 
-  const saveName = () => run(() => actions.setName(name.trim() || 'Joueur'));
+  const saveName = () => run(() => actions.setName(name.trim() || t('rules.defaultName')));
   const applyDate = () => run(() => actions.setSimulatedDate(date));
 
   async function clearDate() {
@@ -33,7 +35,7 @@ export default function RulesScreen({ navigation }) {
   }
 
   async function reset() {
-    if (!(await confirm('Réinitialiser la partie ? Tes équipes seront remplacées par les données de démo.'))) return;
+    if (!(await confirm(t('rules.confirmReset')))) return;
     const result = await run(actions.reset);
     if (!result?.ok) return;
     setName(result.patch.player.name); // reset's patch is the full new PlayerState
@@ -42,40 +44,23 @@ export default function RulesScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.h2}>Règles</Text>
-      <Text style={styles.p}>
-        • Compose une équipe de 6 pilotes : Senior 26", Junior 26", Senior 20", Junior 20" et 2 Elite Femme 20"
-        différentes.
-      </Text>
-      <Text style={styles.p}>• Points d'un pilote = points de classement (100 pour le 1er, 80, 65…) × sa cote.</Text>
-      <Text style={styles.p}>• Une cote élevée signale un outsider : s'il finit bien, il rapporte gros.</Text>
-      <Text style={styles.p}>
-        • L'équipe est modifiable jusqu'au jour de la manche, puis verrouillée. Les résultats sont révélés à la fin de
-        la manche.
-      </Text>
+      <Text style={styles.h2}>{t('rules.title')}</Text>
+      <Text style={styles.p}>{t('rules.teamComposition')}</Text>
+      <Text style={styles.p}>{t('rules.riderPoints')}</Text>
+      <Text style={styles.p}>{t('rules.outsider')}</Text>
+      <Text style={styles.p}>{t('rules.lockRule')}</Text>
 
-      <Text style={styles.h2}>Cartes et collection</Text>
+      <Text style={styles.h2}>{t('rules.cardsTitle')}</Text>
+      <Text style={styles.p}>{t('rules.ownedCards')}</Text>
+      <Text style={styles.p}>{t('rules.cardTypes', { equipment: BALANCE.slots.equipment })}</Text>
+      <Text style={styles.p}>{t('rules.rarities')}</Text>
       <Text style={styles.p}>
-        • Tu ne joues que les cartes que tu possèdes. Elles se réutilisent d'une manche à l'autre.
+        {t('rules.packs', { size: BALANCE.pack.size, pityE: BALANCE.pity.E, pityL: BALANCE.pity.L })}
       </Text>
-      <Text style={styles.p}>
-        • 4 types : pilote, technique (attachée à un pilote), équipement ({BALANCE.slots.equipment} par équipe), arbitre
-        (1 par équipe).
-      </Text>
-      <Text style={styles.p}>
-        • 4 raretés : Commune, Rare, Épique, Légendaire. Plus la carte est rare, plus son effet rapporte et plus son
-        pilote peut porter de techniques.
-      </Text>
-      <Text style={styles.p}>
-        • Un pack gratuit par jour : {BALANCE.pack.size} cartes dont au moins une Rare. Une Épique est garantie au moins
-        tous les {BALANCE.pity.E} packs, une Légendaire tous les {BALANCE.pity.L}.
-      </Text>
-      <Text style={styles.p}>
-        • Les doublons se recyclent en fragments, qui servent à fabriquer la carte de ton choix.
-      </Text>
+      <Text style={styles.p}>{t('rules.duplicates')}</Text>
 
-      <Text style={styles.h2}>Profil</Text>
-      <Text style={styles.p}>Pseudo actuel : {state.player.name}</Text>
+      <Text style={styles.h2}>{t('rules.profileTitle')}</Text>
+      <Text style={styles.p}>{t('rules.currentName', { name: state.player.name })}</Text>
       <TextInput value={name} onChangeText={setName} style={styles.input} />
       <Pressable
         disabled={busy}
@@ -84,7 +69,7 @@ export default function RulesScreen({ navigation }) {
         accessibilityRole="button"
         accessibilityState={{ busy, disabled: busy }}
       >
-        <Text style={styles.btnText}>Enregistrer le pseudo</Text>
+        <Text style={styles.btnText}>{t('rules.saveName')}</Text>
       </Pressable>
       {error && (
         <Text accessibilityRole="alert" style={styles.error}>
@@ -97,7 +82,7 @@ export default function RulesScreen({ navigation }) {
           style={[styles.btn, styles.secondary]}
           accessibilityRole="button"
         >
-          <Text style={styles.secondaryText}>Sauvegarder mon compte</Text>
+          <Text style={styles.secondaryText}>{t('rules.saveAccount')}</Text>
         </Pressable>
       )}
 
@@ -121,7 +106,7 @@ export default function RulesScreen({ navigation }) {
           accessibilityRole="button"
           accessibilityState={{ busy, disabled: busy }}
         >
-          <Text style={styles.btnText}>Réinitialiser la partie</Text>
+          <Text style={styles.btnText}>{t('rules.reset')}</Text>
         </Pressable>
       )}
     </ScrollView>
@@ -129,15 +114,13 @@ export default function RulesScreen({ navigation }) {
 }
 
 function SimulatedDate({ now, simulated, date, onChange, onApply, onClear, busy }) {
+  const { t } = useTranslation();
   const applyDisabled = busy || !DATE_RE.test(date);
   return (
     <>
-      <Text style={styles.h2}>Date simulée</Text>
-      <Text style={styles.p}>
-        Date du jeu : {now}
-        {simulated ? ' (simulée)' : ''}
-      </Text>
-      <TextInput value={date} onChangeText={onChange} placeholder="AAAA-MM-JJ" style={styles.input} />
+      <Text style={styles.h2}>{t('rules.simulatedDateTitle')}</Text>
+      <Text style={styles.p}>{t(simulated ? 'rules.gameDateSimulated' : 'rules.gameDate', { date: now })}</Text>
+      <TextInput value={date} onChangeText={onChange} placeholder={t('rules.datePlaceholder')} style={styles.input} />
       <View style={styles.rowBtns}>
         <Pressable
           disabled={applyDisabled}
@@ -146,7 +129,7 @@ function SimulatedDate({ now, simulated, date, onChange, onApply, onClear, busy 
           accessibilityRole="button"
           accessibilityState={{ busy, disabled: applyDisabled }}
         >
-          <Text style={styles.btnText}>Appliquer</Text>
+          <Text style={styles.btnText}>{t('rules.apply')}</Text>
         </Pressable>
         <Pressable
           disabled={busy}
@@ -155,7 +138,7 @@ function SimulatedDate({ now, simulated, date, onChange, onApply, onClear, busy 
           accessibilityRole="button"
           accessibilityState={{ busy, disabled: busy }}
         >
-          <Text style={styles.secondaryText}>Revenir à aujourd'hui</Text>
+          <Text style={styles.secondaryText}>{t('rules.backToToday')}</Text>
         </Pressable>
       </View>
     </>

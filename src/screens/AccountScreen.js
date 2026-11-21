@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useGame } from '../state/GameContext';
 import { errorMessage } from '../ui/errorMessages';
 import { isEmailAddress } from '../ui/emailAddress';
 import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
-
-const STALE_STATUS_NOTE = "Le statut du compte n'a pas pu être actualisé.";
 
 // Loads the AccountInfo: undefined while loading, null without an account or when it could not be read (failed).
 // `refresh` re-reads it after an action and resolves whether it could; a failed refresh keeps the last status.
@@ -47,6 +46,7 @@ function useAccount(actions) {
 }
 
 export default function AccountScreen() {
+  const { t } = useTranslation();
   const { actions } = useGame();
   const { account, failed, refresh } = useAccount(actions);
   const [email, setEmail] = useState('');
@@ -58,45 +58,40 @@ export default function AccountScreen() {
       return;
     }
     const refreshed = await refresh(); // shows the pending confirmation
-    setMessage(refreshed ? successMessage : `${successMessage} ${STALE_STATUS_NOTE}`);
+    setMessage(
+      refreshed
+        ? successMessage
+        : t('account.withStaleStatus', { message: successMessage, note: t('account.staleStatus') }),
+    );
   });
 
   if (account === undefined) return null;
   if (account && !account.isAnonymous) {
     return (
       <View style={styles.page}>
-        <Text style={styles.text}>Compte sauvegardé : {account.email}</Text>
+        <Text style={styles.text}>{t('account.saved', { email: account.email })}</Text>
       </View>
     );
   }
 
   const address = email.trim();
   const disabled = busy || !isEmailAddress(address);
-  const save = () =>
-    submit(actions.saveAccount, address, `Un lien de confirmation a été envoyé à ${address}. Ouvre-le pour terminer.`);
-  const signIn = () =>
-    submit(
-      actions.signIn,
-      address,
-      `Un lien de connexion a été envoyé à ${address}. La partie invitée de ce navigateur sera remplacée.`,
-    );
+  const save = () => submit(actions.saveAccount, address, t('account.saveSent', { address }));
+  const signIn = () => submit(actions.signIn, address, t('account.signInSent', { address }));
 
   return (
     <View style={styles.page}>
-      <Text style={styles.text}>
-        Tu joues avec un compte invité, lié à ce navigateur ou à cet appareil. Sauvegarde-le pour retrouver ta
-        collection partout.
-      </Text>
+      <Text style={styles.text}>{t('account.guestIntro')}</Text>
       {failed ? (
         <Text accessibilityRole="alert" style={styles.text}>
           {errorMessage('NETWORK')}
         </Text>
       ) : null}
       {account && account.pendingEmail ? (
-        <Text style={styles.text}>Confirmation en attente pour {account.pendingEmail}.</Text>
+        <Text style={styles.text}>{t('account.pending', { email: account.pendingEmail })}</Text>
       ) : null}
       <TextInput
-        accessibilityLabel="Adresse e-mail"
+        accessibilityLabel={t('account.emailLabel')}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -110,7 +105,7 @@ export default function AccountScreen() {
         onPress={save}
         style={[styles.cta, disabled && styles.disabled]}
       >
-        <Text style={styles.ctaText}>Sauvegarder mon compte</Text>
+        <Text style={styles.ctaText}>{t('account.save')}</Text>
       </Pressable>
       <Pressable
         accessibilityRole="button"
@@ -119,7 +114,7 @@ export default function AccountScreen() {
         onPress={signIn}
         style={[styles.secondary, disabled && styles.disabled]}
       >
-        <Text style={styles.secondaryText}>J'ai déjà un compte</Text>
+        <Text style={styles.secondaryText}>{t('account.signIn')}</Text>
       </Pressable>
       {message ? (
         <Text accessibilityRole="alert" style={styles.text}>

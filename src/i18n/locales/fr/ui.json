@@ -77,5 +77,43 @@
     "liveNotPlayed": "En cours · non jouée",
     "notPlayed": "Non jouée",
     "finished": "Terminée · {{points}} pts"
+  },
+  "rules": {
+    "defaultName": "Joueur",
+    "confirmReset": "Réinitialiser la partie ? Tes équipes seront remplacées par les données de démo.",
+    "title": "Règles",
+    "teamComposition": "• Compose une équipe de 6 pilotes : Senior 26\", Junior 26\", Senior 20\", Junior 20\" et 2 Elite Femme 20\" différentes.",
+    "riderPoints": "• Points d'un pilote = points de classement (100 pour le 1er, 80, 65…) × sa cote.",
+    "outsider": "• Une cote élevée signale un outsider : s'il finit bien, il rapporte gros.",
+    "lockRule": "• L'équipe est modifiable jusqu'au jour de la manche, puis verrouillée. Les résultats sont révélés à la fin de la manche.",
+    "cardsTitle": "Cartes et collection",
+    "ownedCards": "• Tu ne joues que les cartes que tu possèdes. Elles se réutilisent d'une manche à l'autre.",
+    "cardTypes": "• 4 types : pilote, technique (attachée à un pilote), équipement ({{equipment}} par équipe), arbitre (1 par équipe).",
+    "rarities": "• 4 raretés : Commune, Rare, Épique, Légendaire. Plus la carte est rare, plus son effet rapporte et plus son pilote peut porter de techniques.",
+    "packs": "• Un pack gratuit par jour : {{size}} cartes dont au moins une Rare. Une Épique est garantie au moins tous les {{pityE}} packs, une Légendaire tous les {{pityL}}.",
+    "duplicates": "• Les doublons se recyclent en fragments, qui servent à fabriquer la carte de ton choix.",
+    "profileTitle": "Profil",
+    "currentName": "Pseudo actuel : {{name}}",
+    "saveName": "Enregistrer le pseudo",
+    "saveAccount": "Sauvegarder mon compte",
+    "simulatedDateTitle": "Date simulée",
+    "gameDate": "Date du jeu : {{date}}",
+    "gameDateSimulated": "Date du jeu : {{date}} (simulée)",
+    "datePlaceholder": "AAAA-MM-JJ",
+    "apply": "Appliquer",
+    "backToToday": "Revenir à aujourd'hui",
+    "reset": "Réinitialiser la partie"
+  },
+  "account": {
+    "saved": "Compte sauvegardé : {{email}}",
+    "guestIntro": "Tu joues avec un compte invité, lié à ce navigateur ou à cet appareil. Sauvegarde-le pour retrouver ta collection partout.",
+    "pending": "Confirmation en attente pour {{email}}.",
+    "emailLabel": "Adresse e-mail",
+    "save": "Sauvegarder mon compte",
+    "signIn": "J'ai déjà un compte",
+    "saveSent": "Un lien de confirmation a été envoyé à {{address}}. Ouvre-le pour terminer.",
+    "signInSent": "Un lien de connexion a été envoyé à {{address}}. La partie invitée de ce navigateur sera remplacée.",
+    "staleStatus": "Le statut du compte n'a pas pu être actualisé.",
+    "withStaleStatus": "{{message}} {{note}}"
   }
 }
