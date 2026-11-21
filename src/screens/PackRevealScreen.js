@@ -14,7 +14,7 @@ export default function PackRevealScreen({ navigation, route }) {
   const cards = state.collection.lastPack;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{route.params?.title || 'Pack'}</Text>
+      <Text style={styles.title}>{route.params?.title || t('pack.title')}</Text>
       <FlatList
         data={cards}
         numColumns={3}
@@ -25,14 +25,14 @@ export default function PackRevealScreen({ navigation, route }) {
             <CardTile
               card={card}
               rarity={item.rarity}
-              badge={item.isNew ? 'Nouvelle !' : 'Doublon'}
-              label={`Carte révélée ${text.cardName(card.id)} ${t(`rarity.${item.rarity}`)}`}
+              badge={item.isNew ? t('pack.new') : t('pack.duplicate')}
+              label={t('pack.revealed', { name: text.cardName(card.id), rarity: t(`rarity.${item.rarity}`) })}
             />
           );
         }}
       />
       <Pressable style={styles.cta} accessibilityRole="button" onPress={() => navigation.goBack()}>
-        <Text style={styles.ctaText}>Voir ma collection</Text>
+        <Text style={styles.ctaText}>{t('pack.viewCollection')}</Text>
       </Pressable>
     </View>
   );

@@ -12,8 +12,6 @@ import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, rarityColors, space, radius } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
-const TYPE_LABELS = { PILOT: 'Pilote', TECHNIQUE: 'Technique', EQUIPMENT: 'Équipement', REFEREE: 'Arbitre' };
-
 export default function CardDetailScreen({ route }) {
   const { t } = useTranslation();
   const text = useGameText();
@@ -36,10 +34,12 @@ export default function CardDetailScreen({ route }) {
       <Text style={styles.glyph}>{TYPE_GLYPHS[card.type]}</Text>
       <Text style={styles.title}>{text.cardName(card.id)}</Text>
       <Text style={styles.sub}>
-        {TYPE_LABELS[card.type]} · édition {card.edition}
-        {rider ? ` · ${rider.country} · ${rider.active === false ? 'légende' : `cote ×${rider.cote.toFixed(1)}`}` : ''}
+        {t(`cardDetail.types.${card.type}`)} · {t('cardDetail.edition', { edition: card.edition })}
+        {rider
+          ? ` · ${rider.country} · ${rider.active === false ? t('cardDetail.legend') : t('cardDetail.cote', { value: rider.cote.toFixed(1) })}`
+          : ''}
       </Text>
-      <Text style={styles.sub}>Fragments : {fragments}</Text>
+      <Text style={styles.sub}>{t('cardDetail.fragments', { count: fragments })}</Text>
       {error && (
         <Text accessibilityRole="alert" style={styles.error}>
           {error}
@@ -69,24 +69,28 @@ export default function CardDetailScreen({ route }) {
                 disabled={craftDisabled}
                 accessibilityRole="button"
                 accessibilityState={{ busy, disabled: craftDisabled }}
-                accessibilityLabel={`Fabriquer ${text.cardName(card.id)} ${rarityLabel}${canCraft ? '' : ' indisponible'}`}
-                onPress={() => run(actions.craft, r, `Fabriquer ${label} pour ${cost} fragments ?`)}
+                accessibilityLabel={t(canCraft ? 'cardDetail.craftA11y' : 'cardDetail.craftUnavailableA11y', {
+                  name: text.cardName(card.id),
+                  rarity: rarityLabel,
+                })}
+                onPress={() => run(actions.craft, r, t('cardDetail.craftConfirm', { label, cost }))}
                 style={[styles.btn, craftDisabled && styles.disabled]}
               >
-                <Text style={styles.btnText}>Fabriquer · {cost} fragments</Text>
+                <Text style={styles.btnText}>{t('cardDetail.craft', { cost })}</Text>
               </Pressable>
               {count > 1 && (
                 <Pressable
                   disabled={busy}
                   accessibilityRole="button"
                   accessibilityState={{ busy, disabled: busy }}
-                  accessibilityLabel={`Recycler ${text.cardName(card.id)} ${rarityLabel}`}
-                  onPress={() =>
-                    run(actions.recycle, r, `Recycler un exemplaire de ${label} contre ${gain} fragments ?`)
-                  }
+                  accessibilityLabel={t('cardDetail.recycleA11y', {
+                    name: text.cardName(card.id),
+                    rarity: rarityLabel,
+                  })}
+                  onPress={() => run(actions.recycle, r, t('cardDetail.recycleConfirm', { label, gain }))}
                   style={[styles.btn, styles.secondary, busy && styles.disabled]}
                 >
-                  <Text style={styles.secondaryText}>Recycler · +{gain}</Text>
+                  <Text style={styles.secondaryText}>{t('cardDetail.recycle', { gain })}</Text>
                 </Pressable>
               )}
             </View>

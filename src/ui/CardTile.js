@@ -24,7 +24,7 @@ export default function CardTile({ card, rarity, count, badge, label, onPress })
         {text.cardName(card.id)}
       </Text>
       <Text style={[styles.rarity, { color: rarityColors[rarity] }]}>{t(`rarity.${rarity}`)}</Text>
-      {count !== undefined && <Text style={styles.count}>{missing ? 'Manquante' : `×${count}`}</Text>}
+      {count !== undefined && <Text style={styles.count}>{missing ? t('collection.missing') : `×${count}`}</Text>}
       {badge ? <Text style={styles.badge}>{badge}</Text> : null}
     </Pressable>
   );

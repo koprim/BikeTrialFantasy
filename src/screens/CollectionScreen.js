@@ -10,13 +10,7 @@ import { errorMessage } from '../ui/errorMessages';
 import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
-const TYPE_FILTERS = [
-  ['ALL', 'Toutes'],
-  ['PILOT', 'Pilotes'],
-  ['TECHNIQUE', 'Techniques'],
-  ['EQUIPMENT', 'Équipements'],
-  ['REFEREE', 'Arbitres'],
-];
+const TYPE_FILTER_KEYS = ['ALL', 'PILOT', 'TECHNIQUE', 'EQUIPMENT', 'REFEREE'];
 
 function Chips({ options, value, onChange }) {
   return (
@@ -40,6 +34,7 @@ export default function CollectionScreen({ navigation }) {
   const { t } = useTranslation();
   const { state, actions } = useGame();
   const now = useNow();
+  const typeFilters = TYPE_FILTER_KEYS.map((key) => [key, t(`collection.types.${key}`)]);
   const rarityFilters = [['ALL', t('collection.allRarities')], ...RARITIES.map((r) => [r, t(`rarity.${r}`)])];
   const [type, setType] = useState('ALL');
   const [rarity, setRarity] = useState('ALL');
@@ -65,10 +60,8 @@ export default function CollectionScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.stat}>
-          {owned} / {items.length} cartes
-        </Text>
-        <Text style={styles.stat}>Fragments : {collection.fragments}</Text>
+        <Text style={styles.stat}>{t('collection.owned', { owned, total: items.length })}</Text>
+        <Text style={styles.stat}>{t('collection.fragments', { count: collection.fragments })}</Text>
       </View>
       {!collection.starterGiven && (
         <Pressable
@@ -76,9 +69,9 @@ export default function CollectionScreen({ navigation }) {
           style={[styles.cta, styles.starter, busy && styles.disabled]}
           accessibilityRole="button"
           accessibilityState={{ busy, disabled: busy }}
-          onPress={() => open(actions.openStarter, 'Pack de départ')}
+          onPress={() => open(actions.openStarter, t('collection.starterTitle'))}
         >
-          <Text style={styles.ctaText}>Ouvrir le pack de départ</Text>
+          <Text style={styles.ctaText}>{t('collection.openStarter')}</Text>
         </Pressable>
       )}
       <Pressable
@@ -86,16 +79,16 @@ export default function CollectionScreen({ navigation }) {
         style={[styles.cta, (busy || !daily) && styles.disabled]}
         accessibilityRole="button"
         accessibilityState={{ busy, disabled: busy || !daily }}
-        onPress={() => open(() => actions.openDailyPack({ now }), 'Pack du jour')}
+        onPress={() => open(() => actions.openDailyPack({ now }), t('collection.dailyTitle'))}
       >
-        <Text style={styles.ctaText}>{daily ? 'Ouvrir le pack du jour' : 'Prochain pack demain'}</Text>
+        <Text style={styles.ctaText}>{daily ? t('collection.openDaily') : t('collection.nextDaily')}</Text>
       </Pressable>
       {error && (
         <Text accessibilityRole="alert" style={styles.error}>
           {error}
         </Text>
       )}
-      <Chips options={TYPE_FILTERS} value={type} onChange={setType} />
+      <Chips options={typeFilters} value={type} onChange={setType} />
       <Chips options={rarityFilters} value={rarity} onChange={setRarity} />
       <FlatList
         data={items}

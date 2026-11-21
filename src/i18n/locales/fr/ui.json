@@ -1,7 +1,31 @@
 {
-  "rarity": { "C": "Commune", "R": "Rare", "E": "Épique", "L": "Légendaire" },
-  "collection": { "allRarities": "Toutes" },
-  "common": { "unexpectedError": "Une erreur est survenue." },
+  "rarity": {
+    "C": "Commune",
+    "R": "Rare",
+    "E": "Épique",
+    "L": "Légendaire"
+  },
+  "collection": {
+    "allRarities": "Toutes",
+    "types": {
+      "ALL": "Toutes",
+      "PILOT": "Pilotes",
+      "TECHNIQUE": "Techniques",
+      "EQUIPMENT": "Équipements",
+      "REFEREE": "Arbitres"
+    },
+    "owned": "{{owned}} / {{total}} cartes",
+    "fragments": "Fragments : {{count}}",
+    "starterTitle": "Pack de départ",
+    "openStarter": "Ouvrir le pack de départ",
+    "dailyTitle": "Pack du jour",
+    "openDaily": "Ouvrir le pack du jour",
+    "nextDaily": "Prochain pack demain",
+    "missing": "Manquante"
+  },
+  "common": {
+    "unexpectedError": "Une erreur est survenue."
+  },
   "compose": {
     "slots": {
       "senior26": "Senior 26\"",
@@ -11,7 +35,11 @@
       "eliteWomen1": "Elite Femme 20\" (1)",
       "eliteWomen2": "Elite Femme 20\" (2)"
     },
-    "pickers": { "technique": "Technique", "equipment": "Équipement", "referee": "Arbitre" },
+    "pickers": {
+      "technique": "Technique",
+      "equipment": "Équipement",
+      "referee": "Arbitre"
+    },
     "closed": "Composition fermée",
     "remove": "Retirer {{card}}",
     "pickPilot": "Choisir un pilote…",
@@ -169,5 +197,31 @@
     "current": "En cours",
     "archived": "Archivée",
     "seasonMeta": "{{status}} · {{rank}} · {{points}} pts"
+  },
+  "cardDetail": {
+    "types": {
+      "PILOT": "Pilote",
+      "TECHNIQUE": "Technique",
+      "EQUIPMENT": "Équipement",
+      "REFEREE": "Arbitre"
+    },
+    "edition": "édition {{edition}}",
+    "legend": "légende",
+    "cote": "cote ×{{value}}",
+    "fragments": "Fragments : {{count}}",
+    "craftA11y": "Fabriquer {{name}} {{rarity}}",
+    "craftUnavailableA11y": "Fabriquer {{name}} {{rarity}} indisponible",
+    "craftConfirm": "Fabriquer {{label}} pour {{cost}} fragments ?",
+    "craft": "Fabriquer · {{cost}} fragments",
+    "recycleA11y": "Recycler {{name}} {{rarity}}",
+    "recycleConfirm": "Recycler un exemplaire de {{label}} contre {{gain}} fragments ?",
+    "recycle": "Recycler · +{{gain}}"
+  },
+  "pack": {
+    "title": "Pack",
+    "new": "Nouvelle !",
+    "duplicate": "Doublon",
+    "revealed": "Carte révélée {{name}} {{rarity}}",
+    "viewCollection": "Voir ma collection"
   }
 }
