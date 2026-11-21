@@ -31,3 +31,12 @@ test('broken storage or locales still give a language', async () => {
   };
   expect(await detectLanguage({ storage, deviceLocales })).toBe('en');
 });
+
+test('a device locale with a language tag only is understood', async () => {
+  const deviceLocales = () => [{ languageTag: 'es-MX' }];
+  expect(await detectLanguage({ storage: storageWith(null), deviceLocales })).toBe('es');
+});
+
+test('no device locales at all gives the fallback language', async () => {
+  expect(await detectLanguage({ storage: storageWith(null), deviceLocales: () => null })).toBe('en');
+});
