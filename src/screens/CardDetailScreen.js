@@ -26,7 +26,7 @@ export default function CardDetailScreen({ route }) {
     if (!(await confirm(question))) return;
     setError(null);
     const result = await call({ cardId: card.id, rarity });
-    if (!result.ok) setError(errorMessage(result.error));
+    if (!result.ok) setError({ code: result.error });
   });
 
   return (
@@ -42,7 +42,7 @@ export default function CardDetailScreen({ route }) {
       <Text style={styles.sub}>{t('cardDetail.fragments', { count: fragments })}</Text>
       {error && (
         <Text accessibilityRole="alert" style={styles.error}>
-          {error}
+          {errorMessage(error.code)}
         </Text>
       )}
 

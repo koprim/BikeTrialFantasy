@@ -50,11 +50,11 @@ export default function CollectionScreen({ navigation }) {
   const daily = canOpenDaily(collection, now);
 
   // Reveal the pack only once the backend has opened it.
-  const { run: open, busy } = useAsyncAction(async (call, title) => {
+  const { run: open, busy } = useAsyncAction(async (call, kind) => {
     setError(null);
     const result = await call();
-    if (result.ok) navigation.navigate('PackReveal', { title });
-    else setError(errorMessage(result.error));
+    if (result.ok) navigation.navigate('PackReveal', { kind });
+    else setError({ code: result.error });
   });
 
   return (
@@ -69,7 +69,7 @@ export default function CollectionScreen({ navigation }) {
           style={[styles.cta, styles.starter, busy && styles.disabled]}
           accessibilityRole="button"
           accessibilityState={{ busy, disabled: busy }}
-          onPress={() => open(actions.openStarter, t('collection.starterTitle'))}
+          onPress={() => open(actions.openStarter, 'starter')}
         >
           <Text style={styles.ctaText}>{t('collection.openStarter')}</Text>
         </Pressable>
@@ -79,13 +79,13 @@ export default function CollectionScreen({ navigation }) {
         style={[styles.cta, (busy || !daily) && styles.disabled]}
         accessibilityRole="button"
         accessibilityState={{ busy, disabled: busy || !daily }}
-        onPress={() => open(() => actions.openDailyPack({ now }), t('collection.dailyTitle'))}
+        onPress={() => open(() => actions.openDailyPack({ now }), 'daily')}
       >
         <Text style={styles.ctaText}>{daily ? t('collection.openDaily') : t('collection.nextDaily')}</Text>
       </Pressable>
       {error && (
         <Text accessibilityRole="alert" style={styles.error}>
-          {error}
+          {errorMessage(error.code)}
         </Text>
       )}
       <Chips options={typeFilters} value={type} onChange={setType} />

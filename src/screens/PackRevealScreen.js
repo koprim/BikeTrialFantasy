@@ -7,6 +7,8 @@ import CardTile from '../ui/CardTile';
 import { colors, space, radius } from '../ui/theme';
 import { useGameText } from '../i18n/useGameText';
 
+const PACK_TITLE_KEYS = { starter: 'collection.starterTitle', daily: 'collection.dailyTitle' };
+
 export default function PackRevealScreen({ navigation, route }) {
   const { t } = useTranslation();
   const text = useGameText();
@@ -14,7 +16,7 @@ export default function PackRevealScreen({ navigation, route }) {
   const cards = state.collection.lastPack;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{route.params?.title || t('pack.title')}</Text>
+      <Text style={styles.title}>{t(PACK_TITLE_KEYS[route.params?.kind] || 'pack.title')}</Text>
       <FlatList
         data={cards}
         numColumns={3}

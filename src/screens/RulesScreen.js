@@ -24,7 +24,7 @@ export default function RulesScreen({ navigation }) {
   const { run, busy } = useAsyncAction(async (call) => {
     setError(null);
     const result = await call();
-    if (!result.ok) setError(errorMessage(result.error, result.details));
+    if (!result.ok) setError({ code: result.error, details: result.details });
     return result;
   });
 
@@ -75,7 +75,7 @@ export default function RulesScreen({ navigation }) {
       </Pressable>
       {error && (
         <Text accessibilityRole="alert" style={styles.error}>
-          {error}
+          {errorMessage(error.code, error.details)}
         </Text>
       )}
       {features.account && (
@@ -91,7 +91,7 @@ export default function RulesScreen({ navigation }) {
       <Text style={styles.h2}>{t('rules.language.title')}</Text>
       <View style={styles.rowBtns}>
         {LANGUAGES.map((language) => {
-          const selected = i18n.language === language.code;
+          const selected = i18n.resolvedLanguage === language.code;
           return (
             <Pressable
               key={language.code}
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     padding: space.md,
     fontSize: 16,
   },
-  rowBtns: { flexDirection: 'row', gap: space.sm },
+  rowBtns: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   flex: { flex: 1 },
   btn: { backgroundColor: colors.primary, padding: space.md, borderRadius: radius.md, alignItems: 'center' },
   btnText: { color: '#fff', fontWeight: '700' },

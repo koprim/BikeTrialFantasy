@@ -63,6 +63,14 @@ test('a refused rename shows the reason', async () => {
   expect(screen.getByText('Pseudo actuel : Démo')).toBeTruthy();
 });
 
+test('a shown refusal follows a language change', async () => {
+  renderRules({ ...inMemoryDemoApi(), setName: async () => ({ ok: false, error: 'NETWORK' }) });
+  fireEvent.press(await screen.findByText('Enregistrer le pseudo'));
+  expect(await screen.findByText('Connexion impossible. Vérifie ta connexion.')).toBeTruthy();
+  fireEvent.press(screen.getByText('English'));
+  expect(await screen.findByText("Can't connect. Check your connection.")).toBeTruthy();
+});
+
 test('after a reset the name field shows the name returned by the backend', async () => {
   const resetState = { ...initialState, player: { name: 'Nouveau' } };
   renderRules({ ...inMemoryDemoApi(), reset: async () => ({ ok: true, patch: resetState }) });

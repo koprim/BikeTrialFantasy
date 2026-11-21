@@ -99,7 +99,7 @@ export default function ComposeScreen({ navigation, route }) {
     setSaveError(null);
     const saved = await actions.saveTeam({ eventId: event.id, team, now });
     if (saved.ok) navigation.popToTop();
-    else setSaveError(errorMessage(saved.error, saved.details));
+    else setSaveError({ code: saved.error, details: saved.details });
   });
   const saveDisabled = saving || !result.valid;
 
@@ -194,7 +194,7 @@ export default function ComposeScreen({ navigation, route }) {
         {!result.valid && <Text style={styles.error}>{teamErrorText(result.errors[0])}</Text>}
         {saveError && (
           <Text accessibilityRole="alert" style={styles.error}>
-            {saveError}
+            {errorMessage(saveError.code, saveError.details)}
           </Text>
         )}
         <Pressable

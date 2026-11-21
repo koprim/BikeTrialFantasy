@@ -51,19 +51,21 @@ export default function AccountScreen() {
   const { account, failed, refresh } = useAccount(actions);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
-  const { run: submit, busy } = useAsyncAction(async (call, address, successMessage) => {
+  // The notice is kept untranslated ({ code } | { key, params, stale }) and translated at render, so it follows a language change.
+  const { run: submit, busy } = useAsyncAction(async (call, address, success) => {
     const result = await call(address);
     if (!result.ok) {
-      setMessage(errorMessage(result.error));
+      setMessage({ code: result.error });
       return;
     }
     const refreshed = await refresh(); // shows the pending confirmation
-    setMessage(
-      refreshed
-        ? successMessage
-        : t('account.withStaleStatus', { message: successMessage, note: t('account.staleStatus') }),
-    );
+    setMessage({ ...success, stale: !refreshed });
   });
+  const messageText = ({ code, key, params, stale }) => {
+    if (code) return errorMessage(code);
+    const text = t(key, params);
+    return stale ? t('account.withStaleStatus', { message: text, note: t('account.staleStatus') }) : text;
+  };
 
   if (account === undefined) return null;
   if (account && !account.isAnonymous) {
@@ -76,8 +78,8 @@ export default function AccountScreen() {
 
   const address = email.trim();
   const disabled = busy || !isEmailAddress(address);
-  const save = () => submit(actions.saveAccount, address, t('account.saveSent', { address }));
-  const signIn = () => submit(actions.signIn, address, t('account.signInSent', { address }));
+  const save = () => submit(actions.saveAccount, address, { key: 'account.saveSent', params: { address } });
+  const signIn = () => submit(actions.signIn, address, { key: 'account.signInSent', params: { address } });
 
   return (
     <View style={styles.page}>
@@ -118,7 +120,7 @@ export default function AccountScreen() {
       </Pressable>
       {message ? (
         <Text accessibilityRole="alert" style={styles.text}>
-          {message}
+          {messageText(message)}
         </Text>
       ) : null}
     </View>
