@@ -5,7 +5,7 @@ const CARD = {
   id: 'test-ref-card',
   type: 'EQUIPMENT',
   edition: '2026',
-  name: 'Test',
+  name: { fr: 'Test' },
   subject_id: null,
   rarities: ['C'],
   effects: [],

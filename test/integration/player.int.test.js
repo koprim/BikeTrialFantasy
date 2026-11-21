@@ -4,11 +4,11 @@ const service = serviceClient();
 const INSUFFICIENT_PRIVILEGE = '42501';
 const OWNED_TABLES = ['profiles', 'wallets', 'owned_cards', 'pack_openings', 'teams'];
 
-const SEASON = { id: 'test-player-season', name: 'Test season' };
+const SEASON = { id: 'test-player-season', name: { fr: 'Test season' } };
 const COMPETITION = {
   id: 'test-player-competition',
   season_id: SEASON.id,
-  name: 'Test competition',
+  name: { fr: 'Test competition' },
   date_from: '2026-01-01',
   date_to: '2026-01-02',
 };
@@ -16,7 +16,7 @@ const CARD = {
   id: 'test-player-card',
   type: 'EQUIPMENT',
   edition: '2026',
-  name: 'Test',
+  name: { fr: 'Test' },
   subject_id: null,
   rarities: ['C'],
   effects: [],

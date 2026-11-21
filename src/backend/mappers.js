@@ -16,7 +16,7 @@ const { emptyCollection } = require('../engine/collection');
  * @property {string} id
  * @property {string} type
  * @property {string} edition
- * @property {string} name
+ * @property {Object<string, string>} name texts per language, not read by the server
  * @property {string} subject_id
  * @property {string[]} rarities
  * @property {object} effects jsonb
@@ -25,7 +25,7 @@ const { emptyCollection } = require('../engine/collection');
  * @typedef {object} CompetitionRow
  * @property {string} id
  * @property {string} season_id
- * @property {string} name
+ * @property {Object<string, string>} name texts per language, not read by the server
  * @property {string} venue
  * @property {string} country
  * @property {number} round
@@ -79,7 +79,6 @@ function toCard(row) {
     id: row.id,
     type: row.type,
     edition: row.edition,
-    name: row.name,
     subject: row.subject_id,
     rarities: row.rarities,
     effects: row.effects,
@@ -91,7 +90,6 @@ function toCompetition(row) {
   return {
     id: row.id,
     seasonId: row.season_id,
-    name: row.name,
     venue: row.venue,
     country: row.country,
     round: row.round,

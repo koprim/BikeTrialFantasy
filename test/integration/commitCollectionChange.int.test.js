@@ -9,7 +9,7 @@ const CARD = {
   id: 'test-rpc-card',
   type: 'EQUIPMENT',
   edition: '2026',
-  name: 'Test',
+  name: { fr: 'Test' },
   subject_id: null,
   rarities: ['C', 'R'],
   effects: [],

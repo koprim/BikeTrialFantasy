@@ -54,9 +54,16 @@ test('diffOwned lists gains and losses per card and rarity', () => {
 
 test('catalog and competition rows use the engine field names', () => {
   expect(
-    toCard({ id: 'p', type: 'PILOT', edition: '2026', name: 'N', subject_id: 'r1', rarities: ['C'], effects: [] })
-      .subject,
-  ).toBe('r1');
+    toCard({
+      id: 'p',
+      type: 'PILOT',
+      edition: '2026',
+      name: { fr: 'N' },
+      subject_id: 'r1',
+      rarities: ['C'],
+      effects: [],
+    }),
+  ).toEqual({ id: 'p', type: 'PILOT', edition: '2026', subject: 'r1', rarities: ['C'], effects: [] });
   expect(
     toRider({
       id: 'r1',
@@ -82,7 +89,7 @@ test('catalog and competition rows use the engine field names', () => {
     toCompetition({
       id: '2026-r1',
       season_id: '2026',
-      name: 'M1',
+      name: { fr: 'M1' },
       venue: 'V',
       country: 'FRA',
       round: 1,
@@ -93,7 +100,6 @@ test('catalog and competition rows use the engine field names', () => {
   ).toEqual({
     id: '2026-r1',
     seasonId: '2026',
-    name: 'M1',
     venue: 'V',
     country: 'FRA',
     round: 1,
