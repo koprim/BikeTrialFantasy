@@ -3,6 +3,7 @@ import { View, Text, SectionList, Pressable, StyleSheet } from 'react-native';
 import { ridersByCategory, EVENTS_BY_ID } from '../data/index';
 import { SLOTS } from '../engine/team';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 const CATEGORY_LABEL = {
   SENIOR_26: 'Senior 26"',
@@ -13,6 +14,7 @@ const CATEGORY_LABEL = {
 };
 
 export default function BriefingScreen({ navigation, route }) {
+  const text = useGameText();
   const event = EVENTS_BY_ID[route.params.eventId];
   const byCat = ridersByCategory();
   const categories = [...new Set(SLOTS.map((s) => s.category))];
@@ -24,7 +26,7 @@ export default function BriefingScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{event.name}</Text>
+        <Text style={styles.title}>{text.eventName(event.id)}</Text>
         <Text style={styles.sub}>
           Manche {event.round} · {event.venue} ({event.country}) · {event.dateFrom}
         </Text>

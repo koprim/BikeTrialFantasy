@@ -5,18 +5,20 @@ import { useGame, useNow } from '../state/GameContext';
 import { CARDS, CARDS_BY_ID, RIDERS_BY_ID, EVENTS_BY_ID, BALANCE, EDITION } from '../data/index';
 import { SLOTS, emptyTeam, normalizeTeam, validateCardTeam } from '../engine/team';
 import { ownedRefs } from '../engine/collection';
-import { describeEffect } from '../engine/effects';
+import { formatValue } from '../engine/effects';
 import { eventStatus } from '../engine/calendar';
 import { errorMessage } from '../ui/errorMessages';
 import { teamErrorText } from '../ui/teamErrors';
 import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 const sameRef = (a, b) => a.cardId === b.cardId && a.rarity === b.rarity;
 
 export default function ComposeScreen({ navigation, route }) {
   const { t } = useTranslation();
-  const refLabel = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '?'} · ${t(`rarity.${ref.rarity}`)}`;
+  const text = useGameText();
+  const refLabel = (ref) => `${text.cardName(ref.cardId)} · ${t(`rarity.${ref.rarity}`)}`;
   const { state, actions } = useGame();
   const now = useNow();
   const event = EVENTS_BY_ID[route.params.eventId];
@@ -59,31 +61,38 @@ export default function ComposeScreen({ navigation, route }) {
     // Read the picker now: the team updater runs later, after setPicker(null) below.
     const { kind, slot } = picker;
     const ref = { cardId: option.cardId, rarity: option.rarity };
-    setTeam((t) => {
+    setTeam((current) => {
       if (kind === 'pilot') {
-        const prev = t.slots[slot.id];
+        const prev = current.slots[slot.id];
         const techniques = (prev ? prev.techniques : []).slice(0, techLimit(ref));
-        return { ...t, slots: { ...t.slots, [slot.id]: { ...ref, techniques } } };
+        return { ...current, slots: { ...current.slots, [slot.id]: { ...ref, techniques } } };
       }
       if (kind === 'technique') {
-        const entry = t.slots[slot.id];
-        return { ...t, slots: { ...t.slots, [slot.id]: { ...entry, techniques: [...entry.techniques, ref] } } };
+        const entry = current.slots[slot.id];
+        return {
+          ...current,
+          slots: { ...current.slots, [slot.id]: { ...entry, techniques: [...entry.techniques, ref] } },
+        };
       }
-      if (kind === 'equipment') return { ...t, equipment: [...t.equipment, ref] };
-      return { ...t, referee: ref };
+      if (kind === 'equipment') return { ...current, equipment: [...current.equipment, ref] };
+      return { ...current, referee: ref };
     });
     setPicker(null);
   }
 
   const removeTechnique = (slotId, ref) =>
-    setTeam((t) => ({
-      ...t,
+    setTeam((current) => ({
+      ...current,
       slots: {
-        ...t.slots,
-        [slotId]: { ...t.slots[slotId], techniques: t.slots[slotId].techniques.filter((x) => !sameRef(x, ref)) },
+        ...current.slots,
+        [slotId]: {
+          ...current.slots[slotId],
+          techniques: current.slots[slotId].techniques.filter((x) => !sameRef(x, ref)),
+        },
       },
     }));
-  const removeEquipment = (ref) => setTeam((t) => ({ ...t, equipment: t.equipment.filter((x) => !sameRef(x, ref)) }));
+  const removeEquipment = (ref) =>
+    setTeam((current) => ({ ...current, equipment: current.equipment.filter((x) => !sameRef(x, ref)) }));
 
   // Leave the screen only once the team is accepted; a refusal stays here with its reason.
   const { run: save, busy: saving } = useAsyncAction(async () => {
@@ -170,7 +179,9 @@ export default function ComposeScreen({ navigation, route }) {
         <View style={styles.slot}>
           <Text style={styles.slotLabel}>Arbitre</Text>
           {team.referee ? (
-            <View style={styles.chips}>{chip(team.referee, () => setTeam((t) => ({ ...t, referee: null })))}</View>
+            <View style={styles.chips}>
+              {chip(team.referee, () => setTeam((current) => ({ ...current, referee: null })))}
+            </View>
           ) : (
             <Pressable onPress={() => setPicker({ kind: 'referee' })} accessibilityRole="button">
               <Text style={styles.slotEmpty}>Choisir un arbitre…</Text>
@@ -215,15 +226,15 @@ export default function ComposeScreen({ navigation, route }) {
                     onPress={() => choose(item)}
                     style={styles.option}
                     accessibilityRole="button"
-                    accessibilityLabel={`Choisir ${item.card.name} ${t(`rarity.${item.rarity}`)}`}
+                    accessibilityLabel={`Choisir ${text.cardName(item.card.id)} ${t(`rarity.${item.rarity}`)}`}
                   >
                     <Text style={styles.optionName}>
-                      {item.card.name} · {t(`rarity.${item.rarity}`)}
+                      {text.cardName(item.card.id)} · {t(`rarity.${item.rarity}`)}
                       {rider ? ` · ×${rider.cote.toFixed(1)}` : ''}
                     </Text>
                     {item.card.effects.map((e, i) => (
                       <Text key={i} style={styles.optionEffect}>
-                        {describeEffect(e, item.rarity, BALANCE)}
+                        {text.effectText(item.card.id, i, formatValue(e.reward, item.rarity, BALANCE))}
                       </Text>
                     ))}
                   </Pressable>

@@ -2,14 +2,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
 import { useGame, useScoring } from '../state/GameContext';
-import { EVENTS_BY_ID, CARDS_BY_ID, EDITION } from '../data/index';
+import { EVENTS_BY_ID, EDITION } from '../data/index';
 import { SLOTS, normalizeTeam } from '../engine/team';
 import { eventOutcome } from '../state/selectors';
 import OutcomeView from '../ui/OutcomeView';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function EventResultScreen({ route }) {
   const { t } = useTranslation();
+  const text = useGameText();
   const { state } = useGame();
   const ctx = useScoring();
   const event = EVENTS_BY_ID[route.params.eventId];
@@ -25,18 +27,18 @@ export default function EventResultScreen({ route }) {
 
   // Live event: team is locked, results not revealed yet.
   const team = normalizeTeam(state.picks[event.id], EDITION);
-  const label = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '—'} · ${t(`rarity.${ref.rarity}`)}`;
+  const label = (ref) => `${text.cardName(ref.cardId)} Â· ${t(`rarity.${ref.rarity}`)}`;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{event.name}</Text>
-      <Text style={styles.sub}>Résultats après le {event.dateTo || event.dateFrom}</Text>
+      <Text style={styles.title}>{text.eventName(event.id)}</Text>
+      <Text style={styles.sub}>RÃ©sultats aprÃ¨s le {event.dateTo || event.dateFrom}</Text>
       {team ? (
         SLOTS.map((slot) => {
           const entry = team.slots[slot.id];
           return (
             <View key={slot.id} style={styles.row}>
               <Text style={styles.label}>{t(`compose.slots.${slot.id}`)}</Text>
-              <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
+              <Text style={styles.rider}>{entry ? label(entry) : 'â€”'}</Text>
               {entry &&
                 entry.techniques.map((technique) => (
                   <Text key={`${technique.cardId}:${technique.rarity}`} style={styles.label}>
@@ -47,12 +49,12 @@ export default function EventResultScreen({ route }) {
           );
         })
       ) : (
-        <Text style={styles.sub}>Aucune équipe enregistrée</Text>
+        <Text style={styles.sub}>Aucune Ã©quipe enregistrÃ©e</Text>
       )}
       {team &&
         team.equipment.map((e) => (
           <Text key={`${e.cardId}:${e.rarity}`} style={styles.sub}>
-            Équipement : {label(e)}
+            Ã‰quipement : {label(e)}
           </Text>
         ))}
       {team && team.referee && <Text style={styles.sub}>Arbitre : {label(team.referee)}</Text>}

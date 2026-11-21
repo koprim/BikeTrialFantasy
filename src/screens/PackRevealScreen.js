@@ -5,9 +5,11 @@ import { useGame } from '../state/GameContext';
 import { CARDS_BY_ID } from '../data/index';
 import CardTile from '../ui/CardTile';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function PackRevealScreen({ navigation, route }) {
   const { t } = useTranslation();
+  const text = useGameText();
   const { state } = useGame();
   const cards = state.collection.lastPack;
   return (
@@ -24,7 +26,7 @@ export default function PackRevealScreen({ navigation, route }) {
               card={card}
               rarity={item.rarity}
               badge={item.isNew ? 'Nouvelle !' : 'Doublon'}
-              label={`Carte révélée ${card.name} ${t(`rarity.${item.rarity}`)}`}
+              label={`Carte révélée ${text.cardName(card.id)} ${t(`rarity.${item.rarity}`)}`}
             />
           );
         }}

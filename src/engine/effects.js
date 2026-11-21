@@ -1,4 +1,4 @@
-// Declarative card effects: { description, trigger, reward }. Pure functions only.
+// Declarative card effects: { trigger, reward }; their sentence lives in the locale files. Pure functions only.
 const TRIGGERS = [
   'ALWAYS',
   'RIDER_TOP_N',
@@ -69,8 +69,4 @@ function formatValue(reward, rarity, balance) {
   return reward.type === 'FLAT_POINTS' ? fmt(v) : `${fmt(v * 100)} %`;
 }
 
-function describeEffect(effect, rarity, balance) {
-  return effect.description.split('{value}').join(formatValue(effect.reward, rarity, balance));
-}
-
-module.exports = { TRIGGERS, REWARDS, RIDER_TRIGGERS, evaluateTrigger, scaledValue, describeEffect };
+module.exports = { TRIGGERS, REWARDS, RIDER_TRIGGERS, evaluateTrigger, scaledValue, formatValue };

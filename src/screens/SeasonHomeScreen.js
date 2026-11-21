@@ -6,8 +6,10 @@ import { currentSeason, eventStatus } from '../engine/calendar';
 import { seasonSummary } from '../state/selectors';
 import { eventLabel } from '../ui/eventLabel';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function SeasonHomeScreen({ navigation }) {
+  const text = useGameText();
   const { state } = useGame();
   const ctx = useScoring();
   const season = currentSeason(SEASONS, ctx.now);
@@ -20,7 +22,7 @@ export default function SeasonHomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.h1}>{season.name}</Text>
+      <Text style={styles.h1}>{text.seasonName(season.id)}</Text>
       <Text style={styles.sub}>
         {state.player.name} · {summary.score.toFixed(0)} pts{summary.rank ? ` · #${summary.rank}` : ''}
       </Text>

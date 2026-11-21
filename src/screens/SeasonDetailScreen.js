@@ -5,13 +5,15 @@ import { SEASONS } from '../data/index';
 import { eventStatus } from '../engine/calendar';
 import { eventLabel } from '../ui/eventLabel';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function SeasonDetailScreen({ navigation, route }) {
+  const text = useGameText();
   const ctx = useScoring();
   const season = SEASONS.find((s) => s.id === route.params.seasonId);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{season.name}</Text>
+      <Text style={styles.title}>{text.seasonName(season.id)}</Text>
       <FlatList
         data={season.events}
         keyExtractor={(e) => e.id}

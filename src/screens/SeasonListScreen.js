@@ -5,8 +5,10 @@ import { SEASONS } from '../data/index';
 import { seasonStatus } from '../engine/calendar';
 import { seasonSummary } from '../state/selectors';
 import { colors, space, radius } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function SeasonListScreen({ navigation }) {
+  const text = useGameText();
   const ctx = useScoring();
   // SEASONS is chronological; show the newest first and hide seasons not started yet.
   const seasons = SEASONS.filter((s) => seasonStatus(s, ctx.now) !== 'upcoming')
@@ -26,7 +28,7 @@ export default function SeasonListScreen({ navigation }) {
               style={styles.row}
               accessibilityRole="button"
             >
-              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.name}>{text.seasonName(item.id)}</Text>
               <Text style={styles.meta}>
                 {status} · {summary.rank ? `#${summary.rank}` : '—'} · {summary.score.toFixed(0)} pts
               </Text>

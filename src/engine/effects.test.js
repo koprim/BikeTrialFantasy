@@ -1,4 +1,4 @@
-const { TRIGGERS, REWARDS, RIDER_TRIGGERS, evaluateTrigger, scaledValue, describeEffect } = require('./effects');
+const { TRIGGERS, REWARDS, RIDER_TRIGGERS, evaluateTrigger, scaledValue, formatValue } = require('./effects');
 
 const balance = { rarityMultiplier: { C: 1, R: 1.5, E: 2, L: 3 } };
 const ridersById = {
@@ -67,21 +67,13 @@ test('scaledValue multiplies the reward by the rarity multiplier', () => {
   expect(scaledValue({ type: 'RIDER_MULTIPLIER', value: 0.1 }, 'R', balance)).toBeCloseTo(0.15);
 });
 
-test('describeEffect fills {value}: points for flat, percent for multipliers', () => {
-  const flat = {
-    description: '+{value} pts si un Français gagne',
-    trigger: { type: 'ALWAYS' },
-    reward: { type: 'FLAT_POINTS', value: 40 },
-  };
-  expect(describeEffect(flat, 'C', balance)).toBe('+40 pts si un Français gagne');
-  expect(describeEffect(flat, 'L', balance)).toBe('+120 pts si un Français gagne');
-  const mult = {
-    description: '+{value} sur ses points',
-    trigger: { type: 'ALWAYS' },
-    reward: { type: 'RIDER_MULTIPLIER', value: 0.1 },
-  };
-  expect(describeEffect(mult, 'R', balance)).toBe('+15 % sur ses points');
-  expect(describeEffect(mult, 'L', balance)).toBe('+30 % sur ses points');
+test('formatValue: points for flat, percent for multipliers', () => {
+  const flat = { type: 'FLAT_POINTS', value: 40 };
+  expect(formatValue(flat, 'C', balance)).toBe('40');
+  expect(formatValue(flat, 'L', balance)).toBe('120');
+  const mult = { type: 'RIDER_MULTIPLIER', value: 0.1 };
+  expect(formatValue(mult, 'R', balance)).toBe('15 %');
+  expect(formatValue(mult, 'L', balance)).toBe('30 %');
 });
 
 test('scaledValue is 0 for an unknown rarity (no NaN)', () => {
@@ -94,14 +86,8 @@ test('evaluateTrigger: missing trigger is false; missing stats.techniques is saf
   expect(on({ type: 'RIDER_DID_TECHNIQUE', technique: 'gap' }, { riderId: 'a', event: e2 })).toBe(false);
 });
 
-test('describeEffect shows exact values: one decimal max, French comma', () => {
-  const flat = { description: '+{value} pts', trigger: { type: 'ALWAYS' }, reward: { type: 'FLAT_POINTS', value: 25 } };
-  expect(describeEffect(flat, 'R', balance)).toBe('+37,5 pts');
-  const mult = {
-    description: '+{value}',
-    trigger: { type: 'ALWAYS' },
-    reward: { type: 'RIDER_MULTIPLIER', value: 0.03 },
-  };
-  expect(describeEffect(mult, 'R', balance)).toBe('+4,5 %');
-  expect(describeEffect(mult, 'C', balance)).toBe('+3 %');
+test('formatValue: one decimal max, comma', () => {
+  expect(formatValue({ type: 'FLAT_POINTS', value: 25 }, 'R', balance)).toBe('37,5');
+  expect(formatValue({ type: 'RIDER_MULTIPLIER', value: 0.03 }, 'R', balance)).toBe('4,5 %');
+  expect(formatValue({ type: 'RIDER_MULTIPLIER', value: 0.03 }, 'C', balance)).toBe('3 %');
 });

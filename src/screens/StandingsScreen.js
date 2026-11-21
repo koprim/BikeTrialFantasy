@@ -6,14 +6,16 @@ import { currentSeason } from '../engine/calendar';
 import { seasonSummary } from '../state/selectors';
 import StandingsList from '../ui/StandingsList';
 import { colors, space } from '../ui/theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function StandingsScreen() {
+  const text = useGameText();
   const ctx = useScoring();
   const season = currentSeason(SEASONS, ctx.now);
   const summary = seasonSummary({ season, ...ctx });
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{season.name}</Text>
+      <Text style={styles.title}>{text.seasonName(season.id)}</Text>
       <Text style={styles.sub}>
         Après {summary.played} / {season.events.length} manches
       </Text>

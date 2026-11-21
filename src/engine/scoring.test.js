@@ -148,14 +148,14 @@ describe('teamEventScore', () => {
       ['ref', 84.5],
       ['tech-gap', 30],
     ]);
-    expect(out.effects[3]).toMatchObject({ name: 'Gap', rarity: 'R', description: '+30 pts' });
+    expect(out.effects[3]).toMatchObject({ cardId: 'tech-gap', effectIndex: 0, rarity: 'R', value: '30' });
   });
 
   test('a legend scores no ranking points but its effect still fires', () => {
     const team = { ...plain, slots: { ...plain.slots, senior26: slot('leg') } };
     const out = teamEventScore(team, event, deps);
     expect(out.breakdown[0]).toMatchObject({ riderId: 'leg', position: null, points: 0 });
-    expect(out.effects).toEqual([{ cardId: 'p-leg', name: 'leg', rarity: 'C', description: '+30 pts', points: 30 }]);
+    expect(out.effects).toEqual([{ cardId: 'p-leg', effectIndex: 0, rarity: 'C', value: '30', points: 30 }]);
     expect(out.total).toBeCloseTo(724 + 30);
   });
 

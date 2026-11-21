@@ -2,9 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { colors, space, radius } from './theme';
+import { useGameText } from '../i18n/useGameText';
 
 export default function OutcomeView({ event, outcome }) {
   const { t } = useTranslation();
+  const text = useGameText();
   const played = outcome.player.breakdown.some((b) => b.riderId);
   const sections = [
     { title: 'Ton score', data: played ? outcome.player.breakdown.map((b) => ({ kind: 'breakdown', ...b })) : [] },
@@ -22,7 +24,7 @@ export default function OutcomeView({ event, outcome }) {
     <View style={{ flex: 1 }}>
       <Text style={styles.total}>{outcome.player.total.toFixed(0)} pts</Text>
       <Text style={styles.sub}>
-        {event.name} · Manche {event.round}
+        {text.eventName(event.id)} · Manche {event.round}
       </Text>
       {!played && <Text style={styles.sub}>Non jouée — aucune équipe enregistrée</Text>}
       <SectionList
@@ -49,9 +51,9 @@ export default function OutcomeView({ event, outcome }) {
               <View style={styles.row}>
                 <View style={styles.cell1}>
                   <Text style={styles.effectName}>
-                    {item.name} · {t(`rarity.${item.rarity}`)}
+                    {text.cardName(item.cardId)} · {t(`rarity.${item.rarity}`)}
                   </Text>
-                  <Text style={styles.effectText}>{item.description}</Text>
+                  <Text style={styles.effectText}>{text.effectText(item.cardId, item.effectIndex, item.value)}</Text>
                 </View>
                 <Text style={styles.cell4}>+{item.points.toFixed(0)}</Text>
               </View>

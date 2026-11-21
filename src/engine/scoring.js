@@ -1,5 +1,5 @@
 const { SLOTS, teamRiderIds } = require('./team');
-const { evaluateTrigger, scaledValue, describeEffect } = require('./effects');
+const { evaluateTrigger, scaledValue, formatValue } = require('./effects');
 
 const POSITION_POINTS = { 1: 100, 2: 80, 3: 65, 4: 52, 5: 42, 6: 34, 7: 27, 8: 21, 9: 16, 10: 12 };
 
@@ -25,10 +25,14 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
   const slots = team.slots || {};
   const riderIds = teamRiderIds({ slots }, cardsById);
   const rows = [];
-  const pending = []; // { card, rarity, effect, riderId, rowIndex }
+  const pending = []; // { card, effectIndex, rarity, effect, riderId, rowIndex }
   const collect = (ref, riderId, rowIndex = null) => {
     const card = cardsById[ref.cardId];
-    if (card) card.effects.forEach((effect) => pending.push({ card, rarity: ref.rarity, effect, riderId, rowIndex }));
+    if (card) {
+      card.effects.forEach((effect, effectIndex) =>
+        pending.push({ card, effectIndex, rarity: ref.rarity, effect, riderId, rowIndex }),
+      );
+    }
   };
 
   SLOTS.forEach((slot) => {
@@ -64,9 +68,9 @@ function teamEventScore(team, event, { ridersById, cardsById, balance }) {
   const note = (f, points) =>
     effects.push({
       cardId: f.card.id,
-      name: f.card.name,
+      effectIndex: f.effectIndex,
       rarity: f.rarity,
-      description: describeEffect(f.effect, f.rarity, balance),
+      value: formatValue(f.effect.reward, f.rarity, balance),
       points,
     });
 
