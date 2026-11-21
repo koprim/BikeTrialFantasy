@@ -1,9 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, SectionList, StyleSheet } from 'react-native';
 import { colors, space, radius } from './theme';
-import { RARITY_LABELS } from '../engine/rarity';
 
 export default function OutcomeView({ event, outcome }) {
+  const { t } = useTranslation();
   const played = outcome.player.breakdown.some((b) => b.riderId);
   const sections = [
     { title: 'Ton score', data: played ? outcome.player.breakdown.map((b) => ({ kind: 'breakdown', ...b })) : [] },
@@ -36,7 +37,7 @@ export default function OutcomeView({ event, outcome }) {
               <View style={styles.row}>
                 <Text style={styles.cell1}>
                   {item.name || '—'}
-                  {item.rarity ? ` · ${RARITY_LABELS[item.rarity]}` : ''}
+                  {item.rarity ? ` · ${t(`rarity.${item.rarity}`)}` : ''}
                 </Text>
                 <Text style={styles.cell2}>{item.position ? `P${item.position}` : 'DNF'}</Text>
                 <Text style={styles.cell3}>×{item.cote?.toFixed(1) ?? '—'}</Text>
@@ -48,7 +49,7 @@ export default function OutcomeView({ event, outcome }) {
               <View style={styles.row}>
                 <View style={styles.cell1}>
                   <Text style={styles.effectName}>
-                    {item.name} · {RARITY_LABELS[item.rarity]}
+                    {item.name} · {t(`rarity.${item.rarity}`)}
                   </Text>
                   <Text style={styles.effectText}>{item.description}</Text>
                 </View>

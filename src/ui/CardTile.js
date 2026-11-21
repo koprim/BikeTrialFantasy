@@ -1,26 +1,27 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, Pressable, StyleSheet } from 'react-native';
-import { RARITY_LABELS } from '../engine/rarity';
 import { colors, rarityColors, space, radius } from './theme';
 
 export const TYPE_GLYPHS = { PILOT: '🏍️', TECHNIQUE: '🤸', EQUIPMENT: '🛠️', REFEREE: '🏁' };
 
 // count: undefined = do not show; 0 = missing (greyed). label overrides the accessibility label.
 export default function CardTile({ card, rarity, count, badge, label, onPress }) {
+  const { t } = useTranslation();
   const missing = count === 0;
   return (
     <Pressable
       onPress={onPress}
       disabled={!onPress}
       accessibilityRole="button"
-      accessibilityLabel={label || `${card.name} ${RARITY_LABELS[rarity]}`}
+      accessibilityLabel={label || `${card.name} ${t(`rarity.${rarity}`)}`}
       style={[styles.tile, { borderColor: rarityColors[rarity] }, missing && styles.missing]}
     >
       <Text style={styles.glyph}>{TYPE_GLYPHS[card.type]}</Text>
       <Text style={styles.name} numberOfLines={2}>
         {card.name}
       </Text>
-      <Text style={[styles.rarity, { color: rarityColors[rarity] }]}>{RARITY_LABELS[rarity]}</Text>
+      <Text style={[styles.rarity, { color: rarityColors[rarity] }]}>{t(`rarity.${rarity}`)}</Text>
       {count !== undefined && <Text style={styles.count}>{missing ? 'Manquante' : `×${count}`}</Text>}
       {badge ? <Text style={styles.badge}>{badge}</Text> : null}
     </Pressable>

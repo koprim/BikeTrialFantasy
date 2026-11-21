@@ -1,4 +1,6 @@
 {
+  "rarity": { "C": "Commune", "R": "Rare", "E": "Épique", "L": "Légendaire" },
+  "collection": { "allRarities": "Toutes" },
   "common": { "unexpectedError": "Une erreur est survenue." },
   "compose": {
     "slots": {

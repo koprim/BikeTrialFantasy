@@ -1,12 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 import { useGame } from '../state/GameContext';
 import { CARDS_BY_ID } from '../data/index';
-import { RARITY_LABELS } from '../engine/rarity';
 import CardTile from '../ui/CardTile';
 import { colors, space, radius } from '../ui/theme';
 
 export default function PackRevealScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const { state } = useGame();
   const cards = state.collection.lastPack;
   return (
@@ -23,7 +24,7 @@ export default function PackRevealScreen({ navigation, route }) {
               card={card}
               rarity={item.rarity}
               badge={item.isNew ? 'Nouvelle !' : 'Doublon'}
-              label={`Carte révélée ${card.name} ${RARITY_LABELS[item.rarity]}`}
+              label={`Carte révélée ${card.name} ${t(`rarity.${item.rarity}`)}`}
             />
           );
         }}

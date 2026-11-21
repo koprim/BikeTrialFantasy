@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 import { useGame, useNow } from '../state/GameContext';
 import { CARDS } from '../data/index';
 import { canOpenDaily, countOf } from '../engine/collection';
-import { RARITIES, RARITY_LABELS } from '../engine/rarity';
+import { RARITIES } from '../engine/rarity';
 import CardTile from '../ui/CardTile';
 import { errorMessage } from '../ui/errorMessages';
 import { useAsyncAction } from '../ui/useAsyncAction';
@@ -16,7 +17,6 @@ const TYPE_FILTERS = [
   ['EQUIPMENT', 'Équipements'],
   ['REFEREE', 'Arbitres'],
 ];
-const RARITY_FILTERS = [['ALL', 'Toutes'], ...RARITIES.map((r) => [r, RARITY_LABELS[r]])];
 
 function Chips({ options, value, onChange }) {
   return (
@@ -37,8 +37,10 @@ function Chips({ options, value, onChange }) {
 }
 
 export default function CollectionScreen({ navigation }) {
+  const { t } = useTranslation();
   const { state, actions } = useGame();
   const now = useNow();
+  const rarityFilters = [['ALL', t('collection.allRarities')], ...RARITIES.map((r) => [r, t(`rarity.${r}`)])];
   const [type, setType] = useState('ALL');
   const [rarity, setRarity] = useState('ALL');
   const [error, setError] = useState(null);
@@ -94,7 +96,7 @@ export default function CollectionScreen({ navigation }) {
         </Text>
       )}
       <Chips options={TYPE_FILTERS} value={type} onChange={setType} />
-      <Chips options={RARITY_FILTERS} value={rarity} onChange={setRarity} />
+      <Chips options={rarityFilters} value={rarity} onChange={setRarity} />
       <FlatList
         data={items}
         numColumns={3}

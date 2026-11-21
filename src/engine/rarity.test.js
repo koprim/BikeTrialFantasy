@@ -1,8 +1,7 @@
-const { RARITIES, RARITY_LABELS, rarityRank, atLeast } = require('./rarity');
+const { RARITIES, rarityRank, atLeast } = require('./rarity');
 
-test('four rarities in ascending order with French labels', () => {
+test('four rarities in ascending order', () => {
   expect(RARITIES).toEqual(['C', 'R', 'E', 'L']);
-  expect(RARITY_LABELS).toEqual({ C: 'Commune', R: 'Rare', E: 'Épique', L: 'Légendaire' });
 });
 
 test('rarityRank and atLeast', () => {
@@ -11,4 +10,8 @@ test('rarityRank and atLeast', () => {
   expect(atLeast('E', 'R')).toBe(true);
   expect(atLeast('R', 'R')).toBe(true);
   expect(atLeast('C', 'R')).toBe(false);
+});
+
+test('the engine only knows rarity codes', () => {
+  expect(require('./rarity')).not.toHaveProperty('RARITY_LABELS');
 });

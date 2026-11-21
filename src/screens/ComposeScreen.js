@@ -6,18 +6,17 @@ import { CARDS, CARDS_BY_ID, RIDERS_BY_ID, EVENTS_BY_ID, BALANCE, EDITION } from
 import { SLOTS, emptyTeam, normalizeTeam, validateCardTeam } from '../engine/team';
 import { ownedRefs } from '../engine/collection';
 import { describeEffect } from '../engine/effects';
-import { RARITY_LABELS } from '../engine/rarity';
 import { eventStatus } from '../engine/calendar';
 import { errorMessage } from '../ui/errorMessages';
 import { teamErrorText } from '../ui/teamErrors';
 import { useAsyncAction } from '../ui/useAsyncAction';
 import { colors, space, radius } from '../ui/theme';
 
-const refLabel = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '?'} · ${RARITY_LABELS[ref.rarity]}`;
 const sameRef = (a, b) => a.cardId === b.cardId && a.rarity === b.rarity;
 
 export default function ComposeScreen({ navigation, route }) {
   const { t } = useTranslation();
+  const refLabel = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '?'} · ${t(`rarity.${ref.rarity}`)}`;
   const { state, actions } = useGame();
   const now = useNow();
   const event = EVENTS_BY_ID[route.params.eventId];
@@ -136,7 +135,7 @@ export default function ComposeScreen({ navigation, route }) {
               </Pressable>
               {entry && (
                 <View style={styles.chips}>
-                  {entry.techniques.map((t) => chip(t, () => removeTechnique(slot.id, t)))}
+                  {entry.techniques.map((technique) => chip(technique, () => removeTechnique(slot.id, technique)))}
                   {entry.techniques.length < techLimit(entry) && (
                     <Pressable
                       onPress={() => setPicker({ kind: 'technique', slot })}
@@ -216,10 +215,10 @@ export default function ComposeScreen({ navigation, route }) {
                     onPress={() => choose(item)}
                     style={styles.option}
                     accessibilityRole="button"
-                    accessibilityLabel={`Choisir ${item.card.name} ${RARITY_LABELS[item.rarity]}`}
+                    accessibilityLabel={`Choisir ${item.card.name} ${t(`rarity.${item.rarity}`)}`}
                   >
                     <Text style={styles.optionName}>
-                      {item.card.name} · {RARITY_LABELS[item.rarity]}
+                      {item.card.name} · {t(`rarity.${item.rarity}`)}
                       {rider ? ` · ×${rider.cote.toFixed(1)}` : ''}
                     </Text>
                     {item.card.effects.map((e, i) => (

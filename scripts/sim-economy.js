@@ -5,7 +5,8 @@ const cards = require('../src/data/seed/cards.json');
 const balance = require('../src/data/seed/balance.json');
 const riders = require('../src/data/seed/riders.json');
 const { emptyCollection, openPack, openStarter, recycle, craft, countOf } = require('../src/engine/collection');
-const { RARITIES, RARITY_LABELS } = require('../src/engine/rarity');
+const { RARITIES } = require('../src/engine/rarity');
+const RARITY_LABELS = require('../src/i18n/locales/fr/ui.json').rarity;
 const { makeRng } = require('../src/engine/rng');
 
 const ridersById = Object.fromEntries(riders.map((r) => [r.id, r]));

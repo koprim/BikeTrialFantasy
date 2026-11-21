@@ -4,7 +4,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useGame, useScoring } from '../state/GameContext';
 import { EVENTS_BY_ID, CARDS_BY_ID, EDITION } from '../data/index';
 import { SLOTS, normalizeTeam } from '../engine/team';
-import { RARITY_LABELS } from '../engine/rarity';
 import { eventOutcome } from '../state/selectors';
 import OutcomeView from '../ui/OutcomeView';
 import { colors, space, radius } from '../ui/theme';
@@ -26,7 +25,7 @@ export default function EventResultScreen({ route }) {
 
   // Live event: team is locked, results not revealed yet.
   const team = normalizeTeam(state.picks[event.id], EDITION);
-  const label = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '—'} · ${RARITY_LABELS[ref.rarity]}`;
+  const label = (ref) => `${CARDS_BY_ID[ref.cardId]?.name ?? '—'} · ${t(`rarity.${ref.rarity}`)}`;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{event.name}</Text>
@@ -39,9 +38,9 @@ export default function EventResultScreen({ route }) {
               <Text style={styles.label}>{t(`compose.slots.${slot.id}`)}</Text>
               <Text style={styles.rider}>{entry ? label(entry) : '—'}</Text>
               {entry &&
-                entry.techniques.map((t) => (
-                  <Text key={`${t.cardId}:${t.rarity}`} style={styles.label}>
-                    + {label(t)}
+                entry.techniques.map((technique) => (
+                  <Text key={`${technique.cardId}:${technique.rarity}`} style={styles.label}>
+                    + {label(technique)}
                   </Text>
                 ))}
             </View>

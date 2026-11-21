@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import { useGame } from '../state/GameContext';
 import { CARDS_BY_ID, RIDERS_BY_ID, BALANCE } from '../data/index';
 import { countOf } from '../engine/collection';
 import { describeEffect } from '../engine/effects';
-import { RARITY_LABELS } from '../engine/rarity';
 import { TYPE_GLYPHS } from '../ui/CardTile';
 import { confirm } from '../ui/confirm';
 import { errorMessage } from '../ui/errorMessages';
@@ -14,6 +14,7 @@ import { colors, rarityColors, space, radius } from '../ui/theme';
 const TYPE_LABELS = { PILOT: 'Pilote', TECHNIQUE: 'Technique', EQUIPMENT: 'Équipement', REFEREE: 'Arbitre' };
 
 export default function CardDetailScreen({ route }) {
+  const { t } = useTranslation();
   const { state, actions } = useGame();
   const [error, setError] = useState(null);
   const card = CARDS_BY_ID[route.params.cardId];
@@ -47,13 +48,13 @@ export default function CardDetailScreen({ route }) {
         const count = countOf(state.collection, card.id, r);
         const cost = BALANCE.fragments.craftCost[r];
         const gain = BALANCE.fragments.perDuplicate[r];
-        const label = `${card.name} (${RARITY_LABELS[r]})`;
+        const label = `${card.name} (${t(`rarity.${r}`)})`;
         const canCraft = fragments >= cost;
         const craftDisabled = busy || !canCraft;
         return (
           <View key={r} style={[styles.row, { borderColor: rarityColors[r] }]}>
             <Text style={[styles.rarity, { color: rarityColors[r] }]}>
-              {RARITY_LABELS[r]} · ×{count}
+              {t(`rarity.${r}`)} · ×{count}
             </Text>
             {card.effects.map((e, i) => (
               <Text key={i} style={styles.effect}>
@@ -65,7 +66,7 @@ export default function CardDetailScreen({ route }) {
                 disabled={craftDisabled}
                 accessibilityRole="button"
                 accessibilityState={{ busy, disabled: craftDisabled }}
-                accessibilityLabel={`Fabriquer ${card.name} ${RARITY_LABELS[r]}${canCraft ? '' : ' indisponible'}`}
+                accessibilityLabel={`Fabriquer ${card.name} ${t(`rarity.${r}`)}${canCraft ? '' : ' indisponible'}`}
                 onPress={() => run(actions.craft, r, `Fabriquer ${label} pour ${cost} fragments ?`)}
                 style={[styles.btn, craftDisabled && styles.disabled]}
               >
@@ -76,7 +77,7 @@ export default function CardDetailScreen({ route }) {
                   disabled={busy}
                   accessibilityRole="button"
                   accessibilityState={{ busy, disabled: busy }}
-                  accessibilityLabel={`Recycler ${card.name} ${RARITY_LABELS[r]}`}
+                  accessibilityLabel={`Recycler ${card.name} ${t(`rarity.${r}`)}`}
                   onPress={() =>
                     run(actions.recycle, r, `Recycler un exemplaire de ${label} contre ${gain} fragments ?`)
                   }
