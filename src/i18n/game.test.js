@@ -43,3 +43,8 @@ test('the real registry reads the generated French texts', () => {
   expect(gameText('fr').cardName('technique-2026-gap')).toBe('Gap');
   expect(gameText('fr').seasonName('2026')).toBe('Coupe du Monde 2026');
 });
+
+test('an unknown language is skipped: the chain is English then French', () => {
+  expect(gameText('de', registry).cardName('c1')).toBe('Tyres');
+  expect(gameText('en', registry).eventName('e')).toBe('Manche');
+});
